@@ -1,6 +1,5 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
-/* global requestAnimationFrame  */
 /*-------------------------------*/
 'use strict';
 
@@ -10,26 +9,26 @@ var canvasWidth  = window.innerWidth;
 var canvasHeight = window.innerHeight;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
-var camera = new THREE.PerspectiveCamera(75, canvasWidth/canvasHeight, 0.1, 1000);
+var camera = new THREE.PerspectiveCamera(80, canvasWidth/canvasHeight, 0.1, 1000);
 
 // Bind renderer to document
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(canvasWidth, canvasHeight);
 $('#canvas-body').append(renderer.domElement);
 
-// Create 3D cube
+// Create shape
 var geometry = new THREE.BoxGeometry(1, 1, 1);
-var material = new THREE.MeshBasicMaterial();
-var cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+var meshData = {color: 0xffeeae};
+var material = new THREE.MeshBasicMaterial(meshData);
+var figure = new THREE.Mesh(geometry, material);
+scene.add(figure);
 camera.position.z = 5;
-
 
 // Render animation
 function animate() {
-  requestAnimationFrame(animate);
-  cube.rotation.x += 0.01;
-  cube.rotation.z += 0.01;
+  window.requestAnimationFrame(animate);
+  figure.rotation.x += 0.01;
+  figure.rotation.y += 0.01;
   renderer.render(scene, camera);
 }
 animate();
