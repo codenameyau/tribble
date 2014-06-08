@@ -13,8 +13,8 @@ var mouseX, mouseY;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
 var camera = new THREE.PerspectiveCamera(1000, canvasWidth/canvasHeight, 0.1, 2000);
-var start = new THREE.Vector3(0, 0, 150);
-camera.position.set(0, 0, 150);
+var start = new THREE.Vector3(0, 0, 500);
+camera.position.set(0, 0, 500);
 camera.lookAt(start);
 
 // WebGLRenderer
@@ -34,39 +34,38 @@ pointLight.position.set(100, 100, 100);
 scene.add(pointLight);
 
 // Create geometry and materials
-var cylinder = new THREE.CylinderGeometry(10, 10, 35, 20);
-var floor = new THREE.BoxGeometry(60, 20, 20);
-var blueMaterial = new THREE.MeshLambertMaterial({color: 0x4a8cb9});
-var greenMaterial = new THREE.MeshLambertMaterial({color: 0x4acc69});
+var pillarRadius = 10;
+var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, 35, 20);
+var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xb1b1b1});
 
 // Create green box
-var building = new THREE.Mesh(floor, greenMaterial);
-building.position.x = 0;
-building.position.y = 0;
-building.position.z = 0;
-scene.add(building);
+// var building = new THREE.Mesh(floor, greenMaterial);
+// building.position.x = 0;
+// building.position.y = 0;
+// building.position.z = 0;
+// scene.add(building);
 
-// Create pillars
-var pillarA = new THREE.Mesh(cylinder, blueMaterial);
-pillarA.rotation.x = calc.radToDeg(90);
-pillarA.position.x = 0;
-pillarA.position.y = 0;
-scene.add(pillarA);
+// Create left side pillars
+function addPillars(xOffset, yOffset, xChange, yChange, totalPillars) {
+  for (var i = 0; i < totalPillars; i++) {
+    var pillar = new THREE.Mesh(cylinder, pillarMaterial);
+    pillar.rotation.x = calc.radToDeg(90);
+    pillar.position.x = xOffset;
+    pillar.position.y = yOffset;
+    scene.add(pillar);
+    xOffset += xChange;
+    yOffset += yChange;
+  }
+}
 
-var pillarB = new THREE.Mesh(cylinder, blueMaterial);
-pillarB.position.x = -45;
-pillarB.position.y = 45;
-scene.add(pillarB);
+var frontPillars = 8;
+var sidePillars = 17;
+var spacing = 4;
 
-var pillarC = new THREE.Mesh(cylinder, blueMaterial);
-pillarC.position.x = -45;
-pillarC.position.y = -45;
-scene.add(pillarC);
-
-var pillarD = new THREE.Mesh(cylinder, blueMaterial);
-pillarD.position.x = 45;
-pillarD.position.y = -45;
-scene.add(pillarD);
+var frontOffset = frontPillars * pillarRadius * spacing;
+addPillars(-90, frontOffset, pillarRadius*4, 0, sidePillars);
+addPillars(-90, -frontOffset, pillarRadius*4, 0, sidePillars);
+addPillars(90, -pillarRadius*frontPillars, 0, pillarRadius*4, frontPillars);
 
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
