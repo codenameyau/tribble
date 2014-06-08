@@ -33,15 +33,9 @@ scene.add(pointLight);
 
 // Create geometry and materials
 var pillarRadius = 10;
+var baseColor = 0xF7F3E4;
 var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, 35, 20);
-var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xb1b1b1, wireframe: true});
-
-// Create green box
-// var building = new THREE.Mesh(floor, greenMaterial);
-// building.position.x = 0;
-// building.position.y = 0;
-// building.position.z = 0;
-// scene.add(building);
+var pillarMaterial = new THREE.MeshLambertMaterial({color: baseColor, wireframe: true});
 
 // Create left side pillars
 function addPillars(xOffset, yOffset, xChange, yChange, totalPillars) {
@@ -69,6 +63,17 @@ addPillars(-sideOffset, -frontOffset, spacing, 0, sidePillars);
 addPillars(-sideOffset, -frontOffset, 0, spacing, frontPillars);
 addPillars(sideOffset-spacing, -frontOffset, 0, spacing, frontPillars);
 
+// Add floor
+var floorLength = (sidePillars-1) * spacing;
+var floorWidth = frontPillars * spacing;
+var floorHeight = 20;
+var buildingBase = new THREE.BoxGeometry(floorLength, floorWidth, floorHeight);
+var buildingFloor = new THREE.Mesh(buildingBase, pillarMaterial);
+buildingFloor.position.x = -20;
+buildingFloor.position.z = -floorHeight;
+scene.add(buildingFloor);
+
+
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
   mouseX = e.clientX - window.innerWidth / 2;
@@ -80,7 +85,6 @@ function update() {
   // Move light position to track mouse (must be a unit vector!)
   light.position.set(mouseX, mouseY, 100).normalize();
   renderer.render(scene, camera);
-  building.rotation.x += 0.01;
 }
 
 function animate() {
