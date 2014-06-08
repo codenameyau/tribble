@@ -1,19 +1,20 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
+/* global THREEx                 */
 /*-------------------------------*/
 'use strict';
 
 // Create scene
-var scene  = new THREE.Scene();
+var scene = new THREE.Scene();
 var canvasWidth  = window.innerWidth;
 var canvasHeight = window.innerHeight;
 var mouseX, mouseY;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
-var camera = new THREE.PerspectiveCamera(80, canvasWidth/canvasHeight, 0.1, 1000);
-var origin = new THREE.Vector3(0, 0, 0);
-camera.position.set(0, 0, 100);
-camera.lookAt(origin);
+var camera = new THREE.PerspectiveCamera(1000, canvasWidth/canvasHeight, 0.1, 2000);
+var start = new THREE.Vector3(0, 0, 80);
+camera.position.set(0, 0, 80);
+camera.lookAt(start);
 
 // WebGLRenderer
 var renderer = new THREE.WebGLRenderer();
@@ -32,28 +33,37 @@ pointLight.position.set(100, 100, 100);
 scene.add(pointLight);
 
 // Create geometry and materials
-var cylinder = new THREE.CylinderGeometry(15, 15, 25, 20);
-var box = new THREE.BoxGeometry(25, 25, 25);
-var tetrahedron = new THREE.TetrahedronGeometry(20);
-var redMaterial = new THREE.MeshLambertMaterial({color: 0xa34554, wireframe: true});
+var cylinder = new THREE.CylinderGeometry(10, 10, 35, 20);
+var floor = new THREE.BoxGeometry(60, 20, 20);
 var blueMaterial = new THREE.MeshLambertMaterial({color: 0x4a8cb9, wireframe: true});
 var greenMaterial = new THREE.MeshLambertMaterial({color: 0x4acc69, wireframe: true});
 
-// Create red tetrahedron
-var firstTetrahedron = new THREE.Mesh(tetrahedron, redMaterial);
-firstTetrahedron.position.x = -45;
-scene.add(firstTetrahedron);
-
 // Create green box
-var firstBox = new THREE.Mesh(box, greenMaterial);
-firstBox.position.x = 0;
-scene.add(firstBox);
+var buildingCeiling = new THREE.Mesh(floor, greenMaterial);
+buildingCeiling.position.x = 0;
+scene.add(buildingCeiling);
 
-// Create blue cylinder
-var firstCylinder = new THREE.Mesh(cylinder, blueMaterial);
-firstCylinder.position.x = 45;
-scene.add(firstCylinder);
+// Create pillars
+var pillarA = new THREE.Mesh(cylinder, blueMaterial);
+pillarA.position.x = 45;
+pillarA.position.y = 45;
+pillarA.position.z = 45;
+scene.add(pillarA);
 
+var pillarB = new THREE.Mesh(cylinder, blueMaterial);
+pillarB.position.x = -45;
+pillarB.position.y = 45;
+scene.add(pillarB);
+
+var pillarC = new THREE.Mesh(cylinder, blueMaterial);
+pillarC.position.x = -45;
+pillarC.position.y = -45;
+scene.add(pillarC);
+
+var pillarD = new THREE.Mesh(cylinder, blueMaterial);
+pillarD.position.x = 45;
+pillarD.position.y = -45;
+scene.add(pillarD);
 
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
@@ -62,21 +72,16 @@ document.addEventListener('mousemove', function(e) {
 }, false );
 
 
-function renderAnimation() {
+function update() {
   // Move light position to track mouse (must be a unit vector!)
   light.position.set(mouseX, mouseY, 100).normalize();
   renderer.render(scene, camera);
-  firstTetrahedron.rotation.x += 0.01;
-  firstTetrahedron.rotation.y += 0.01;
-  firstCylinder.rotation.x += 0.01;
-  firstCylinder.rotation.y += 0.01;
-  firstBox.rotation.x += 0.01;
-  firstBox.rotation.y += 0.01;
+
 }
 
 function animate() {
   window.requestAnimationFrame(animate);
-  renderAnimation();
+  update();
 }
 animate();
 

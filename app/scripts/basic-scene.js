@@ -10,7 +10,9 @@ var canvasHeight = window.innerHeight;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
 var camera = new THREE.PerspectiveCamera(80, canvasWidth/canvasHeight, 0.1, 1000);
+var origin = new THREE.Vector3(0, 0, 0);
 camera.position.z = 5;
+camera.lookAt(origin);
 
 // Bind renderer to document
 var renderer = new THREE.WebGLRenderer();
