@@ -13,9 +13,7 @@ var mouseX, mouseY;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
 var camera = new THREE.PerspectiveCamera(1000, canvasWidth/canvasHeight, 0.1, 2000);
-var start = new THREE.Vector3(0, 0, 500);
-camera.position.set(0, 0, 500);
-camera.lookAt(start);
+camera.position.set(0, 0, 400);
 
 // WebGLRenderer
 var renderer = new THREE.WebGLRenderer();
@@ -36,7 +34,7 @@ scene.add(pointLight);
 // Create geometry and materials
 var pillarRadius = 10;
 var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, 35, 20);
-var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xb1b1b1});
+var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xb1b1b1, wireframe: true});
 
 // Create green box
 // var building = new THREE.Mesh(floor, greenMaterial);
@@ -58,14 +56,18 @@ function addPillars(xOffset, yOffset, xChange, yChange, totalPillars) {
   }
 }
 
-var frontPillars = 8;
-var sidePillars = 17;
-var spacing = 4;
+// Compute pillar offsets
+var frontPillars = 7;
+var sidePillars = 19;
+var spacing = pillarRadius * 4;
+var frontOffset = frontPillars * spacing/2;
+var sideOffset = sidePillars * spacing/2;
 
-var frontOffset = frontPillars * pillarRadius * spacing;
-addPillars(-90, frontOffset, pillarRadius*4, 0, sidePillars);
-addPillars(-90, -frontOffset, pillarRadius*4, 0, sidePillars);
-addPillars(90, -pillarRadius*frontPillars, 0, pillarRadius*4, frontPillars);
+// Add front and side pillars
+addPillars(-sideOffset, frontOffset, spacing, 0, sidePillars);
+addPillars(-sideOffset, -frontOffset, spacing, 0, sidePillars);
+addPillars(-sideOffset, -frontOffset, 0, spacing, frontPillars);
+addPillars(sideOffset-spacing, -frontOffset, 0, spacing, frontPillars);
 
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
