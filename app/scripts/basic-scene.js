@@ -10,8 +10,7 @@ var canvasHeight = window.innerHeight;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
 var camera = new THREE.PerspectiveCamera(80, canvasWidth/canvasHeight, 0.1, 1000);
-var origin = new THREE.Vector3(0, 0, 0);
-camera.lookAt(origin);
+camera.position.z = 5;
 
 // Bind renderer to document
 var renderer = new THREE.WebGLRenderer();
@@ -33,7 +32,6 @@ figure.scale.z = 1.0;
 figure.scale.y = 1.0;
 figure.scale.x = 1.0;
 scene.add(figure);
-camera.position.z = 5;
 
 // Render animation
 function renderAnimation() {
