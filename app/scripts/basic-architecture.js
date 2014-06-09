@@ -10,12 +10,13 @@ var scene = new THREE.Scene();
 var canvasWidth  = window.innerWidth;
 var canvasHeight = window.innerHeight;
 var mouseX, mouseY;
-var theta = 0;
 
 // PerspectiveCamera(field of view, aspect ratio, near clip, far clip)
-var camera = new THREE.PerspectiveCamera(1000, canvasWidth/canvasHeight, 0.1, 2000);
-camera.position.set(0, 90, 400);
-camera.rotation.z = calc.radToDeg(180);
+var viewAngle = 90;
+var rotationSpeed = 0.02;
+var aspectRatio = canvasWidth/canvasHeight;
+var camera = new THREE.PerspectiveCamera(viewAngle, aspectRatio, 0.1, 2000);
+camera.position.set(0, 0, 400);
 var keyboard = new THREEx.KeyboardState();
 
 // WebGLRenderer
@@ -36,7 +37,7 @@ scene.add(pointLight);
 
 // Create geometry and materials
 var pillarRadius = 10;
-var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, 50, 20);
+var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, 100, 20);
 var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xF7F3E4, wireframe: true});
 var floorMaterial = new THREE.MeshLambertMaterial({color: 0xa3a3a3});
 
@@ -67,13 +68,13 @@ addPillars(-sideOffset, -frontOffset, 0, spacing, frontPillars);
 addPillars(sideOffset-spacing, -frontOffset, 0, spacing, frontPillars);
 
 // Add floor
-var floorLength = (sidePillars-1) * spacing;
+var floorLength = sidePillars * spacing;
 var floorWidth = frontPillars * spacing;
-var floorHeight = 20;
+var floorHeight = 15;
 var buildingBase = new THREE.BoxGeometry(floorLength, floorWidth, floorHeight);
 var buildingFloor = new THREE.Mesh(buildingBase, floorMaterial);
 buildingFloor.position.x = -20;
-buildingFloor.position.z = -floorHeight;
+buildingFloor.position.z = -floorHeight-40;
 scene.add(buildingFloor);
 
 
@@ -84,35 +85,44 @@ document.addEventListener('mousemove', function(e) {
 }, false );
 
 
+
+function checkRotation() {
+  var x = camera.position.x;
+  var y = camera.position.y;
+  var z = camera.position.z;
+
+  // Keyboard camera rotation
+  if(keyboard.pressed('left')) {
+    camera.position.x = x * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+    camera.rotation.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
+  }
+  else if(keyboard.pressed('right')) {
+    camera.position.x = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) + x * Math.sin(rotationSpeed);
+  }
+  else if(keyboard.pressed('down')) {
+    camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
+  }
+  else if(keyboard.pressed('up')) {
+    camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+  }
+  camera.lookAt(scene.position);
+}
+
 function update() {
   // Move light position to track mouse (must be a unit vector!)
   light.position.set(mouseX, mouseY, 100).normalize();
   renderer.render(scene, camera);
-
-  // Keyboard camera rotation
-  if(keyboard.pressed('left')) {
-    theta += 0.5;
-    camera.rotation.y = calc.radToDeg(theta);
-  }
-  else if(keyboard.pressed('right')) {
-    theta -= 0.5;
-    camera.rotation.y = calc.radToDeg(theta);
-  }
-  else if(keyboard.pressed('down')) {
-    theta += 0.5;
-    camera.position.z -= 1;
-    camera.rotation.x = calc.radToDeg(theta);
-  }
-  else if(keyboard.pressed('up')) {
-    theta -= 0.5;
-    camera.rotation.x = calc.radToDeg(theta);
-  }
+  checkRotation();
 }
 
 function animate() {
   window.requestAnimationFrame(animate);
   update();
 }
+
 animate();
 
 
