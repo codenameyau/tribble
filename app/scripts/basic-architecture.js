@@ -77,6 +77,16 @@ buildingFloor.position.x = -20;
 buildingFloor.position.z = -floorHeight-40;
 scene.add(buildingFloor);
 
+// Add ceiling
+var ceilingFloor = new THREE.Mesh(buildingBase, floorMaterial);
+ceilingFloor.position.x = -20;
+ceilingFloor.position.z = floorHeight+40;
+scene.add(ceilingFloor);
+
+// Add ceiling triangle
+var tetrahedronBase = new THREE.TetrahedronGeometry(100);
+var triangularRoof = new THREE.Mesh(tetrahedronBase, floorMaterial);
+scene.add(triangularRoof);
 
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
@@ -93,20 +103,24 @@ function checkRotation() {
 
   // Keyboard camera rotation
   if(keyboard.pressed('left')) {
-    camera.position.x = x * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-    camera.rotation.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
-  }
-  else if(keyboard.pressed('right')) {
     camera.position.x = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
     camera.position.z = z * Math.cos(rotationSpeed) + x * Math.sin(rotationSpeed);
   }
+  else if(keyboard.pressed('right')) {
+    camera.position.x = x * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
+  }
   else if(keyboard.pressed('down')) {
-    camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-    camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
+    if (camera.position.z > 10) {
+      camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+      camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
+    }
   }
   else if(keyboard.pressed('up')) {
-    camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-    camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+    if (camera.position.y < -10) {
+      camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+      camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+    }
   }
   camera.lookAt(scene.position);
 }
