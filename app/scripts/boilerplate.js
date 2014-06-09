@@ -36,7 +36,7 @@ function initScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(divId).append(renderer.domElement);
 
-  // Example shape (delete sample)
+  // Example grid stage
   var lines = 20, step = 2;
   var floorGrid = new THREE.Geometry();
   var gridLine = new THREE.LineBasicMaterial({color: 'white'});
@@ -46,7 +46,6 @@ function initScene() {
     floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
     floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
   }
-
   var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
   scene.add(stage);
 
@@ -75,10 +74,17 @@ function updateKeyboard() {
     }
   }
   else if(keyboard.pressed('up')) {
-    console.log(camera.position.x + ' ' + camera.position.y + ' ' + camera.position.x);
-    if (camera.position.x === 0 && camera.position.y < zoomY-0.1) {
-      camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-      camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+    var posY = camera.position.y;
+    if (posY < zoomY-0.1) {
+      if (posY < 1) {
+        camera.position.x = zoomX;
+        camera.position.y = zoomY;
+        camera.position.z = zoomZ;
+      }
+      else {
+        camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+        camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+      }
     }
   }
   camera.lookAt(scene.position);
