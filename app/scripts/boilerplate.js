@@ -1,10 +1,16 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
+/* global THREEx                 */
 /*-------------------------------*/
 'use strict';
 
+// Global variables
 var divId = '#canvas-body';
-var scene, camera, renderer;
+var scene, camera, keyboard, renderer;
+var rotationSpeed = 0.02;
+var zoomX = 0;
+var zoomY = 50;
+var zoomZ = 0;
 
 // Initialization
 function initScene() {
@@ -18,9 +24,12 @@ function initScene() {
   var viewDistance = 50;
   var aspectRatio  = canvasWidth/canvasHeight;
   var lookAtCoords = new THREE.Vector3(0, 0, 0);
-  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 5000);
-  camera.position.set(0, 50, 0);
+  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 1000);
+  camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
+
+  // Keyboard controls
+  keyboard = new THREEx.KeyboardState();
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
@@ -43,17 +52,50 @@ function initScene() {
 
 }
 
-// Update scene
-function updateScene() {
-  renderer.render(scene, camera);
+// Keyboard event listener
+function updateKeyboard() {
+
+  var x = camera.position.x;
+  var y = camera.position.y;
+  var z = camera.position.z;
+
+  // Keyboard camera rotation
+  if(keyboard.pressed('left')) {
+    camera.position.x = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) + x * Math.sin(rotationSpeed);
+  }
+  else if(keyboard.pressed('right')) {
+    camera.position.x = x * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
+  }
+  else if(keyboard.pressed('down')) {
+    if (camera.position.y > 5) {
+      camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+      camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
+    }
+  }
+  else if(keyboard.pressed('up')) {
+    console.log(camera.position.x + ' ' + camera.position.y + ' ' + camera.position.x);
+    if (camera.position.x === 0 && camera.position.y < zoomY-0.1) {
+      camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+      camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
+    }
+  }
+  camera.lookAt(scene.position);
 }
 
-// Animate scene
-function animateScene() {
-  window.requestAnimationFrame(animateScene);
+// Update animation scene
+function updateScene() {
+  renderer.render(scene, camera);
+  updateKeyboard();
+}
+
+// Render scene
+function renderScene() {
+  window.requestAnimationFrame(renderScene);
   updateScene();
 }
 
 // Run Scene
 initScene();
-animateScene();
+renderScene();
