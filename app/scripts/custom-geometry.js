@@ -51,7 +51,7 @@ function initScene() {
   scene.add(stage);
 
   // Add rectangular prism geometry
-  var prismMaterial = new THREE.MeshBasicMaterial();
+  var prismMaterial = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
   var triangularPrism = calc.TriangularPrism(8, 6, 10);
   var prism = new THREE.Mesh(triangularPrism, prismMaterial);
   scene.add(prism);
