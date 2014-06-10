@@ -1,6 +1,7 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
 /* global THREEx                 */
+/* global calc                   */
 /*-------------------------------*/
 'use strict';
 
@@ -50,15 +51,12 @@ function initScene() {
   scene.add(stage);
 
   // Add rectangular prism geometry
-  var triangleHeight = 6;
   var prismMaterial = new THREE.MeshBasicMaterial();
-  var triangularPrism = new THREE.Geometry();
-  triangularPrism.vertices.push(new THREE.Vector3(-triangleHeight, 0, 10));
-  triangularPrism.vertices.push(new THREE.Vector3(triangleHeight, 0, 10));
-  triangularPrism.vertices.push(new THREE.Vector3(0, triangleHeight, 10));
-  triangularPrism.faces.push(new THREE.Face3(0, 1, 2));
+  prismMaterial.side = THREE.DoubleSide;
+  var triangularPrism = calc.TriangularPrism();
   var prism = new THREE.Mesh(triangularPrism, prismMaterial);
   scene.add(prism);
+
 }
 
 // Keyboard event listener
