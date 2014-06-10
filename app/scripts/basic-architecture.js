@@ -1,6 +1,7 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
 /* global THREEx                 */
+/* global calc                   */
 /*-------------------------------*/
 'use strict';
 
@@ -93,20 +94,24 @@ function initScene() {
   // Add floor
   var floorFrontArea = (countFace + 0.5) * spacing;
   var floorSideArea = (countSide + 1.5) * spacing;
-  var floorHeight = 2;
-  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, floorHeight, floorSideArea);
+  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, 2, floorSideArea);
   var solidMaterial = new THREE.MeshBasicMaterial({color: 0xDCDCDC});
   var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
   floorMesh.position.y = 0;
   scene.add(floorMesh);
 
   // Add ceiling
-  var ceilingMesh = new THREE.Mesh(floorGeometry, solidMaterial);
-  floorMesh.position.y = 30;
+  var ceilingGeometry = new THREE.BoxGeometry(floorFrontArea, 3, floorSideArea);
+  var ceilingMesh = new THREE.Mesh(ceilingGeometry, solidMaterial);
+  ceilingMesh.position.y = 30;
   scene.add(ceilingMesh);
 
   // Adding triangularPrism roof
-
+  var roofMaterial = new THREE.MeshBasicMaterial({color: 0xEAEAEA});
+  var triangularPrism = calc.TriangularPrism(countFace*4.3, 10, countSide*4.3);
+  var roofMesh = new THREE.Mesh(triangularPrism, roofMaterial);
+  roofMesh.position.y = 31;
+  scene.add(roofMesh);
 }
 
 // Keyboard event listener
@@ -125,10 +130,8 @@ function updateKeyboard() {
     camera.position.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
   }
   else if(keyboard.pressed('down')) {
-    if (camera.position.y > 5) {
-      camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-      camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
-    }
+    camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
   }
   else if(keyboard.pressed('up')) {
     if (camera.position.y < zoomY-0.1) {
