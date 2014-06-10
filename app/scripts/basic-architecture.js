@@ -10,7 +10,7 @@ var scene, camera, keyboard, renderer;
 var rotationSpeed = 0.02;
 var zoomX = 0;
 var zoomY = 140;
-var zoomZ = 100;
+var zoomZ = 200;
 
 /********************
  * Helper Functions *
@@ -61,7 +61,7 @@ function initScene() {
   $(containerID).append(renderer.domElement);
 
   // Example grid stage
-  var lines = 80, step = 4;
+  var lines = 120, step = 5;
   var floorGrid = new THREE.Geometry();
   var gridLine = new THREE.LineBasicMaterial({color: 'white'});
   for (var i = -lines; i <= lines; i += step) {
@@ -75,16 +75,38 @@ function initScene() {
 
   // Add pillars
   var countSide = 18;
-  var countFace = 7;
+  var countFace = 8;
   var pillarRadius = 2;
-  var spacing = 10;
-  var startX = countFace * pillarRadius * 2;
+  var spacing = pillarRadius*4;
+  var startX = (countFace-1) * pillarRadius * 2;
   var startZ = countSide * pillarRadius * 2;
-  var pillarMaterial = new THREE.MeshBasicMaterial({wireframe: true});
+  var pillarMaterial = new THREE.MeshBasicMaterial({color: 0xFAFAFA, wireframe: true});
   var pillarsFront = {xPos: -startX, xSpace: spacing, zPos: startZ,  zSpace: 0};
   var pillarsBack  = {xPos: -startX, xSpace: spacing, zPos: -startZ, zSpace: 0};
+  var pillarsLeft  = {xPos: -startX, xSpace: 0, zPos: -startZ, zSpace: spacing};
+  var pillarsright = {xPos:  startX, xSpace: 0, zPos: -startZ, zSpace: spacing};
   addPillars(pillarsFront, pillarMaterial, countFace, pillarRadius);
   addPillars(pillarsBack, pillarMaterial, countFace, pillarRadius);
+  addPillars(pillarsLeft, pillarMaterial, countSide, pillarRadius);
+  addPillars(pillarsright, pillarMaterial, countSide, pillarRadius);
+
+  // Add floor
+  var floorFrontArea = (countFace + 0.5) * spacing;
+  var floorSideArea = (countSide + 1.5) * spacing;
+  var floorHeight = 2;
+  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, floorHeight, floorSideArea);
+  var solidMaterial = new THREE.MeshBasicMaterial({color: 0xDCDCDC});
+  var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
+  floorMesh.position.y = 0;
+  scene.add(floorMesh);
+
+  // Add ceiling
+  var ceilingMesh = new THREE.Mesh(floorGeometry, solidMaterial);
+  floorMesh.position.y = 30;
+  scene.add(ceilingMesh);
+
+  // Adding triangularPrism roof
+
 }
 
 // Keyboard event listener
