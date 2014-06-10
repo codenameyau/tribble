@@ -5,7 +5,7 @@
 'use strict';
 
 // Global variables
-var divId = '#canvas-body';
+var containerID = '#canvas-body';
 var scene, camera, keyboard, renderer;
 var rotationSpeed = 0.02;
 var zoomX = 0;
@@ -34,7 +34,7 @@ function initScene() {
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
-  $(divId).append(renderer.domElement);
+  $(containerID).append(renderer.domElement);
 
   // Example grid stage
   var lines = 20, step = 2;
@@ -74,9 +74,8 @@ function updateKeyboard() {
     }
   }
   else if(keyboard.pressed('up')) {
-    var posY = camera.position.y;
-    if (posY < zoomY-0.1) {
-      if (posY < 1) {
+    if (camera.position.y < zoomY-0.1) {
+      if (camera.position.y < 1) {
         camera.position.x = zoomX;
         camera.position.y = zoomY;
         camera.position.z = zoomZ;
