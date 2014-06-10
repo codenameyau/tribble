@@ -1,7 +1,6 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
 /* global THREEx                 */
-/* global calc                   */
 /*-------------------------------*/
 'use strict';
 
@@ -10,26 +9,28 @@ var containerID = '#canvas-body';
 var scene, camera, keyboard, renderer;
 var rotationSpeed = 0.02;
 var zoomX = 0;
-var zoomY = 200;
-var zoomZ = 0;
+var zoomY = 140;
+var zoomZ = 100;
 
 /********************
  * Helper Functions *
  ********************/
-var addPillars = function(detail, pillarMaterial) {
-  var totalPillars = detail.count;
-  var radius = detail.radius || 10;
-  var height = detail.height || 50;
-  var xOffset = detail.xOffset || 10;
-  var xChange = detail.xChange || 10;
-  var cylinder = new THREE.CylinderGeometry(radius, radius, height, 32);
+var addPillars = function(detail, pillarMaterial, totalPillars, pillarRadius) {
+  var height = detail.height || 30;
+  var xPosition = detail.xPos || 0;
+  var zPosition = detail.zPos || 0;
+  totalPillars = totalPillars || 8;
+  pillarRadius = pillarRadius || 4;
 
+  var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, height, 32);
   for (var i = 0; i < totalPillars; i++) {
     var pillar = new THREE.Mesh(cylinder, pillarMaterial);
-    pillar.rotation.x = calc.radToDeg(90);
-    pillar.position.x = xOffset;
+    pillar.position.x = xPosition;
+    pillar.position.y = height/2;
+    pillar.position.z = zPosition;
     scene.add(pillar);
-    xOffset += xChange;
+    xPosition += detail.xSpace;
+    zPosition += detail.zSpace;
   }
 };
 
@@ -73,9 +74,17 @@ function initScene() {
   scene.add(stage);
 
   // Add pillars
-  var pillarDetails = {count: 8, radius: 2, height: 50};
-  var pillarMaterial = new THREE.LineBasicMaterial({color: 0xFFFFFF});
-  addPillars(pillarDetails, pillarMaterial);
+  var countSide = 18;
+  var countFace = 7;
+  var pillarRadius = 2;
+  var spacing = 10;
+  var startX = countFace * pillarRadius * 2;
+  var startZ = countSide * pillarRadius * 2;
+  var pillarMaterial = new THREE.MeshBasicMaterial({wireframe: true});
+  var pillarsFront = {xPos: -startX, xSpace: spacing, zPos: startZ,  zSpace: 0};
+  var pillarsBack  = {xPos: -startX, xSpace: spacing, zPos: -startZ, zSpace: 0};
+  addPillars(pillarsFront, pillarMaterial, countFace, pillarRadius);
+  addPillars(pillarsBack, pillarMaterial, countFace, pillarRadius);
 }
 
 // Keyboard event listener
