@@ -51,7 +51,7 @@ function initScene() {
   scene.add(stage);
 
   // Add rectangular prism geometry
-  var prismMaterial = new THREE.MeshBasicMaterial({side: THREE.DoubleSide});
+  var prismMaterial = new THREE.MeshBasicMaterial();
   var triangularPrism = calc.TriangularPrism(8, 6, 10);
   var prism = new THREE.Mesh(triangularPrism, prismMaterial);
   scene.add(prism);
@@ -74,23 +74,12 @@ function updateKeyboard() {
     camera.position.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
   }
   else if(keyboard.pressed('down')) {
-    if (camera.position.y > 5) {
-      camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-      camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
-    }
+    camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
   }
   else if(keyboard.pressed('up')) {
-    if (camera.position.y < zoomY-0.1) {
-      if (camera.position.y < 1) {
-        camera.position.x = zoomX;
-        camera.position.y = zoomY;
-        camera.position.z = zoomZ;
-      }
-      else {
-        camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-        camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
-      }
-    }
+    camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
+    camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
   }
   camera.lookAt(scene.position);
 }
