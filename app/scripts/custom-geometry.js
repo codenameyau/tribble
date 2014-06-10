@@ -51,12 +51,10 @@ function initScene() {
   scene.add(stage);
 
   // Add rectangular prism geometry
-  var prismMaterial = new THREE.MeshBasicMaterial();
-  prismMaterial.side = THREE.DoubleSide;
-  var triangularPrism = calc.TriangularPrism();
+  var prismMaterial = new THREE.MeshBasicMaterial({side: THREE.DoubleSide});
+  var triangularPrism = calc.TriangularPrism(8, 6, 10);
   var prism = new THREE.Mesh(triangularPrism, prismMaterial);
   scene.add(prism);
-
 }
 
 // Keyboard event listener

@@ -12,12 +12,14 @@ var calc = {
   },
 
   // Custom Geometry: triangular prism
+  // To do: make double sided true internally
   TriangularPrism : function(width, height, length) {
     // Default sizes
     width  = width  || 8;
     height = height || 8;
     length = length || 10;
     var triangularPrism = new THREE.Geometry();
+
     // Front triangle
     triangularPrism.vertices.push(new THREE.Vector3(-width, 0, length));
     triangularPrism.vertices.push(new THREE.Vector3(width, 0, length));
@@ -33,8 +35,8 @@ var calc = {
     triangularPrism.faces.push(new THREE.Face3(1, 2, 4));
     triangularPrism.faces.push(new THREE.Face3(2, 3, 5));
     triangularPrism.faces.push(new THREE.Face3(2, 4, 5));
-    triangularPrism.faces.push(new THREE.Face3(0, 3, 4));
     triangularPrism.faces.push(new THREE.Face3(0, 1, 4));
+    triangularPrism.faces.push(new THREE.Face3(0, 1, 3));
     return triangularPrism;
   },
 

@@ -83,19 +83,6 @@ ceilingFloor.position.x = -20;
 ceilingFloor.position.z = floorHeight+40;
 scene.add(ceilingFloor);
 
-// Add ceiling triangle prism
-// var triangularPrism = new THREE.Geometry();
-// var testMaterial = new THREE.MeshLambertMaterial({color: 0xaa2233});
-// var v1 = new THREE.Vector3(50, 0, 0);
-// var v2 = new THREE.Vector3(-50, 0, 0);
-// var v3 = new THREE.Vector3(0, 0, 50);
-// triangularPrism.vertices.push(v1);
-// triangularPrism.vertices.push(v2);
-// triangularPrism.vertices.push(v3);
-// triangularPrism.faces.push(new THREE.Face3( 0, 1, 2 ));
-// var triangularRoof = new THREE.Mesh(triangularPrism, testMaterial);
-// scene.add(triangularRoof);
-
 
 // Track the mouse position, relative to the middle of the screen
 document.addEventListener('mousemove', function(e) {
@@ -147,5 +134,3 @@ function animate() {
 }
 
 animate();
-
-
