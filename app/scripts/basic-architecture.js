@@ -11,42 +11,39 @@ var zoomX = 0;
 var zoomY = 90;
 var zoomZ = 250;
 
-// Custom variables
-var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
+// Custom settings
 var countSide = 18;
 var countFace = 8;
 var pillarRadius = 2;
+var pillarHeight = 30;
 var spacing = pillarRadius*4;
-var floorHeight = 2;
 
 
 /********************
  * Helper Functions *
  ********************/
-var addPillars = function(detail, pillarMaterial, totalPillars, pillarRadius) {
-  var height = detail.height || 30;
+var addPillars = function(detail, pillarMaterial, totalPillars) {
   var xPosition = detail.xPos || 0;
   var yPosition = detail.yPos || 0;
   var zPosition = detail.zPos || 0;
   totalPillars = totalPillars || 8;
-  pillarRadius = pillarRadius || 4;
 
-  var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, height, 32);
+  var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, pillarHeight, 32);
   for (var i = 0; i < totalPillars; i++) {
     var pillar = new THREE.Mesh(cylinder, pillarMaterial);
-    pillar.position.set(xPosition, height/2+yPosition-1, zPosition);
+    pillar.position.set(xPosition, pillarHeight/2+yPosition-1, zPosition);
     scene.add(pillar);
     xPosition += detail.xSpace;
     zPosition += detail.zSpace;
   }
 };
 
-var addFloorLayer = function() {
-  var floorFrontArea = (countFace + 1.0) * spacing;
-  var floorSideArea = (countSide + 2.0) * spacing;
-  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, floorHeight, floorSideArea);
-  var solidMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
-  var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
+var getFloorLayer = function(frontDist, sideDist, height, materialColor) {
+  var floorFrontArea = (countFace + frontDist) * spacing;
+  var floorSideArea = (countSide + sideDist) * spacing;
+  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, height, floorSideArea);
+  var solidMaterial = new THREE.MeshLambertMaterial({color: materialColor});
+  return new THREE.Mesh(floorGeometry, solidMaterial);
 };
 
 /******************
@@ -77,10 +74,10 @@ function initScene() {
   $(containerID).append(renderer.domElement);
 
   // Light sources
-  var lightAmbient = new THREE.AmbientLight(0x565656);
+  var lightAmbient = new THREE.AmbientLight(0x727272);
   scene.add(lightAmbient);
   var lightFront = new THREE.PointLight(0xcccccc);
-  lightFront.position.set(0, 30, 120);
+  lightFront.position.set(0, 75, 120);
   scene.add(lightFront);
   var lightBack = new THREE.PointLight(0xcccccc);
   lightBack.position.set(0, 0, -120);
@@ -96,49 +93,51 @@ function initScene() {
     floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
     floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
   }
-
   var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
   scene.add(stage);
 
-  // Add floor
-  var floorFrontArea = (countFace + 1.0) * spacing;
-  var floorSideArea = (countSide + 2.0) * spacing;
-  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, floorHeight, floorSideArea);
-  var solidMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
-  var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
-  floorMesh.position.y = floorHeight/2;
-  scene.add(floorMesh);
+  // Materials and setup
+  var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
 
-  var floorFrontArea = (countFace + 0.5) * spacing;
-  var floorSideArea = (countSide + 1.5) * spacing;
-  var floorGeometry = new THREE.BoxGeometry(floorFrontArea, floorHeight, floorSideArea);
-  var solidMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
-  var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
-  floorMesh.position.y = floorHeight+1;
-  scene.add(floorMesh);
+  // Add floor layers
+  var floorHeight = 2;
+  var floorFirstLayer = getFloorLayer(1.3, 2.0, floorHeight);
+  floorFirstLayer.position.y = floorHeight/2;
+  var floorSecondLayer = getFloorLayer(0.8, 1.5, floorHeight);
+  floorSecondLayer.position.y = floorFirstLayer.position.y + floorHeight;
+  var floorThirdLayer = getFloorLayer(0.3, 1.0, floorHeight);
+  floorThirdLayer.position.y = floorSecondLayer.position.y + floorHeight;
+  scene.add(floorFirstLayer);
+  scene.add(floorSecondLayer);
+  scene.add(floorThirdLayer);
 
   // Add pillars
   var startX = (countFace-1) * pillarRadius * 2;
+  var startY = floorThirdLayer.position.y;
   var startZ = countSide * pillarRadius * 2;
-  var pillarsFront = {xPos: -startX, xSpace: spacing, zPos: startZ,  zSpace: 0, yPos: floorHeight};
-  var pillarsBack  = {xPos: -startX, xSpace: spacing, zPos: -startZ, zSpace: 0, yPos: floorHeight};
-  var pillarsLeft  = {xPos: -startX, xSpace: 0, zPos: -startZ, zSpace: spacing, yPos: floorHeight};
-  var pillarsright = {xPos:  startX, xSpace: 0, zPos: -startZ, zSpace: spacing, yPos: floorHeight};
-  addPillars(pillarsFront, concreteMaterial, countFace, pillarRadius);
-  addPillars(pillarsBack, concreteMaterial, countFace, pillarRadius);
-  addPillars(pillarsLeft, concreteMaterial, countSide, pillarRadius);
-  addPillars(pillarsright, concreteMaterial, countSide, pillarRadius);
+  var pillarsFront = {xPos: -startX, xSpace: spacing, zPos: startZ,  zSpace: 0, yPos: startY};
+  var pillarsBack  = {xPos: -startX, xSpace: spacing, zPos: -startZ, zSpace: 0, yPos: startY};
+  var pillarsLeft  = {xPos: -startX, xSpace: 0, zPos: -startZ, zSpace: spacing, yPos: startY};
+  var pillarsright = {xPos:  startX, xSpace: 0, zPos: -startZ, zSpace: spacing, yPos: startY};
+  addPillars(pillarsFront, concreteMaterial, countFace);
+  addPillars(pillarsBack, concreteMaterial, countFace);
+  addPillars(pillarsLeft, concreteMaterial, countSide);
+  addPillars(pillarsright, concreteMaterial, countSide);
 
   // Add ceiling
-  var ceilingGeometry = new THREE.BoxGeometry(floorFrontArea, 3, floorSideArea);
-  var ceilingMesh = new THREE.Mesh(ceilingGeometry, solidMaterial);
-  ceilingMesh.position.y = 30;
-  scene.add(ceilingMesh);
+  var ceilingHeight = 3;
+  var facadeHeight = 6;
+  var ceilingLayer = getFloorLayer(0, 1, ceilingHeight, 0xDCDCDC);
+  ceilingLayer.position.y = startY+pillarHeight;
+  var facadeLayer = getFloorLayer(-0.1, 0.8, facadeHeight, 0xABABAB);
+  facadeLayer.position.y = ceilingLayer.position.y + ceilingHeight+1;
+  scene.add(ceilingLayer);
+  scene.add(facadeLayer);
 
   // Adding triangularPrism roof
-  var triangularPrism = calc.TriangularPrism(countFace*4.3, 10, countSide*4.3);
+  var triangularPrism = calc.TriangularPrism(countFace*4.15, 12, countSide*4.2);
   var roofMesh = new THREE.Mesh(triangularPrism, concreteMaterial);
-  roofMesh.position.y = 31;
+  roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
   scene.add(roofMesh);
 }
 
