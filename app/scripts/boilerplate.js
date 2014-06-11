@@ -3,39 +3,66 @@
 /*-------------------------------*/
 'use strict';
 
-// Global variables
+
+/*********************************
+ * Global Variables and Settings *
+ *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
+var viewDistance = 50;
 var zoomX = 0;
 var zoomY = 50;
 var zoomZ = 0;
 
-// Initialization
-function initScene() {
 
-  // Create scene
+/********************************
+ * Helper Function Declarations *
+ ********************************/
+function renderScene() {
+  renderer.render( scene, camera );
+}
+
+function animateScene() {
+  window.requestAnimationFrame( animateScene );
+  controls.update();
+}
+
+function resizeWindow() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderScene();
+}
+
+
+/**************************************
+ * Scene Initialization and Rendering *
+ **************************************/
+function initializeScene() {
+
+  // Scene
   scene = new THREE.Scene();
   var canvasWidth  = window.innerWidth;
   var canvasHeight = window.innerHeight;
+  window.addEventListener( 'resize', resizeWindow, false );
 
-  // Camera position
-  var viewDistance = 50;
+  // Camera
   var aspectRatio  = canvasWidth/canvasHeight;
   var lookAtCoords = new THREE.Vector3(0, 0, 0);
   camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
   camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
 
-  // Orbit controls
+  // OrbitControls
   controls = new THREE.OrbitControls( camera );
-  controls.addEventListener( 'change', renderer );
+  controls.addEventListener( 'change', renderScene );
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
-  // Example grid stage
+  // Grid floor stage
   var lines = 20, step = 2;
   var floorGrid = new THREE.Geometry();
   var gridLine = new THREE.LineBasicMaterial({color: 'white'});
@@ -48,21 +75,13 @@ function initScene() {
   var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
   scene.add(stage);
 
+  // Start here
+
 }
 
-// Update animation scene
-function updateScene() {
-  renderer.render(scene, camera);
-}
-
-// Render scene
-function renderScene() {
-  window.requestAnimationFrame(renderScene);
-  updateScene();
-  controls.update();
-}
-
-// Run Scene
-initScene();
-renderScene();
+/********************
+ * Initialize Scene *
+ ********************/
+initializeScene();
+animateScene();
 
