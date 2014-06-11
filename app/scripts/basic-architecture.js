@@ -1,14 +1,12 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
-/* global THREEx                 */
 /* global calc                   */
 /*-------------------------------*/
 'use strict';
 
 // Global variables
 var containerID = '#canvas-body';
-var scene, camera, keyboard, renderer;
-var rotationSpeed = 0.02;
+var scene, camera, controls, renderer;
 var zoomX = 0;
 var zoomY = 140;
 var zoomZ = 200;
@@ -53,8 +51,9 @@ function initScene() {
   camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
 
-  // Keyboard controls
-  keyboard = new THREEx.KeyboardState();
+  // Orbit controls
+  controls = new THREE.OrbitControls( camera );
+  controls.addEventListener( 'change', renderer );
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
@@ -115,51 +114,16 @@ function initScene() {
   scene.add(wfh);
 }
 
-// Keyboard event listener
-function updateKeyboard() {
-  var x = camera.position.x;
-  var y = camera.position.y;
-  var z = camera.position.z;
-
-  // Keyboard camera rotation
-  if(keyboard.pressed('left')) {
-    camera.position.x = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-    camera.position.z = z * Math.cos(rotationSpeed) + x * Math.sin(rotationSpeed);
-  }
-  else if(keyboard.pressed('right')) {
-    camera.position.x = x * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-    camera.position.z = z * Math.cos(rotationSpeed) - x * Math.sin(rotationSpeed);
-  }
-  else if(keyboard.pressed('down')) {
-    camera.position.y = y * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-    camera.position.z = z * Math.cos(rotationSpeed) + y * Math.sin(rotationSpeed);
-  }
-  else if(keyboard.pressed('up')) {
-    if (camera.position.y < zoomY-0.1) {
-      if (camera.position.y < 1) {
-        camera.position.x = zoomX;
-        camera.position.y = zoomY;
-        camera.position.z = zoomZ;
-      }
-      else {
-        camera.position.y = y * Math.cos(rotationSpeed) + z * Math.sin(rotationSpeed);
-        camera.position.z = z * Math.cos(rotationSpeed) - y * Math.sin(rotationSpeed);
-      }
-    }
-  }
-  camera.lookAt(scene.position);
-}
-
 // Update animation scene
 function updateScene() {
   renderer.render(scene, camera);
-  updateKeyboard();
 }
 
 // Render scene
 function renderScene() {
   window.requestAnimationFrame(renderScene);
   updateScene();
+  controls.update();
 }
 
 // Run Scene

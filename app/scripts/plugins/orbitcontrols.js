@@ -1,9 +1,14 @@
+/*-------JSHint Directives-------*/
+/* jshint curly:false            */
+/* global THREE                  */
+/*-------------------------------*/
 /**
  * @author qiao / https://github.com/qiao
  * @author mrdoob / http://mrdoob.com
  * @author alteredq / http://alteredqualia.com/
  * @author WestLangley / http://github.com/WestLangley
  */
+'use strict';
 
 THREE.OrbitControls = function ( object, domElement ) {
 
@@ -303,7 +308,7 @@ THREE.OrbitControls = function ( object, domElement ) {
 
   }
 
-  function onMouseUp( event ) {
+  function onMouseUp( ) {
 
     if ( scope.enabled === false ) return;
     if ( scope.userRotate === false ) return;
