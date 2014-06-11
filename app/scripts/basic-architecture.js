@@ -110,8 +110,9 @@ function initScene() {
   var roofMaterial = new THREE.MeshBasicMaterial({color: 0xEAEAEA});
   var triangularPrism = calc.TriangularPrism(countFace*4.3, 10, countSide*4.3);
   var roofMesh = new THREE.Mesh(triangularPrism, roofMaterial);
-  roofMesh.position.y = 31;
-  scene.add(roofMesh);
+  var wfh = new THREE.WireframeHelper( roofMesh, 0x000000 );
+  wfh.position.y = 31;
+  scene.add(wfh);
 }
 
 // Keyboard event listener
