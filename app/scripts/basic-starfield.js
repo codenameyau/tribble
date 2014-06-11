@@ -1,5 +1,6 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
+/* global calc                   */
 /*-------------------------------*/
 'use strict';
 
@@ -8,7 +9,9 @@ var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var zoomX = 0;
 var zoomY = 0;
-var zoomZ = 100;
+var zoomZ = 1000;
+var updateSpeed = 30;
+var particleSpeed = 20;
 
 // Starfield settings
 var mouseX = 0, mouseY = 0;
@@ -18,15 +21,47 @@ var particles = [];
 function onMouseMove(event) {
   mouseX = event.clientX;
   mouseY = event.clientY;
+  console.log(mouseX + ' ' + mouseY);
+}
+
+// Particle renderer
+function particleRender(context) {
+  context.beginPath();
+  context.arc(0, 0, 1, 0, Math.PI * 2, true);
+  context.fill();
 }
 
 // Creates random starfield
 function makeParticles() {
+  var particle;
+  var material = new THREE.ParticleCanvasMaterial(
+    { color: 0xffffff, program: particleRender });
 
+  for (var z=-zoomZ; z<zoomZ; z+=particleSpeed) {
+    particle = new THREE.Particle(material);
+    particle.position.x = calc.getRandomNumber(-500, 500);
+    particle.position.y = calc.getRandomNumber(-500, 500);
+    particle.position.z = z;
+    particle.scale.x = particle.scale.y = 10;
+    scene.add(particle);
+    particles.push(particle);
+  }
+}
+
+// Moves particles based on mouse position
+function updateParticles() {
+  for (var i=0; i<particles.length; i++) {
+    var particle = particles[i];
+    particle.position.z += mouseY * 0.1;
+    if (particle.position.z > 1000) {
+      particle.position.z = 2000;
+    }
+  }
 }
 
 // Update animation scene
 function updateScene() {
+  updateParticles();
   renderer.render(scene, camera);
 }
 
@@ -34,7 +69,7 @@ function updateScene() {
 function renderScene() {
   window.requestAnimationFrame(renderScene);
   updateScene();
-  controls.update();
+  // controls.update();
 }
 
 // Initialization
@@ -62,23 +97,10 @@ function initScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
-  // Example grid stage
-  var lines = 20, step = 2;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial({color: 'white'});
-  for (var i = -lines; i <= lines; i += step) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
-  scene.add(stage);
-
   // Particles
   makeParticles();
   document.addEventListener( 'mousemove', onMouseMove, false );
-  setInterval(updateScene, 1000/30);
+  setInterval(updateScene, 1000/updateSpeed);
 }
 
 // Run Scene

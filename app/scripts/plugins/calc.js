@@ -11,6 +11,11 @@ var calc = {
     return degrees * (Math.PI / 180);
   },
 
+  // getRandomNum(Int, Int) -> Int
+  getRandomNumber : function(min, max) {
+    return Math.random() * (max - min) + min;
+  },
+
   // Custom Geometry: triangular prism
   // To do: make double sided true internally
   TriangularPrism : function(width, height, length) {
