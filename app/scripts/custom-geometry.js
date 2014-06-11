@@ -1,7 +1,7 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
 /* global THREEx                 */
-/* global calc                   */
+/* global geometry               */
 /*-------------------------------*/
 'use strict';
 
@@ -52,7 +52,7 @@ function initScene() {
 
   // Add rectangular prism geometry
   var prismMaterial = new THREE.MeshBasicMaterial({color: 0xFFFFFF});
-  var triangularPrism = calc.TriangularPrism(8, 6, 10);
+  var triangularPrism = geometry.TriangularPrism(8, 6, 10);
   var prism = new THREE.Mesh(triangularPrism, prismMaterial);
   scene.add(prism);
 }

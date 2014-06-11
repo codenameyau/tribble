@@ -1,6 +1,6 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
-/* global calc                   */
+/* global geometry               */
 /*-------------------------------*/
 'use strict';
 
@@ -164,7 +164,7 @@ function initScene() {
   // Adding triangularPrism roof
   var roofHeight = pillarHeight/2.8;
   var roofWidth = pillarRadius*2;
-  var triangularPrism = calc.TriangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
+  var triangularPrism = geometry.TriangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
   var roofMesh = new THREE.Mesh(triangularPrism, concreteMaterial);
   roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
   scene.add(roofMesh);
