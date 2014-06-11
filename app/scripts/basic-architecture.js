@@ -24,9 +24,7 @@ var addPillars = function(detail, pillarMaterial, totalPillars, pillarRadius) {
   var cylinder = new THREE.CylinderGeometry(pillarRadius, pillarRadius, height, 32);
   for (var i = 0; i < totalPillars; i++) {
     var pillar = new THREE.Mesh(cylinder, pillarMaterial);
-    pillar.position.x = xPosition;
-    pillar.position.y = height/2;
-    pillar.position.z = zPosition;
+    pillar.position.set(xPosition, height/2, zPosition);
     scene.add(pillar);
     xPosition += detail.xSpace;
     zPosition += detail.zSpace;
@@ -60,6 +58,11 @@ function initScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
+  // Light sources
+  var lightFront = new THREE.PointLight(0xcccccc);
+  lightFront.position.set(0, 0, 100);
+  scene.add(lightFront);
+
   // Example grid stage
   var lines = 120, step = 5;
   var floorGrid = new THREE.Geometry();
@@ -80,7 +83,7 @@ function initScene() {
   var spacing = pillarRadius*4;
   var startX = (countFace-1) * pillarRadius * 2;
   var startZ = countSide * pillarRadius * 2;
-  var pillarMaterial = new THREE.MeshBasicMaterial({color: 0xFAFAFA, wireframe: true});
+  var pillarMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
   var pillarsFront = {xPos: -startX, xSpace: spacing, zPos: startZ,  zSpace: 0};
   var pillarsBack  = {xPos: -startX, xSpace: spacing, zPos: -startZ, zSpace: 0};
   var pillarsLeft  = {xPos: -startX, xSpace: 0, zPos: -startZ, zSpace: spacing};
@@ -94,7 +97,7 @@ function initScene() {
   var floorFrontArea = (countFace + 0.5) * spacing;
   var floorSideArea = (countSide + 1.5) * spacing;
   var floorGeometry = new THREE.BoxGeometry(floorFrontArea, 2, floorSideArea);
-  var solidMaterial = new THREE.MeshBasicMaterial({color: 0xDCDCDC});
+  var solidMaterial = new THREE.MeshLambertMaterial({color: 0xDCDCDC});
   var floorMesh = new THREE.Mesh(floorGeometry, solidMaterial);
   floorMesh.position.y = 0;
   scene.add(floorMesh);
@@ -106,12 +109,10 @@ function initScene() {
   scene.add(ceilingMesh);
 
   // Adding triangularPrism roof
-  var roofMaterial = new THREE.MeshBasicMaterial({color: 0xEAEAEA});
   var triangularPrism = calc.TriangularPrism(countFace*4.3, 10, countSide*4.3);
-  var roofMesh = new THREE.Mesh(triangularPrism, roofMaterial);
-  var wfh = new THREE.WireframeHelper( roofMesh, 0x000000 );
-  wfh.position.y = 31;
-  scene.add(wfh);
+  var roofMesh = new THREE.Mesh(triangularPrism, pillarMaterial);
+  roofMesh.position.y = 31;
+  scene.add(roofMesh);
 }
 
 // Update animation scene
