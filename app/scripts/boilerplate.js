@@ -1,5 +1,6 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
+/* global $:false                */
 /*-------------------------------*/
 'use strict';
 
@@ -35,25 +36,44 @@ function resizeWindow() {
 }
 
 
+/******************************
+ * Scene and Object Functions *
+ ******************************/
+function basicFloorGrid(lines, steps, gridColor) {
+  lines = lines || 20;
+  steps = steps || 2;
+  gridColor = gridColor || 0xFFFFFF;
+  var floorGrid = new THREE.Geometry();
+  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
+  for (var i = -lines; i <= lines; i += steps) {
+    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
+  }
+  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
+}
+
+
 /**************************************
  * Scene Initialization and Rendering *
  **************************************/
 function initializeScene() {
 
-  // Scene
+  // Scene and resize listener
   scene = new THREE.Scene();
   var canvasWidth  = window.innerWidth;
   var canvasHeight = window.innerHeight;
   window.addEventListener( 'resize', resizeWindow, false );
 
-  // Camera
+  // Camera and initial view
   var aspectRatio  = canvasWidth/canvasHeight;
   var lookAtCoords = new THREE.Vector3(0, 0, 0);
   camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
   camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
 
-  // OrbitControls
+  // OrbitControls with mouse
   controls = new THREE.OrbitControls( camera );
   controls.addEventListener( 'change', renderScene );
 
@@ -62,20 +82,8 @@ function initializeScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
-  // Grid floor stage
-  var lines = 20, step = 2;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial({color: 'white'});
-  for (var i = -lines; i <= lines; i += step) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
-  scene.add(stage);
-
-  // Start here
+  // Starter floor grid
+  scene.add(basicFloorGrid(20, 2));
 
 }
 
@@ -84,4 +92,3 @@ function initializeScene() {
  ********************/
 initializeScene();
 animateScene();
-
