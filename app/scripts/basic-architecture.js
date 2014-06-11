@@ -8,14 +8,14 @@
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var zoomX = 0;
-var zoomY = 90;
-var zoomZ = 250;
+var zoomY = 20;
+var zoomZ = 180;
 
 // Custom settings
 var countSide = 18;
 var countFace = 8;
 var pillarRadius = 2;
-var pillarHeight = 30;
+var pillarHeight = 28;
 var spacing = pillarRadius*4;
 
 
@@ -74,17 +74,20 @@ function initScene() {
   $(containerID).append(renderer.domElement);
 
   // Light sources
-  var lightAmbient = new THREE.AmbientLight(0x727272);
+  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   scene.add(lightAmbient);
-  var lightFront = new THREE.PointLight(0xcccccc);
-  lightFront.position.set(0, 75, 120);
+  var lightFront = new THREE.PointLight(0x7c7c7c);
+  var lightLeft  = new THREE.PointLight(0x525252);
+  var lightRight = new THREE.PointLight(0x525252);
+  lightFront.position.set(0, 100, 150);
+  lightLeft.position.set(-250, 120, 80);
+  lightRight.position.set(250, 120, 80);
   scene.add(lightFront);
-  var lightBack = new THREE.PointLight(0xcccccc);
-  lightBack.position.set(0, 0, -120);
-  scene.add(lightBack);
+  scene.add(lightLeft);
+  scene.add(lightRight);
 
   // Example grid stage
-  var lines = 120, step = 5;
+  var lines = 150, step = 5;
   var floorGrid = new THREE.Geometry();
   var gridLine = new THREE.LineBasicMaterial({color: 0xFAFAFA });
   for (var i = -lines; i <= lines; i += step) {
@@ -135,7 +138,9 @@ function initScene() {
   scene.add(facadeLayer);
 
   // Adding triangularPrism roof
-  var triangularPrism = calc.TriangularPrism(countFace*4.15, 12, countSide*4.2);
+  var roofHeight = pillarHeight/2.8;
+  var roofWidth = pillarRadius*2;
+  var triangularPrism = calc.TriangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
   var roofMesh = new THREE.Mesh(triangularPrism, concreteMaterial);
   roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
   scene.add(roofMesh);
