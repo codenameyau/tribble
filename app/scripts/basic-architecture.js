@@ -22,7 +22,7 @@ var spacing = pillarRadius*4;
 /********************
  * Helper Functions *
  ********************/
-var addPillars = function(detail, pillarMaterial, totalPillars) {
+function addPillars(detail, pillarMaterial, totalPillars) {
   var xPosition = detail.xPos || 0;
   var yPosition = detail.yPos || 0;
   var zPosition = detail.zPos || 0;
@@ -36,15 +36,48 @@ var addPillars = function(detail, pillarMaterial, totalPillars) {
     xPosition += detail.xSpace;
     zPosition += detail.zSpace;
   }
-};
+}
 
-var getFloorLayer = function(frontDist, sideDist, height, materialColor) {
+function getFloorLayer(frontDist, sideDist, height, materialColor) {
+  materialColor = materialColor || 0xB2B2B2;
   var floorFrontArea = (countFace + frontDist) * spacing;
   var floorSideArea = (countSide + sideDist) * spacing;
   var floorGeometry = new THREE.BoxGeometry(floorFrontArea, height, floorSideArea);
   var solidMaterial = new THREE.MeshLambertMaterial({color: materialColor});
   return new THREE.Mesh(floorGeometry, solidMaterial);
-};
+}
+
+function basicFloorGrid(lines, steps, gridColor) {
+  lines = lines || 20;
+  steps = steps || 2;
+  gridColor = gridColor || 0xFFFFFF;
+  var floorGrid = new THREE.Geometry();
+  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
+  for (var i = -lines; i <= lines; i += steps) {
+    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
+  }
+  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
+}
+
+function renderScene() {
+  renderer.render( scene, camera );
+}
+
+function animateScene() {
+  window.requestAnimationFrame( animateScene );
+  controls.update();
+}
+
+function resizeWindow() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderScene();
+}
+
 
 /******************
  * Initialization *
@@ -55,6 +88,7 @@ function initScene() {
   scene = new THREE.Scene();
   var canvasWidth  = window.innerWidth;
   var canvasHeight = window.innerHeight;
+  window.addEventListener( 'resize', resizeWindow, false );
 
   // Camera position
   var viewDistance = 50;
@@ -66,7 +100,7 @@ function initScene() {
 
   // Orbit controls
   controls = new THREE.OrbitControls( camera );
-  controls.addEventListener( 'change', renderer );
+  controls.addEventListener( 'change', renderScene );
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
@@ -87,17 +121,7 @@ function initScene() {
   scene.add(lightRight);
 
   // Example grid stage
-  var lines = 150, step = 5;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial({color: 0xFAFAFA });
-  for (var i = -lines; i <= lines; i += step) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  var stage = new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
-  scene.add(stage);
+  scene.add(basicFloorGrid(150, 5));
 
   // Materials and setup
   var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
@@ -146,18 +170,9 @@ function initScene() {
   scene.add(roofMesh);
 }
 
-// Update animation scene
-function updateScene() {
-  renderer.render(scene, camera);
-}
 
-// Render scene
-function renderScene() {
-  window.requestAnimationFrame(renderScene);
-  updateScene();
-  controls.update();
-}
-
-// Run Scene
+/******************
+ * Run Animations *
+ ******************/
 initScene();
-renderScene();
+animateScene();

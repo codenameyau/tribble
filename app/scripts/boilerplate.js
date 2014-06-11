@@ -17,7 +17,7 @@ var zoomZ = 0;
 
 
 /********************************
- * Helper Function Declarations *
+ * Helper Functions Declarations *
  ********************************/
 function renderScene() {
   renderer.render( scene, camera );
@@ -36,9 +36,9 @@ function resizeWindow() {
 }
 
 
-/******************************
- * Scene and Object Functions *
- ******************************/
+/****************************
+ * Custom THREEJS Functions *
+ ****************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
   steps = steps || 2;
@@ -55,9 +55,9 @@ function basicFloorGrid(lines, steps, gridColor) {
 }
 
 
-/**************************************
- * Scene Initialization and Rendering *
- **************************************/
+/************************
+ * Scene Initialization *
+ ************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -87,8 +87,9 @@ function initializeScene() {
 
 }
 
-/********************
- * Initialize Scene *
- ********************/
+
+/**********************
+ * Render and Animate *
+ **********************/
 initializeScene();
 animateScene();
