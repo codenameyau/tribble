@@ -12,10 +12,10 @@
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var viewDistance = 50;
-var zoomX = 0;
-var zoomY = 50;
-var zoomZ = 0;
-
+var zoomX = 10;
+var zoomY = 10;
+var zoomZ = 300;
+var starSystem;
 
 /********************************
  * Helper Functions Declarations *
@@ -26,6 +26,7 @@ function renderScene() {
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
+  // starSystem.rotation.y += 0.001;
   controls.update();
 }
 
@@ -40,25 +41,14 @@ function resizeWindow() {
 /****************************
  * Custom THREEJS Functions *
  ****************************/
-function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 20;
-  steps = steps || 2;
-  gridColor = gridColor || 0xFFFFFF;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
-  for (var i = -lines; i <= lines; i += steps) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
-}
-
 function particleStarField(totalParticles) {
   totalParticles = totalParticles || 200;
   var particles = new THREE.Geometry();
-  var material = new THREE.ParticleBasicMaterial({color: 0xFFFFFF, size: 10});
+  var texture = THREE.ImageUtils.loadTexture('images/texture/pstar.jpg');
+  var material = new THREE.ParticleBasicMaterial(
+    {color: 0xFFFFFF, size: 5, map: texture, blending: THREE.AdditiveBlending, transparent: true});
+
+  // Add particles vectors
   for (var i = 0; i < totalParticles; i++) {
     var range = 250;
     var px = calc.getRandomNumber(-range, range);
@@ -66,7 +56,9 @@ function particleStarField(totalParticles) {
     var pz = calc.getRandomNumber(-range, range);
     particles.vertices.push(new THREE.Vector3(px, py, pz));
   }
-  return new THREE.ParticleSystem(particles, material);
+  var starSystem = new THREE.ParticleSystem(particles, material);
+  starSystem.sortParticles = true;
+  return starSystem;
 }
 
 /************************
@@ -96,11 +88,9 @@ function initializeScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
-  // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
-
   // Add particle field
-  scene.add(particleStarField(200));
+  starSystem = particleStarField(500);
+  scene.add(starSystem);
 
 }
 
