@@ -15,31 +15,12 @@ var viewDistance = 50;
 var zoomX = 0;
 var zoomY = 10;
 var zoomZ = 20;
+var movingFigure;
 
 
-/********************************
- * Helper Functions Declarations *
- ********************************/
-function renderScene() {
-  renderer.render( scene, camera );
-}
-
-function animateScene() {
-  window.requestAnimationFrame( animateScene );
-  controls.update();
-}
-
-function resizeWindow() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  renderScene();
-}
-
-
-/****************************
- * Custom THREEJS Functions *
- ****************************/
+/*************************
+ * Custom User Functions *
+ *************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 80;
   steps = steps || 2;
@@ -55,13 +36,40 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
-function movableFigure(figureSize) {
+function simpleBox(figureSize, figureColor) {
+  figureSize  = figureSize  || 4;
+  figureColor = figureColor || 0xCCCCCC;
   var figureGeometry = new THREE.BoxGeometry(figureSize, figureSize, figureSize);
   var figureMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
-  var movingFigure = new THREE.Mesh(figureGeometry, figureMaterial);
-  movingFigure.position.set(0, figureSize/2, 0);
-  return movingFigure;
+  var boxFigure = new THREE.Mesh(figureGeometry, figureMaterial);
+  boxFigure.position.set(0, figureSize/2, 0);
+  return boxFigure;
 }
+
+function updateMovingFigure() {
+  console.log('figure');
+}
+
+/********************************
+ * Helper Functions Declarations *
+ ********************************/
+function renderScene() {
+  renderer.render( scene, camera );
+}
+
+function animateScene() {
+  window.requestAnimationFrame( animateScene );
+  controls.update();
+  updateMovingFigure();
+}
+
+function resizeWindow() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderScene();
+}
+
 
 /************************
  * Scene Initialization *
@@ -101,8 +109,8 @@ function initializeScene() {
   scene.add(basicFloorGrid(20, 2));
 
   // Add Movable Cube
-  var figureSize = 4;
-  scene.add(movableFigure(figureSize));
+  movingFigure = simpleBox();
+  scene.add(movingFigure);
 
 }
 
