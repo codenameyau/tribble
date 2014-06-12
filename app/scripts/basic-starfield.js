@@ -15,7 +15,37 @@ var viewDistance = 50;
 var zoomX = 10;
 var zoomY = 10;
 var zoomZ = 300;
-var starSystem;
+var starFields = [];
+
+
+/****************************
+ * Custom THREEJS Functions *
+ ****************************/
+function particleStarField(totalParticles, texture, scale) {
+  totalParticles = totalParticles || 200;
+  scale = scale || 8;
+  var particles = new THREE.Geometry();
+  var material = new THREE.ParticleBasicMaterial(
+    {size: scale, map: texture, blending: THREE.AdditiveBlending, transparent: true});
+
+  // Add particles vectors
+  for (var i = 0; i < totalParticles; i++) {
+    var sideRange = 500;
+    var heightRange = 200;
+    var px = calc.getRandomNumber(-sideRange, sideRange);
+    var py = calc.getRandomNumber(-heightRange, heightRange);
+    var pz = calc.getRandomNumber(-sideRange, sideRange);
+    particles.vertices.push(new THREE.Vector3(px, py, pz));
+  }
+  return new THREE.ParticleSystem(particles, material);
+}
+
+function rotateStarfields() {
+  for (var i=0; i<starFields.length; i++) {
+    starFields[i].rotation.y -= 0.00015;
+  }
+}
+
 
 /********************************
  * Helper Functions Declarations *
@@ -26,7 +56,7 @@ function renderScene() {
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
-  // starSystem.rotation.y += 0.001;
+  rotateStarfields();
   controls.update();
 }
 
@@ -37,29 +67,6 @@ function resizeWindow() {
   renderScene();
 }
 
-
-/****************************
- * Custom THREEJS Functions *
- ****************************/
-function particleStarField(totalParticles) {
-  totalParticles = totalParticles || 200;
-  var particles = new THREE.Geometry();
-  var texture = THREE.ImageUtils.loadTexture('images/texture/pstar.jpg');
-  var material = new THREE.ParticleBasicMaterial(
-    {color: 0xFFFFFF, size: 5, map: texture, blending: THREE.AdditiveBlending, transparent: true});
-
-  // Add particles vectors
-  for (var i = 0; i < totalParticles; i++) {
-    var range = 250;
-    var px = calc.getRandomNumber(-range, range);
-    var py = calc.getRandomNumber(-range, range);
-    var pz = calc.getRandomNumber(-range, range);
-    particles.vertices.push(new THREE.Vector3(px, py, pz));
-  }
-  var starSystem = new THREE.ParticleSystem(particles, material);
-  starSystem.sortParticles = true;
-  return starSystem;
-}
 
 /************************
  * Scene Initialization *
@@ -89,9 +96,18 @@ function initializeScene() {
   $(containerID).append(renderer.domElement);
 
   // Add particle field
-  starSystem = particleStarField(500);
-  scene.add(starSystem);
-
+  var yellowStar = THREE.ImageUtils.loadTexture('images/texture/f-star.png');
+  var redStar = THREE.ImageUtils.loadTexture('images/texture/m-star.png');
+  var whiteStar = THREE.ImageUtils.loadTexture('images/texture/a-star.png');
+  starFields.push(particleStarField(3000, whiteStar, 2));
+  starFields.push(particleStarField(400, redStar, 3));
+  starFields.push(particleStarField(100, redStar, 5));
+  starFields.push(particleStarField(600, yellowStar, 3));
+  starFields.push(particleStarField(200, yellowStar, 5));
+  starFields.push(particleStarField(30, yellowStar, 8));
+  for (var i=0; i<starFields.length; i++) {
+    scene.add(starFields[i]);
+  }
 }
 
 
