@@ -1,37 +1,95 @@
 /*-------JSHint Directives-------*/
-/* global calc                   */
 /* global THREE                  */
-/* global THREEx                 */
+/* global $:false                */
 /*-------------------------------*/
 'use strict';
 
-// Scene
-var scene = new THREE.Scene();
-var canvasWidth  = window.innerWidth;
-var canvasHeight = window.innerHeight;
 
-// PerspectiveCamera
-var viewAngle = 45;
-var aspectRatio = canvasWidth/canvasHeight;
-var camera = new THREE.PerspectiveCamera(viewAngle, aspectRatio, 0.1, 20000);
-camera.position.set(0, 150, 400);
-scene.add(camera);
+/*********************************
+ * Global Variables and Settings *
+ *********************************/
+var containerID = '#canvas-body';
+var scene, camera, controls, renderer;
+var viewDistance = 50;
+var zoomX = 0;
+var zoomY = 50;
+var zoomZ = 0;
 
-// Renderer
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize(canvasWidth, canvasHeight);
-$('#canvas-body').append(renderer.domElement);
 
-// Lighting
-var light = new THREE.PointLight(0xffffff);
-light.position.set(0, 250, 0);
-scene.add(light);
+/********************************
+ * Helper Functions Declarations *
+ ********************************/
+function renderScene() {
+  renderer.render( scene, camera );
+}
 
-// Floor pattern
-var floorTexture = new THREE.ImageUtils.loadTexture('images/texture/checkerboard.jpg');
-floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-floorTexture.repeat.set( 10, 10 );
-var floorMaterial = new THREE.MeshBasicMaterial({map: floorTexture, side: THREE.DoubleSide});
-var floorGeometery = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-var floor = new THREE.Mesh(floorGeometery, floorMaterial);
-scene.add(floor);
+function animateScene() {
+  window.requestAnimationFrame( animateScene );
+  controls.update();
+}
+
+function resizeWindow() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderScene();
+}
+
+
+/****************************
+ * Custom THREEJS Functions *
+ ****************************/
+function basicFloorGrid(lines, steps, gridColor) {
+  lines = lines || 20;
+  steps = steps || 2;
+  gridColor = gridColor || 0xFFFFFF;
+  var floorGrid = new THREE.Geometry();
+  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
+  for (var i = -lines; i <= lines; i += steps) {
+    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
+    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
+  }
+  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
+}
+
+
+/************************
+ * Scene Initialization *
+ ************************/
+function initializeScene() {
+
+  // Scene and resize listener
+  scene = new THREE.Scene();
+  var canvasWidth  = window.innerWidth;
+  var canvasHeight = window.innerHeight;
+  window.addEventListener( 'resize', resizeWindow, false );
+
+  // Camera and initial view
+  var aspectRatio  = canvasWidth/canvasHeight;
+  var lookAtCoords = new THREE.Vector3(0, 0, 0);
+  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
+  camera.position.set(zoomX, zoomY, zoomZ);
+  camera.lookAt(lookAtCoords);
+
+  // OrbitControls with mouse
+  controls = new THREE.OrbitControls( camera );
+  controls.addEventListener( 'change', renderScene );
+
+  // WebGL renderer
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize(canvasWidth, canvasHeight);
+  $(containerID).append(renderer.domElement);
+
+  // Starter floor grid
+  scene.add(basicFloorGrid(20, 2));
+
+}
+
+
+/**********************
+ * Render and Animate *
+ **********************/
+initializeScene();
+animateScene();
