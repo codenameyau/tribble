@@ -1,5 +1,6 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
+/* global THREEx                 */
 /* global $:false                */
 /*-------------------------------*/
 'use strict';
@@ -12,8 +13,8 @@ var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var viewDistance = 50;
 var zoomX = 0;
-var zoomY = 50;
-var zoomZ = 0;
+var zoomY = 10;
+var zoomZ = 20;
 
 
 /********************************
@@ -40,7 +41,7 @@ function resizeWindow() {
  * Custom THREEJS Functions *
  ****************************/
 function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 20;
+  lines = lines || 80;
   steps = steps || 2;
   gridColor = gridColor || 0xFFFFFF;
   var floorGrid = new THREE.Geometry();
@@ -54,6 +55,13 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
+function movableFigure(figureSize) {
+  var figureGeometry = new THREE.BoxGeometry(figureSize, figureSize, figureSize);
+  var figureMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
+  var movingFigure = new THREE.Mesh(figureGeometry, figureMaterial);
+  movingFigure.position.set(0, figureSize/2, 0);
+  return movingFigure;
+}
 
 /************************
  * Scene Initialization *
@@ -82,8 +90,19 @@ function initializeScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
+  // Ambient light
+  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
+  var lightSource = new THREE.PointLight(0x7a7a7a);
+  lightSource.position.set(0, 50, -100);
+  scene.add(lightAmbient);
+  scene.add(lightSource);
+
   // Starter floor grid
   scene.add(basicFloorGrid(20, 2));
+
+  // Add Movable Cube
+  var figureSize = 4;
+  scene.add(movableFigure(figureSize));
 
 }
 

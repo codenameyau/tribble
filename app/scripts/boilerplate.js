@@ -82,6 +82,10 @@ function initializeScene() {
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
+  // Ambient light
+  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
+  scene.add(lightAmbient);
+
   // Starter floor grid
   scene.add(basicFloorGrid(20, 2));
 
