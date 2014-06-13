@@ -10,10 +10,10 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, renderer;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
-var viewDistance = 45;
+var fov = 45;
 var zoomX = 0;
 var zoomY = 20;
 var zoomZ = 40;
@@ -75,6 +75,7 @@ function updateMovingFigure() {
   var cameraOffset = relativeCameraOffset.applyMatrix4( movingFigure.matrixWorld );
   camera.position.x = cameraOffset.x;
   camera.position.z = cameraOffset.z;
+  camera.lookAt( movingFigure.position );
 }
 
 /********************************
@@ -86,7 +87,7 @@ function renderScene() {
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
-  controls.update();
+  renderScene();
   updateMovingFigure();
 }
 
@@ -111,14 +112,10 @@ function initializeScene() {
 
   // Camera and initial view
   var aspectRatio  = canvasWidth/canvasHeight;
-  var lookAtCoords = new THREE.Vector3(0, 0, 0);
-  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
+  camera = new THREE.PerspectiveCamera(fov, aspectRatio, 0.01, 3000);
   camera.position.set(zoomX, zoomY, zoomZ);
-  camera.lookAt(lookAtCoords);
-
-  // OrbitControls with mouse
-  controls = new THREE.OrbitControls( camera );
-  controls.addEventListener( 'change', renderScene );
+  camera.lookAt(scene.position);
+  scene.add(camera);
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();

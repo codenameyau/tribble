@@ -10,7 +10,7 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
-var viewDistance = 50;
+var fov = 50;
 var zoomX = 0;
 var zoomY = 50;
 var zoomZ = 0;
@@ -69,7 +69,7 @@ function initializeScene() {
   // Camera and initial view
   var aspectRatio  = canvasWidth/canvasHeight;
   var lookAtCoords = new THREE.Vector3(0, 0, 0);
-  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
+  camera = new THREE.PerspectiveCamera(fov, aspectRatio, 0.01, 3000);
   camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
 
