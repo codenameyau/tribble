@@ -13,18 +13,21 @@ var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var keyboard = new THREEx.KeyboardState();
 var clock = new THREE.Clock();
-var viewDistance = 50;
+var viewDistance = 45;
 var zoomX = 0;
-var zoomY = 10;
-var zoomZ = 20;
-var movingFigure;
+var zoomY = 20;
+var zoomZ = 40;
 
+// Moving Figure
+var movingFigure;
+var pixelsPerSec = 20;
+var rotationSteed = 1.5;
 
 /*************************
  * Custom User Functions *
  *************************/
 function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 80;
+  lines = lines || 40;
   steps = steps || 2;
   gridColor = gridColor || 0xFFFFFF;
   var floorGrid = new THREE.Geometry();
@@ -40,7 +43,7 @@ function basicFloorGrid(lines, steps, gridColor) {
 
 function simpleBox(figureSize, figureColor) {
   figureSize  = figureSize  || 4;
-  figureColor = figureColor || 0xCCCCCC;
+  figureColor = figureColor || 0xDADADA;
   var figureGeometry = new THREE.BoxGeometry(figureSize, figureSize, figureSize);
   var figureMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
   var boxFigure = new THREE.Mesh(figureGeometry, figureMaterial);
@@ -49,11 +52,8 @@ function simpleBox(figureSize, figureColor) {
 }
 
 function updateMovingFigure() {
-  // Pixels per second
-  var pxsPerSec = 20;
-  var rotationSteed = 1.5;
   var delta = clock.getDelta();
-  var moveDistance = pxsPerSec * delta;
+  var moveDistance = pixelsPerSec * delta;
   var rotationAngle = Math.PI / rotationSteed * delta;
 
   // Basic rotation
@@ -71,7 +71,10 @@ function updateMovingFigure() {
   }
 
   // Adjust chase camera
-  camera.position.z = movingFigure.position.z + zoomZ;
+  var relativeCameraOffset = new THREE.Vector3(zoomX, zoomY, zoomZ);
+  var cameraOffset = relativeCameraOffset.applyMatrix4( movingFigure.matrixWorld );
+  camera.position.x = cameraOffset.x;
+  camera.position.z = cameraOffset.z;
 }
 
 /********************************
@@ -130,7 +133,8 @@ function initializeScene() {
   scene.add(lightSource);
 
   // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
+  var floor = basicFloorGrid(40, 2);
+  scene.add(floor);
 
   // Add Movable Cube
   movingFigure = simpleBox();
