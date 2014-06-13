@@ -16,6 +16,7 @@ Playground for three.js and computer graphics
 * Basic grid with LineBasicMaterial
 * OrbitControls for mouse
 * Rendering on window resize
+* Global setting objects
 
 #####custom-geometry.js
 * Created a custom triangular prism geometry
@@ -42,3 +43,6 @@ Playground for three.js and computer graphics
 * Relative camera offset and rotation
 * Must disable OrbitControls with chase cam
 
+#####demo-ocean.js
+* OrbitControl custom settings
+* WebGL detector and canvas fall-back

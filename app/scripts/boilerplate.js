@@ -10,23 +10,29 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
-var fov = 50;
-var zoomX = 0;
-var zoomY = 50;
-var zoomZ = 0;
+
+// Camera settings
+var CAMERA = {
+  fov : 50,
+  near : 1,
+  far : 3000,
+  zoomX : 0,
+  zoomY : 50,
+  zoomZ : 0,
+};
 
 // OrbitControls settings
 var CONTROLS = {
-  userPan : false,
-  userPanSpeed : 0.0,
-  maxDistance : 300.0,
+  userPan : true,
+  userPanSpeed : 0.5,
+  maxDistance : 100.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
 
-/*************************
- * Custom User Functions *
- *************************/
+/********************
+ * Custom Functions *
+ ********************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
   steps = steps || 2;
@@ -43,9 +49,9 @@ function basicFloorGrid(lines, steps, gridColor) {
 }
 
 
-/********************************
- * Helper Function Declarations *
- ********************************/
+/********************
+ * Helper Functions *
+ ********************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -72,19 +78,17 @@ function initializeScene() {
   scene = new THREE.Scene();
   var canvasWidth  = window.innerWidth;
   var canvasHeight = window.innerHeight;
-  window.addEventListener( 'resize', resizeWindow, false );
+  window.addEventListener('resize', resizeWindow, false);
 
   // Camera and initial view
   var aspectRatio  = canvasWidth/canvasHeight;
-  var lookAtCoords = new THREE.Vector3(0, 0, 0);
-  camera = new THREE.PerspectiveCamera(fov, aspectRatio, 0.01, 3000);
-  camera.position.set(zoomX, zoomY, zoomZ);
-  camera.lookAt(lookAtCoords);
+  camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
+  camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
 
   // OrbitControls with mouse
-  controls = new THREE.OrbitControls( camera );
-  for (var key in CONTROLS) {controls[key] = CONTROLS[key];}
-  controls.addEventListener( 'change', renderScene );
+  controls = new THREE.OrbitControls(camera);
+  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
+  controls.addEventListener('change', renderScene);
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();

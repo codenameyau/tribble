@@ -11,21 +11,36 @@
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 
+var PATHS = {
+  texture : 'images/texture/',
+};
+
+// World settings
+var WORLD = {
+  width: 2000,
+  height: 2000,
+  widthSegments: 250,
+  heightSegments: 250,
+  depth: 1500,
+  param: 4,
+  filterparam: 1
+};
+
 // Camera settings
 var CAMERA = {
-  fov : 50,
+  fov : 55,
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 50,
-  zoomZ : 0,
+  zoomY : 500,
+  zoomZ : 50,
 };
 
 // OrbitControls settings
 var CONTROLS = {
   userPan : true,
   userPanSpeed : 0.5,
-  maxDistance : 100.0,
+  maxDistance : 10000.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
@@ -100,27 +115,28 @@ function initializeScene() {
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
-  var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, -100);
+  var sunLight = new THREE.DirectionalLight( 0xffff55, 1 );
+  sunLight.position.set(- 1, 0.4, -1);
   scene.add(lightAmbient);
-  scene.add(lightSource);
-  // directionalLight = new THREE.DirectionalLight( 0xffff55, 1 );
-  // directionalLight.position.set( - 1, 0.4, - 1 );
-  // scene.add( directionalLight );
+  scene.add(sunLight);
 
   // Water demo
-  var waterNormals = new THREE.ImageUtils.loadTexture('textures/waternormals.jpg');
+  var waterNormals = new THREE.ImageUtils.loadTexture(PATHS.texture + 'waternormals.jpg');
   waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-  ocean = new THREE.Water(renderer, camera, scene, {
+  var ocean = new THREE.Water(renderer, camera, scene, {
     textureWidth: 512,
     textureHeight: 512,
     waterNormals: waterNormals,
     alpha:  1.0,
-    sunDirection: directionalLight.position.normalize(),
+    sunDirection: sunLight.position.normalize(),
     sunColor: 0xffffff,
     waterColor: 0x001e0f,
     distortionScale: 50.0,
   });
+  var oceanPlane = new THREE.PlaneGeometry(WORLD.width*500, WORLD.height*500, 50, 50);
+  var mirrorMesh = new THREE.Mesh(oceanPlane, ocean.material);
+  mirrorMesh.add(ocean);
+  scene.add(mirrorMesh);
 }
 
 
