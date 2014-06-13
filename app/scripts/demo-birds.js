@@ -1,6 +1,5 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
-/* global THREEx                 */
 /* global $:false                */
 /*-------------------------------*/
 'use strict';
@@ -10,25 +9,18 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, renderer;
-var keyboard = new THREEx.KeyboardState();
-var clock = new THREE.Clock();
-var fov = 45;
+var scene, camera, controls, renderer;
+var fov = 50;
 var zoomX = 0;
-var zoomY = 20;
-var zoomZ = 40;
-
-// Example figure
-var movingFigure;
-var pixelsPerSec = 20;
-var rotationSteed = 1.5;
+var zoomY = 50;
+var zoomZ = 0;
 
 
 /*************************
  * Custom User Functions *
  *************************/
 function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 40;
+  lines = lines || 20;
   steps = steps || 2;
   gridColor = gridColor || 0xFFFFFF;
   var floorGrid = new THREE.Geometry();
@@ -42,46 +34,9 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
-function simpleBox(figureSize, figureColor) {
-  figureSize  = figureSize  || 4;
-  figureColor = figureColor || 0xDADADA;
-  var figureGeometry = new THREE.BoxGeometry(figureSize, figureSize, figureSize);
-  var figureMaterial = new THREE.MeshLambertMaterial({color: 0xcccccc});
-  var boxFigure = new THREE.Mesh(figureGeometry, figureMaterial);
-  boxFigure.position.set(0, figureSize/2, 0);
-  return boxFigure;
-}
-
-function updateMovingFigure() {
-  var delta = clock.getDelta();
-  var moveDistance = pixelsPerSec * delta;
-  var rotationAngle = Math.PI / rotationSteed * delta;
-
-  // Basic rotation
-  if (keyboard.pressed('w')) {
-    movingFigure.translateZ(-moveDistance);
-  }
-  if (keyboard.pressed('s')) {
-    movingFigure.translateZ(moveDistance);
-  }
-  if (keyboard.pressed('a')) {
-    movingFigure.rotation.y += rotationAngle;
-  }
-  if (keyboard.pressed('d')) {
-    movingFigure.rotation.y -= rotationAngle;
-  }
-
-  // Adjust chase camera
-  var relativeCameraOffset = new THREE.Vector3(zoomX, zoomY, zoomZ);
-  var cameraOffset = relativeCameraOffset.applyMatrix4( movingFigure.matrixWorld );
-  camera.position.x = cameraOffset.x;
-  camera.position.y = cameraOffset.y;
-  camera.position.z = cameraOffset.z;
-  camera.lookAt( movingFigure.position );
-}
 
 /********************************
- * Helper Functions Declarations *
+ * Helper Function Declarations *
  ********************************/
 function renderScene() {
   renderer.render( scene, camera );
@@ -89,8 +44,7 @@ function renderScene() {
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
-  renderScene();
-  updateMovingFigure();
+  controls.update();
 }
 
 function resizeWindow() {
@@ -114,17 +68,21 @@ function initializeScene() {
 
   // Camera and initial view
   var aspectRatio  = canvasWidth/canvasHeight;
+  var lookAtCoords = new THREE.Vector3(0, 0, 0);
   camera = new THREE.PerspectiveCamera(fov, aspectRatio, 0.01, 3000);
   camera.position.set(zoomX, zoomY, zoomZ);
-  camera.lookAt(scene.position);
-  scene.add(camera);
+  camera.lookAt(lookAtCoords);
+
+  // OrbitControls with mouse
+  controls = new THREE.OrbitControls( camera );
+  controls.addEventListener( 'change', renderScene );
 
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
-  // Ambient light
+  // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var lightSource = new THREE.PointLight(0x7a7a7a);
   lightSource.position.set(0, 50, -100);
@@ -132,12 +90,7 @@ function initializeScene() {
   scene.add(lightSource);
 
   // Starter floor grid
-  var floor = basicFloorGrid(60, 4);
-  scene.add(floor);
-
-  // Add Movable Cube
-  movingFigure = simpleBox();
-  scene.add(movingFigure);
+  scene.add(basicFloorGrid(20, 2));
 
 }
 

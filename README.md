@@ -32,3 +32,8 @@ Playground for three.js
 * Rotate objects with rotation property
 * Use ImageUtils.loadTexture for textures
 * Material properties: map, blending, transparent
+
+#####basic-chasecam.js
+* Clock is used to keep framerate consistent
+* Relative camera offset and rotation
+* Must disable OrbitControls with chase cam
