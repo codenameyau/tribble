@@ -15,6 +15,14 @@ var zoomX = 0;
 var zoomY = 50;
 var zoomZ = 0;
 
+// OrbitControls settings
+var CONTROLS = {
+  userPan : false,
+  userPanSpeed : 0.0,
+  maxDistance : 300.0,
+  maxPolarAngle : (Math.PI/180) * 80,
+};
+
 
 /*************************
  * Custom User Functions *
@@ -75,6 +83,7 @@ function initializeScene() {
 
   // OrbitControls with mouse
   controls = new THREE.OrbitControls( camera );
+  for (var key in CONTROLS) {controls[key] = CONTROLS[key];}
   controls.addEventListener( 'change', renderScene );
 
   // WebGL renderer

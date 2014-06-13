@@ -4,7 +4,12 @@
 /*-------------------------------*/
 'use strict';
 
-// Global settings
+
+/*********************************
+ * Global Variables and Settings *
+ *********************************/
+
+// Global variables
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var zoomX = 0;
@@ -17,6 +22,14 @@ var countFace = 8;
 var pillarRadius = 2;
 var pillarHeight = 28;
 var spacing = pillarRadius*4;
+
+// OrbitControls settings
+var CONTROLS = {
+  userPan : false,
+  userPanSpeed : 0.0,
+  maxDistance : 300.0,
+  maxPolarAngle : (Math.PI/180) * 80,
+};
 
 
 /********************
@@ -100,6 +113,7 @@ function initScene() {
 
   // Orbit controls
   controls = new THREE.OrbitControls( camera );
+  for (var key in CONTROLS) {controls[key] = CONTROLS[key];}
   controls.addEventListener( 'change', renderScene );
 
   // WebGL renderer

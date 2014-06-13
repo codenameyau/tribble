@@ -1,7 +1,11 @@
 tribble
 =======
 
-Playground for three.js
+Playground for three.js and computer graphics
+
+###3D Modeling and Animation Software ($)
+* ZBrush - Digital painting and sculpting with polygons
+* Maya - 3D animation, modeling, simulation, rendering, and compositing
 
 
 ###Learning Milestones
@@ -37,3 +41,4 @@ Playground for three.js
 * Clock is used to keep framerate consistent
 * Relative camera offset and rotation
 * Must disable OrbitControls with chase cam
+
