@@ -11,6 +11,8 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
+var keyboard = new THREEx.KeyboardState();
+var clock = new THREE.Clock();
 var viewDistance = 50;
 var zoomX = 0;
 var zoomY = 10;
@@ -47,7 +49,29 @@ function simpleBox(figureSize, figureColor) {
 }
 
 function updateMovingFigure() {
-  console.log('figure');
+  // Pixels per second
+  var pxsPerSec = 20;
+  var rotationSteed = 1.5;
+  var delta = clock.getDelta();
+  var moveDistance = pxsPerSec * delta;
+  var rotationAngle = Math.PI / rotationSteed * delta;
+
+  // Basic rotation
+  if (keyboard.pressed('w')) {
+    movingFigure.translateZ(-moveDistance);
+  }
+  if (keyboard.pressed('s')) {
+    movingFigure.translateZ(moveDistance);
+  }
+  if (keyboard.pressed('a')) {
+    movingFigure.rotation.y += rotationAngle;
+  }
+  if (keyboard.pressed('d')) {
+    movingFigure.rotation.y -= rotationAngle;
+  }
+
+  // Adjust chase camera
+  camera.position.z = movingFigure.position.z + zoomZ;
 }
 
 /********************************
