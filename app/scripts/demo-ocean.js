@@ -18,10 +18,14 @@ var waterSpeed = 1.0/60.0;
 // External file paths
 var PATHS = {
   texture : 'images/texture/',
+  skybox : 'images/skybox/',
+  water : 'images/texture/water/',
 };
 
 // World settings
 var WORLD = {
+  skybox : 'skybox-amethyst.jpg',
+  waterNormal : 'water-clear.png',
   width: 500,
   height: 500,
   widthSegments: 250,
@@ -33,26 +37,21 @@ var WORLD = {
 
 // Camera settings
 var CAMERA = {
-  fov : 55,
-  near : 0.1,
+  fov : 50,
+  near : 0.01,
   far : 3000000,
-  zoomX : 0,
+  zoomX : -400,
   zoomY : 200,
-  zoomZ : 800,
+  zoomZ : 900,
 };
 
 // OrbitControls settings
 var CONTROLS = {
   userPan : false,
   userPanSpeed : 0.0,
-  maxDistance : 10000.0,
-  maxPolarAngle : (Math.PI/180) * 90,
+  maxDistance : 2000.0,
+  maxPolarAngle : (Math.PI/180) * 85,
 };
-
-
-/********************
- * Custom Functions *
- ********************/
 
 
 /********************
@@ -106,16 +105,16 @@ function initializeScene() {
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var sunLight = new THREE.DirectionalLight(0xffff55, 1);
-  sunLight.position.set(- 1, 0.4, -1);
+  sunLight.position.set(- 1, 0.5, -1);
   scene.add(lightAmbient);
   scene.add(sunLight);
 
   // Water demo
-  var waterNormals = new THREE.ImageUtils.loadTexture(PATHS.texture + 'waternormals.jpg');
+  var waterNormals = new THREE.ImageUtils.loadTexture(PATHS.water + WORLD.waterNormal);
   waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
   ocean = new THREE.Water(renderer, camera, scene, {
-    textureWidth: 256,
-    textureHeight: 256,
+    textureWidth: 512,
+    textureHeight: 512,
     waterNormals: waterNormals,
     alpha: 1.0,
     sunDirection: sunLight.position.normalize(),
@@ -131,29 +130,29 @@ function initializeScene() {
   mirrorMesh.rotation.x = - Math.PI * 0.5;
   scene.add(mirrorMesh);
 
-  // Ocean skybox
+  // Create ocean skybox
   var cubeMap = new THREE.Texture([]);
   cubeMap.format = THREE.RGBFormat;
   cubeMap.flipY = false;
+
+  // Parse skybox image
   var loader = new THREE.ImageLoader();
-  loader.load(PATHS.texture + 'skyboxsun.png', function (image) {
-    console.log(image);
-    var getSide = function ( x, y ) {
+  loader.load(PATHS.skybox + WORLD.skybox, function (image) {
+    var getSide = function (x, y) {
       var size = 512;
-      var canvas = document.createElement( 'canvas' );
+      var canvas = document.createElement('canvas');
       canvas.width = size;
       canvas.height = size;
-      var context = canvas.getContext( '2d' );
-      context.drawImage( image, - x * size, - y * size );
+      var context = canvas.getContext('2d');
+      context.drawImage(image, -x * size, -y * size );
       return canvas;
     };
-
-    cubeMap.image[ 0 ] = getSide( 2, 1 ); // px
-    cubeMap.image[ 1 ] = getSide( 0, 1 ); // nx
-    cubeMap.image[ 2 ] = getSide( 1, 0 ); // py
-    cubeMap.image[ 3 ] = getSide( 1, 2 ); // ny
-    cubeMap.image[ 4 ] = getSide( 1, 1 ); // pz
-    cubeMap.image[ 5 ] = getSide( 3, 1 ); // nz
+    cubeMap.image[0] = getSide( 2, 1 ); // px
+    cubeMap.image[1] = getSide( 0, 1 ); // nx
+    cubeMap.image[2] = getSide( 1, 0 ); // py
+    cubeMap.image[3] = getSide( 1, 2 ); // ny
+    cubeMap.image[4] = getSide( 1, 1 ); // pz
+    cubeMap.image[5] = getSide( 3, 1 ); // nz
     cubeMap.needsUpdate = true;
   });
 
@@ -167,11 +166,10 @@ function initializeScene() {
     side: THREE.BackSide
   });
   var skyBox = new THREE.Mesh(
-    new THREE.BoxGeometry( 1000000, 1000000, 1000000 ),
+    new THREE.BoxGeometry(300000, 300000, 300000),
     skyBoxMaterial
   );
   scene.add( skyBox );
-
 
 }
 
