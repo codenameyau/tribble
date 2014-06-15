@@ -4,6 +4,11 @@
 /*-------------------------------*/
 'use strict';
 
+// To Do:
+// - 3D Crane geometry
+// - For loop to add cranes
+// - Rotation camera
+// - Add scenary
 
 /*********************************
  * Global Variables and Settings *
@@ -17,8 +22,8 @@ var CAMERA = {
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 20,
-  zoomZ : 40,
+  zoomY : 50,
+  zoomZ : 0,
 };
 
 // OrbitControls settings
@@ -34,7 +39,7 @@ var CONTROLS = {
  * Custom Functions *
  ********************/
 function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 40;
+  lines = lines || 20;
   steps = steps || 2;
   gridColor = gridColor || 0xFFFFFF;
   var floorGrid = new THREE.Geometry();
@@ -48,38 +53,6 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
-function geometryIsoscelesTriangle(base, height) {
-  var geometry = new THREE.Geometry();
-  geometry.vertices.push( new THREE.Vector3(-base, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( base, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( 0, height, 0) );
-  geometry.faces.push( new THREE.Face3(0, 1, 2) );
-  geometry.computeFaceNormals();
-  geometry.computeVertexNormals();
-  return geometry;
-}
-
-function geometryEquilateralTriangle(width) {
-  var geometry = new THREE.Geometry();
-  geometry.vertices.push( new THREE.Vector3(-width, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( width, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( 0, width, 0) );
-  geometry.faces.push( new THREE.Face3(0, 1, 2) );
-  geometry.computeFaceNormals();
-  geometry.computeVertexNormals();
-  return geometry;
-}
-
-function geometryScaleneTriangle(base, sideA, sideB) {
-  var geometry = new THREE.Geometry();
-  geometry.vertices.push( new THREE.Vector3(-base, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( base, 0, 0) );
-  geometry.vertices.push( new THREE.Vector3( sideA, sideB, 0) );
-  geometry.faces.push( new THREE.Face3(0, 1, 2) );
-  geometry.computeFaceNormals();
-  geometry.computeVertexNormals();
-  return geometry;
-}
 
 /********************
  * Helper Functions *
@@ -135,28 +108,8 @@ function initializeScene() {
   scene.add(lightSource);
 
   // Starter floor grid
-  scene.add(basicFloorGrid(14, 2));
+  scene.add(basicFloorGrid(20, 2));
 
-  // Materials
-  var basicMaterial = new THREE.MeshBasicMaterial( {side: THREE.DoubleSide} );
-
-  // Custom triangles
-  var equalateralTriangle = geometryEquilateralTriangle(4);
-  var triangleA = new THREE.Mesh(equalateralTriangle, basicMaterial);
-  triangleA.position.set(0, 0, 12);
-
-  var isoscelesTriangle = geometryIsoscelesTriangle(4, 6);
-  var triangleB = new THREE.Mesh(isoscelesTriangle, basicMaterial);
-  triangleB.position.set(0, 0, 0);
-
-  var scaleneTriangle = geometryScaleneTriangle(4, -6, 7);
-  var triangleC = new THREE.Mesh(scaleneTriangle, basicMaterial);
-  triangleC.position.set(0, 0, -12);
-
-  // Add custom objects
-  scene.add(triangleA);
-  scene.add(triangleB);
-  scene.add(triangleC);
 }
 
 
