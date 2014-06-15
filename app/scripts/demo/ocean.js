@@ -39,8 +39,8 @@ var WORLD = {
 var CAMERA = {
   fov : 50,
   near : 0.01,
-  far : 3000000,
-  zoomX : -400,
+  far : 2500000,
+  zoomX : 0,
   zoomY : 200,
   zoomZ : 900,
 };
@@ -144,7 +144,7 @@ function initializeScene() {
       canvas.width = size;
       canvas.height = size;
       var context = canvas.getContext('2d');
-      context.drawImage(image, -x * size, -y * size );
+      context.drawImage(image, -x * size, -y * size);
       return canvas;
     };
     cubeMap.image[0] = getSide( 2, 1 ); // px
