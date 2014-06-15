@@ -17,8 +17,8 @@ var CAMERA = {
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 50,
-  zoomZ : 0,
+  zoomY : 10,
+  zoomZ : 30,
 };
 
 // OrbitControls settings
@@ -98,13 +98,19 @@ function initializeScene() {
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, -100);
+  lightSource.position.set(0, 50, 80);
   scene.add(lightAmbient);
   scene.add(lightSource);
 
   // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
+  scene.add(basicFloorGrid(40, 4));
 
+  // Sphere
+  var sphereGeometry = new THREE.SphereGeometry(5, 32, 32);
+  var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x8888ff});
+  var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  sphere.position.set(0, 5, 0);
+  scene.add(sphere);
 }
 
 
