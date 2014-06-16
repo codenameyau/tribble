@@ -9,7 +9,7 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, controls, renderer, composer;
 
 // Camera settings
 var CAMERA = {
@@ -59,6 +59,7 @@ function renderScene() {
 function animateScene() {
   window.requestAnimationFrame( animateScene );
   controls.update();
+  composer.render();
 }
 
 function resizeWindow() {
@@ -111,6 +112,10 @@ function initializeScene() {
   var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
   sphere.position.set(0, 5, 0);
   scene.add(sphere);
+
+  // Shaders
+  composer = new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene, camera));
 }
 
 

@@ -1,6 +1,5 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
-/* global geometry               */
 /*-------------------------------*/
 'use strict';
 
@@ -35,6 +34,37 @@ var CONTROLS = {
 /********************
  * Helper Functions *
  ********************/
+
+// Custom Geometry: triangular prism
+function triangularPrism(width, height, length) {
+  // Default sizes
+  width  = width  || 8;
+  height = height || 8;
+  length = length || 10;
+  var geometry = new THREE.Geometry();
+
+  // Front triangle
+  geometry.vertices.push(new THREE.Vector3(-width, 0, length));
+  geometry.vertices.push(new THREE.Vector3(width, 0, length));
+  geometry.vertices.push(new THREE.Vector3(0, height, length));
+  // Back triangle
+  geometry.vertices.push(new THREE.Vector3(-width, 0, -length));
+  geometry.vertices.push(new THREE.Vector3(width, 0, -length));
+  geometry.vertices.push(new THREE.Vector3(0, height, -length));
+  // Connect faces
+  geometry.faces.push(new THREE.Face3(2, 0, 1)); // CC: front face
+  geometry.faces.push(new THREE.Face3(5, 4, 3)); // CW: back face
+  geometry.faces.push(new THREE.Face3(4, 1, 3)); // CC: bottom
+  geometry.faces.push(new THREE.Face3(1, 0, 3)); // CC: bottom
+  geometry.faces.push(new THREE.Face3(2, 5, 3)); // CC: left side
+  geometry.faces.push(new THREE.Face3(2, 3, 0)); // CW: left side
+  geometry.faces.push(new THREE.Face3(1, 4, 2)); // CW: right side
+  geometry.faces.push(new THREE.Face3(2, 4, 5)); // CC: right side
+  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
+  return geometry;
+}
+
 function addPillars(detail, pillarMaterial, totalPillars) {
   var xPosition = detail.xPos || 0;
   var yPosition = detail.yPos || 0;
@@ -178,8 +208,8 @@ function initScene() {
   // Adding triangularPrism roof
   var roofHeight = pillarHeight/2.8;
   var roofWidth = pillarRadius*2;
-  var triangularPrism = geometry.TriangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
-  var roofMesh = new THREE.Mesh(triangularPrism, concreteMaterial);
+  var roof = triangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
+  var roofMesh = new THREE.Mesh(roof, concreteMaterial);
   roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
   scene.add(roofMesh);
 }
