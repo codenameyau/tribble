@@ -33,16 +33,20 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/threejs/build/three.js"></script>
+    <script src="bower_components/threex.keyboardstate/threex.keyboardstate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- Manually injected -->
-    <script src="bower_components/threex.keyboardstate/threex.keyboardstate.js"></script>
+    <!-- Three.js plugins (no bower packages) -->
     <script src="scripts/plugins/calc.js"></script>
     <script src="scripts/plugins/threejs/OrbitControls.js"></script>
     <script src="scripts/plugins/threejs/Mirror.js"></script>
     <script src="scripts/plugins/threejs/WaterShader.js"></script>
-    <!-- End inject -->
+    <!-- End plugins -->
+
+    <!-- Three.js shaders -->
+    <script src="scripts/shaders/SepiaShader.js"></script>
+    <!-- End plugins -->
 
     <!-- build:js scripts/main.js -->
     <!-- <script src="scripts/main.js"></script> -->
