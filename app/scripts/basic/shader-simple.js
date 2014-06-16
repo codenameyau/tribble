@@ -113,9 +113,16 @@ function initializeScene() {
   sphere.position.set(0, 5, 0);
   scene.add(sphere);
 
-  // Shaders
+  // Composer combines shader effects and pass scene for base image
   composer = new THREE.EffectComposer(renderer);
   composer.addPass(new THREE.RenderPass(scene, camera));
+
+  // Setup sepia shader
+  var shaderSepia = THREE.SepiaShader;
+  var effectSepia = new THREE.ShaderPass(shaderSepia);
+  effectSepia.uniforms.amount.value = 0.9;
+  effectSepia.renderToScreen = true;
+  composer.addPass(effectSepia);
 }
 
 
