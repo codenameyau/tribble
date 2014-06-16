@@ -5,7 +5,7 @@ Playground for three.js and computer graphics
 
 ###3D Modeling and Animation Software
 * Autodesk 3DS Max - 3D modeling, animation, and rendering
-* Autodesk AutoCAD - 2D and 3D computer-aided design (CAD)
+* Blender - Open source computer graphics software with built-in game engine
 * Maya - 3D animation, modeling, simulation, rendering, and compositing
 * ZBrush - Digital painting and sculpting with polygons
 
