@@ -10,7 +10,7 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
-var rotatingClock;
+var virtualClock;
 
 // Camera settings
 var CAMERA = {
@@ -30,6 +30,10 @@ var CONTROLS = {
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
+var CLOCK = {
+  radius : 10,
+  height : 2,
+}
 
 /********************
  * Custom Functions *
@@ -99,16 +103,36 @@ function initializeScene() {
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, -100);
+  lightSource.position.set(0, 50, 0);
   scene.add(lightAmbient);
   scene.add(lightSource);
 
   // Starter floor grid
   scene.add(basicFloorGrid(20, 2));
 
-  // Add Object3D robot arm
-  rotatingClock = new THREE.Object3D();
+  // Add Object3D clock
+  virtualClock = new THREE.Object3D();
+  virtualClock.position.y = CLOCK.height/2;
+  scene.add(virtualClock);
 
+  // Clock base
+  var cylinderBase = new THREE.CylinderGeometry(CLOCK.radius, CLOCK.radius, 2, 32);
+  var baseMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
+  var clockBody = new THREE.Mesh(cylinderBase, baseMaterial);
+  scene.add(clockBody);
+
+  // Clock markers
+  var markerGeometry = new THREE.PlaneGeometry(0.2, 1.5);
+  var markerMaterial = new THREE.MeshLambertMaterial({color: 0x121212, side: THREE.DoubleSide});
+  var rotationAngle = 0;
+  for (var i=0; i<4; i++) {
+    var clockMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+    clockMarker.position.z = - CLOCK.radius+1;
+    clockMarker.position.y = 0.1;
+    clockMarker.rotation.x = -Math.PI/180 * 90;
+    virtualClock.add(clockMarker);
+    rotationAngle += 90;
+  }
 }
 
 
