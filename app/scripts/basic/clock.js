@@ -10,7 +10,7 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
-var robotArm;
+var rotatingClock;
 
 // Camera settings
 var CAMERA = {
@@ -107,7 +107,7 @@ function initializeScene() {
   scene.add(basicFloorGrid(20, 2));
 
   // Add Object3D robot arm
-  robotArm = new THREE.Object3D();
+  rotatingClock = new THREE.Object3D();
 
 }
 
