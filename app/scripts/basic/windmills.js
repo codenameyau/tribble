@@ -17,8 +17,8 @@ var CAMERA = {
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 20,
-  zoomZ : 40,
+  zoomY : 30,
+  zoomZ : 50,
 };
 
 // OrbitControls settings
@@ -48,6 +48,27 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
+function getBladeGeometry() {
+  var geometry = new THREE.Geometry();
+  // Top blade front
+  geometry.vertices.push(new THREE.Vector3( 0, 15,  0));
+  geometry.vertices.push(new THREE.Vector3(-1,  2,  0));
+  geometry.vertices.push(new THREE.Vector3( 1,  2,  0));
+  geometry.vertices.push(new THREE.Vector3( 0,  2, 0.5));
+  geometry.vertices.push(new THREE.Vector3( 0,  2, -0.5));
+  geometry.faces.push(new THREE.Face3(3, 0, 1));
+  geometry.faces.push(new THREE.Face3(2, 0, 3));
+  geometry.faces.push(new THREE.Face3(1, 0, 4));
+  geometry.faces.push(new THREE.Face3(4, 0, 2));
+
+
+
+
+  // Compute normals
+  geometry.computeFaceNormals();
+  geometry.computeVertexNormals();
+  return geometry;
+}
 
 /********************
  * Helper Functions *
@@ -97,13 +118,24 @@ function initializeScene() {
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
-  var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, 80);
+  var lightSource = new THREE.DirectionalLight(0x9a9a9a);
+  lightSource.position.set(0, 0.4, 0.6);
   scene.add(lightAmbient);
   scene.add(lightSource);
 
   // Starter floor grid
   scene.add(basicFloorGrid(20, 2));
+
+  // Add windmills to scene
+  var windmill = new THREE.Object3D();
+  scene.add(windmill);
+
+  // Create blades
+  var bladeGeometry = getBladeGeometry();
+  var windmillMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
+  var windmillBlade = new THREE.Mesh(bladeGeometry, windmillMaterial);
+  windmill.add(windmillBlade);
+
 
 }
 
