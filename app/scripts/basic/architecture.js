@@ -16,6 +16,7 @@ var zoomY = 20;
 var zoomZ = 180;
 
 // Custom settings
+var parthenon;
 var countSide = 18;
 var countFace = 8;
 var pillarRadius = 2;
@@ -75,7 +76,7 @@ function addPillars(detail, pillarMaterial, totalPillars) {
   for (var i = 0; i < totalPillars; i++) {
     var pillar = new THREE.Mesh(cylinder, pillarMaterial);
     pillar.position.set(xPosition, pillarHeight/2+yPosition-1, zPosition);
-    scene.add(pillar);
+    parthenon.add(pillar);
     xPosition += detail.xSpace;
     zPosition += detail.zSpace;
   }
@@ -169,6 +170,8 @@ function initScene() {
 
   // Materials and setup
   var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
+  parthenon = new THREE.Object3D();
+  scene.add(parthenon);
 
   // Add floor layers
   var floorHeight = 2;
@@ -178,9 +181,9 @@ function initScene() {
   floorSecondLayer.position.y = floorFirstLayer.position.y + floorHeight;
   var floorThirdLayer = getFloorLayer(0.3, 1.0, floorHeight);
   floorThirdLayer.position.y = floorSecondLayer.position.y + floorHeight;
-  scene.add(floorFirstLayer);
-  scene.add(floorSecondLayer);
-  scene.add(floorThirdLayer);
+  parthenon.add(floorFirstLayer);
+  parthenon.add(floorSecondLayer);
+  parthenon.add(floorThirdLayer);
 
   // Add pillars
   var startX = (countFace-1) * pillarRadius * 2;
@@ -202,8 +205,8 @@ function initScene() {
   ceilingLayer.position.y = startY+pillarHeight;
   var facadeLayer = getFloorLayer(-0.1, 0.8, facadeHeight, 0xABABAB);
   facadeLayer.position.y = ceilingLayer.position.y + ceilingHeight+1;
-  scene.add(ceilingLayer);
-  scene.add(facadeLayer);
+  parthenon.add(ceilingLayer);
+  parthenon.add(facadeLayer);
 
   // Adding triangularPrism roof
   var roofHeight = pillarHeight/2.8;
@@ -211,7 +214,7 @@ function initScene() {
   var roof = triangularPrism(countFace*roofWidth, roofHeight, countSide*roofWidth*1.05);
   var roofMesh = new THREE.Mesh(roof, concreteMaterial);
   roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
-  scene.add(roofMesh);
+  parthenon.add(roofMesh);
 }
 
 
