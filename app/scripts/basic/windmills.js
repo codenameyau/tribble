@@ -11,7 +11,7 @@ var containerID = '#canvas-body';
 var scene, camera, controls, renderer, clock;
 
 // Windmill settings
-var windmill, delta;
+var windmills = [], delta;
 var WINDMILL = {
   height: 35,
 };
@@ -162,7 +162,9 @@ function Windmill() {
  ***********************/
 function rotateWindmillBlades() {
   delta = clock.getDelta();
-  windmill.children[0].rotation.z -= delta * 1.5;
+  for (var i=0; i<windmills.length; i++) {
+    windmills[i].children[0].rotation.z -= delta * 1.5;
+  }
 }
 
 function renderScene() {
@@ -224,9 +226,21 @@ function initializeScene() {
   scene.add(basicFloorGrid(30, 4));
 
   // Add windmills to scene
-  windmill = new Windmill();
-  windmill.position.set(0, WINDMILL.height+0.5, 0);
-  scene.add(windmill);
+  var windmillA = new Windmill();
+  windmillA.position.set(0, WINDMILL.height+0.5, 0);
+  scene.add(windmillA);
+  windmills.push(windmillA);
+
+  var windmillB = new Windmill();
+  windmillB.position.set(-20, WINDMILL.height+0.5, 20);
+  scene.add(windmillB);
+  windmills.push(windmillB);
+
+  var windmillC = new Windmill();
+  windmillC.position.set(20, WINDMILL.height+0.5, -20);
+  scene.add(windmillC);
+  windmills.push(windmillC);
+
 }
 
 
