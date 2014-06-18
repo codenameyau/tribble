@@ -11,6 +11,9 @@
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 
+// Windmill settings
+var windmill;
+
 // Camera settings
 var CAMERA = {
   fov : 50,
@@ -18,7 +21,7 @@ var CAMERA = {
   far : 3000,
   zoomX : 0,
   zoomY : 30,
-  zoomZ : -50,
+  zoomZ : 50,
 };
 
 // OrbitControls settings
@@ -48,16 +51,16 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
-function getBladeGeometry() {
+function bladeGeometry() {
+  // Creates top blade
   var geometry = new THREE.Geometry();
-  // Top blade
   geometry.vertices.push(new THREE.Vector3( 0, 15,  0 ));
   geometry.vertices.push(new THREE.Vector3(-1,  2,  0 ));
   geometry.vertices.push(new THREE.Vector3( 1,  2,  0 ));
   geometry.vertices.push(new THREE.Vector3( 0,  2, 0.5 ));
   geometry.vertices.push(new THREE.Vector3( 0,  2, -0.5 ));
-  geometry.vertices.push(new THREE.Vector3(-0.5,  1,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 0.5,  1,  0 ));
+  geometry.vertices.push(new THREE.Vector3(-0.3,  1,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0.3,  1,  0 ));
   geometry.faces.push(new THREE.Face3(3, 0, 1));
   geometry.faces.push(new THREE.Face3(2, 0, 3));
   geometry.faces.push(new THREE.Face3(1, 0, 4));
@@ -68,14 +71,22 @@ function getBladeGeometry() {
   geometry.faces.push(new THREE.Face3(6, 4, 2));
   geometry.faces.push(new THREE.Face3(5, 1, 4));
   geometry.faces.push(new THREE.Face3(5, 4, 6));
-
-
-
-
-  // Compute normals
   geometry.computeFaceNormals();
   geometry.computeVertexNormals();
   return geometry;
+}
+
+function windmillBladesObject3D(windmillMaterial) {
+  var windmillBlades = new THREE.Object3D();
+  var windmillBlade = bladeGeometry();
+  var rotationAngle = 0;
+  for (var i=0; i<3; i++) {
+    var blade = new THREE.Mesh(windmillBlade, windmillMaterial);
+    blade.rotation.z = Math.PI/180 * rotationAngle;
+    windmillBlades.add(blade);
+    rotationAngle += 120;
+  }
+  return windmillBlades;
 }
 
 /********************
@@ -88,6 +99,7 @@ function renderScene() {
 function animateScene() {
   window.requestAnimationFrame( animateScene );
   controls.update();
+
 }
 
 function resizeWindow() {
@@ -135,15 +147,13 @@ function initializeScene() {
   scene.add(basicFloorGrid(20, 2));
 
   // Add windmills to scene
-  var windmill = new THREE.Object3D();
+  windmill = new THREE.Object3D();
   scene.add(windmill);
 
   // Create blades
-  var bladeGeometry = getBladeGeometry();
   var windmillMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
-  var windmillBlade = new THREE.Mesh(bladeGeometry, windmillMaterial);
-  windmill.add(windmillBlade);
-
+  var windmillBlades = windmillBladesObject3D(windmillMaterial);
+  windmill.add(windmillBlades);
 
 }
 
