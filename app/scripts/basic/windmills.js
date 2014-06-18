@@ -12,22 +12,26 @@ var scene, camera, controls, renderer, clock;
 
 // Windmill settings
 var windmill, delta;
+var WINDMILL = {
+  height: 35,
+};
+
 
 // Camera settings
 var CAMERA = {
-  fov : 50,
+  fov : 45,
   near : 1,
-  far : 3000,
-  zoomX : 0,
-  zoomY : 30,
-  zoomZ : 50,
+  far : 10000,
+  zoomX : -90,
+  zoomY : 45,
+  zoomZ : 80,
 };
 
 // OrbitControls settings
 var CONTROLS = {
   userPan : true,
   userPanSpeed : 0.5,
-  maxDistance : 100.0,
+  maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
@@ -54,9 +58,8 @@ function degToRad(degrees) {
   return Math.PI/180 * degrees;
 }
 
-// Returns geometry of a single blade
+// Returns geometry of a blade
 function bladeGeometry() {
-  // Creates top blade
   var geometry = new THREE.Geometry();
   geometry.vertices.push(new THREE.Vector3( 0, 15,  0 ));
   geometry.vertices.push(new THREE.Vector3(-1,  2.5,  0 ));
@@ -114,18 +117,51 @@ function windmillHubMesh(windmillMaterial) {
 function windmillGeneratorObject3D(windmillMaterial) {
   var sphere = new THREE.SphereGeometry(1, 3, 16, Math.PI, Math.PI, 0);
   var body = new THREE.Mesh(sphere, windmillMaterial);
-  body.scale.z = 5;
+  body.scale.z = 6;
   body.position.z = -0.45;
   return body;
 }
 
+// Returns mesh of windmill tower
+function windmillTowerMesh(windmillMaterial) {
+  var radius = 0.7;
+  var cylinder = new THREE.CylinderGeometry(radius, radius+0.5, WINDMILL.height, 16);
+  var tower = new THREE.Mesh(cylinder, windmillMaterial);
+  tower.position.set(0, -WINDMILL.height/2, -1.5);
+  return tower;
+}
+
+// Returns mesh of windmill ground base
+function windmillGroundMesh(windmillMaterial) {
+  var box = new THREE.BoxGeometry(10, 1, 10);
+  var base = new THREE.Mesh(box, windmillMaterial);
+  base.position.set(0, -WINDMILL.height, -1.5);
+  return base;
+}
+
+function Windmill() {
+  // Create blades
+  var newWindmill = new THREE.Object3D();
+  var windmillMaterial = new THREE.MeshLambertMaterial( {color: 0xfafafa} );
+  var windmillBlades = windmillBladesObject3D( windmillMaterial );
+  var windmillHub = windmillHubMesh( windmillMaterial );
+  var windmillGenerator = windmillGeneratorObject3D( windmillMaterial );
+  var windmillTower = windmillTowerMesh( windmillMaterial );
+  var windmillGround = windmillGroundMesh( windmillMaterial );
+  newWindmill.add(windmillBlades);
+  newWindmill.add(windmillHub);
+  newWindmill.add(windmillGenerator);
+  newWindmill.add(windmillTower);
+  newWindmill.add(windmillGround);
+  return newWindmill;
+}
 
 /***********************
  * Rendering Functions *
  ***********************/
 function rotateWindmillBlades() {
   delta = clock.getDelta();
-  windmill.children[0].rotation.z -= delta * 1;
+  windmill.children[0].rotation.z -= delta * 1.5;
 }
 
 function renderScene() {
@@ -161,6 +197,7 @@ function initializeScene() {
   var aspectRatio  = canvasWidth/canvasHeight;
   camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
   camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
+  camera.castShadow = true;
 
   // OrbitControls with mouse
   controls = new THREE.OrbitControls(camera);
@@ -183,21 +220,12 @@ function initializeScene() {
   clock = new THREE.Clock();
 
   // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
+  scene.add(basicFloorGrid(30, 4));
 
   // Add windmills to scene
-  windmill = new THREE.Object3D();
+  windmill = new Windmill();
+  windmill.position.set(0, WINDMILL.height+0.5, 0);
   scene.add(windmill);
-
-  // Create blades
-  var windmillMaterial = new THREE.MeshLambertMaterial( {color: 0xfafafa} );
-  var windmillBlades = windmillBladesObject3D( windmillMaterial );
-  var windmillHub = windmillHubMesh( windmillMaterial );
-  var windmillGenerator = windmillGeneratorObject3D( windmillMaterial );
-  windmill.add(windmillBlades);
-  windmill.add(windmillHub);
-  windmill.add(windmillGenerator);
-  windmill.position.y = 10;
 }
 
 

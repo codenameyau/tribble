@@ -12,7 +12,7 @@ var scene, camera, controls, renderer;
 
 // Camera settings
 var CAMERA = {
-  fov : 50,
+  fov : 45,
   near : 1,
   far : 3000,
   zoomX : 0,
@@ -24,7 +24,7 @@ var CAMERA = {
 var CONTROLS = {
   userPan : true,
   userPanSpeed : 0.5,
-  maxDistance : 100.0,
+  maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
