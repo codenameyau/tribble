@@ -18,7 +18,7 @@ var CAMERA = {
   far : 3000,
   zoomX : 0,
   zoomY : 30,
-  zoomZ : 50,
+  zoomZ : -50,
 };
 
 // OrbitControls settings
@@ -50,16 +50,24 @@ function basicFloorGrid(lines, steps, gridColor) {
 
 function getBladeGeometry() {
   var geometry = new THREE.Geometry();
-  // Top blade front
-  geometry.vertices.push(new THREE.Vector3( 0, 15,  0));
-  geometry.vertices.push(new THREE.Vector3(-1,  2,  0));
-  geometry.vertices.push(new THREE.Vector3( 1,  2,  0));
-  geometry.vertices.push(new THREE.Vector3( 0,  2, 0.5));
-  geometry.vertices.push(new THREE.Vector3( 0,  2, -0.5));
+  // Top blade
+  geometry.vertices.push(new THREE.Vector3( 0, 15,  0 ));
+  geometry.vertices.push(new THREE.Vector3(-1,  2,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 1,  2,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0,  2, 0.5 ));
+  geometry.vertices.push(new THREE.Vector3( 0,  2, -0.5 ));
+  geometry.vertices.push(new THREE.Vector3(-0.5,  1,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0.5,  1,  0 ));
   geometry.faces.push(new THREE.Face3(3, 0, 1));
   geometry.faces.push(new THREE.Face3(2, 0, 3));
   geometry.faces.push(new THREE.Face3(1, 0, 4));
   geometry.faces.push(new THREE.Face3(4, 0, 2));
+  geometry.faces.push(new THREE.Face3(5, 3, 1));
+  geometry.faces.push(new THREE.Face3(6, 2, 3));
+  geometry.faces.push(new THREE.Face3(6, 3, 5));
+  geometry.faces.push(new THREE.Face3(6, 4, 2));
+  geometry.faces.push(new THREE.Face3(5, 1, 4));
+  geometry.faces.push(new THREE.Face3(5, 4, 6));
 
 
 
@@ -117,7 +125,7 @@ function initializeScene() {
   $(containerID).append(renderer.domElement);
 
   // Light sources
-  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
+  var lightAmbient = new THREE.AmbientLight(0x7a7a7a);
   var lightSource = new THREE.DirectionalLight(0x9a9a9a);
   lightSource.position.set(0, 0.4, 0.6);
   scene.add(lightAmbient);
