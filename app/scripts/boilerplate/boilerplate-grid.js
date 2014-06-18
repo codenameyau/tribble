@@ -83,6 +83,7 @@ function initializeScene() {
   var aspectRatio  = canvasWidth/canvasHeight;
   camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
   camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
+  scene.add(camera);
 
   // OrbitControls with mouse
   controls = new THREE.OrbitControls(camera);

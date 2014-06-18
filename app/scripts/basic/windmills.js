@@ -19,12 +19,12 @@ var WINDMILL = {
 
 // Camera settings
 var CAMERA = {
-  fov : 45,
+  fov : 25,
   near : 1,
   far : 10000,
-  zoomX : -90,
-  zoomY : 45,
-  zoomZ : 80,
+  zoomX : 0,
+  zoomY : 0,
+  zoomZ : 150,
 };
 
 // OrbitControls settings
@@ -33,6 +33,7 @@ var CONTROLS = {
   userPanSpeed : 0.5,
   maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
+  center : new THREE.Vector3(0, WINDMILL.height/1.5, 0),
 };
 
 
@@ -61,13 +62,13 @@ function degToRad(degrees) {
 // Returns geometry of a blade
 function bladeGeometry() {
   var geometry = new THREE.Geometry();
-  geometry.vertices.push(new THREE.Vector3( 0, 15,  0 ));
-  geometry.vertices.push(new THREE.Vector3(-1,  2.5,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 1,  2.5,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 0,  2.5, 0.5 ));
-  geometry.vertices.push(new THREE.Vector3( 0,  2.5, -0.5 ));
-  geometry.vertices.push(new THREE.Vector3(-0.3, 0.3,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 0.3, 0.3,  0 ));
+  geometry.vertices.push(new THREE.Vector3(   0,   15,  0 ));
+  geometry.vertices.push(new THREE.Vector3(  -1,  2.5,  0 ));
+  geometry.vertices.push(new THREE.Vector3(   1,  2.5,  0 ));
+  geometry.vertices.push(new THREE.Vector3(   0,  2.5,  0.5 ));
+  geometry.vertices.push(new THREE.Vector3(   0,  2.5, -0.5 ));
+  geometry.vertices.push(new THREE.Vector3(-0.3,  0.3,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0.3,  0.3,  0 ));
   geometry.faces.push(new THREE.Face3(3, 0, 1));
   geometry.faces.push(new THREE.Face3(2, 0, 3));
   geometry.faces.push(new THREE.Face3(1, 0, 4));
@@ -171,7 +172,8 @@ function renderScene() {
 function animateScene() {
   window.requestAnimationFrame( animateScene );
   controls.update();
-  // rotateWindmillBlades();
+  renderScene();
+  rotateWindmillBlades();
 }
 
 function resizeWindow() {
@@ -197,7 +199,6 @@ function initializeScene() {
   var aspectRatio  = canvasWidth/canvasHeight;
   camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
   camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
-  camera.castShadow = true;
 
   // OrbitControls with mouse
   controls = new THREE.OrbitControls(camera);
