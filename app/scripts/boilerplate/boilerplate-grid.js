@@ -1,6 +1,5 @@
 /*-------JSHint Directives-------*/
-/* global THREE                  */
-/* global $:false                */
+/* global THREE, $               */
 /*-------------------------------*/
 'use strict';
 

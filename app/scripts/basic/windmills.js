@@ -1,6 +1,5 @@
 /*-------JSHint Directives-------*/
-/* global THREE                  */
-/* global $:false                */
+/* global THREE, $               */
 /*-------------------------------*/
 'use strict';
 
@@ -51,16 +50,21 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
+function degToRad(degrees) {
+  return Math.PI/180 * degrees;
+}
+
+// Returns geometry of a single blade
 function bladeGeometry() {
   // Creates top blade
   var geometry = new THREE.Geometry();
   geometry.vertices.push(new THREE.Vector3( 0, 15,  0 ));
-  geometry.vertices.push(new THREE.Vector3(-1,  2,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 1,  2,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 0,  2, 0.5 ));
-  geometry.vertices.push(new THREE.Vector3( 0,  2, -0.5 ));
-  geometry.vertices.push(new THREE.Vector3(-0.3,  1,  0 ));
-  geometry.vertices.push(new THREE.Vector3( 0.3,  1,  0 ));
+  geometry.vertices.push(new THREE.Vector3(-1,  2.5,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 1,  2.5,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0,  2.5, 0.5 ));
+  geometry.vertices.push(new THREE.Vector3( 0,  2.5, -0.5 ));
+  geometry.vertices.push(new THREE.Vector3(-0.3, 0.3,  0 ));
+  geometry.vertices.push(new THREE.Vector3( 0.3, 0.3,  0 ));
   geometry.faces.push(new THREE.Face3(3, 0, 1));
   geometry.faces.push(new THREE.Face3(2, 0, 3));
   geometry.faces.push(new THREE.Face3(1, 0, 4));
@@ -76,17 +80,33 @@ function bladeGeometry() {
   return geometry;
 }
 
+// Returns three windmill blades as an Object3D
 function windmillBladesObject3D(windmillMaterial) {
   var windmillBlades = new THREE.Object3D();
+  // Rotating hub
+  var cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1, 16);
+  var windmillHub = new THREE.Mesh(cylinderGeometry, windmillMaterial);
+  windmillHub.rotation.x = degToRad(90);
+  windmillBlades.add(windmillHub);
+  // Windmill blades
   var windmillBlade = bladeGeometry();
   var rotationAngle = 0;
   for (var i=0; i<3; i++) {
     var blade = new THREE.Mesh(windmillBlade, windmillMaterial);
-    blade.rotation.z = Math.PI/180 * rotationAngle;
+    blade.rotation.z = degToRad(rotationAngle);
     windmillBlades.add(blade);
     rotationAngle += 120;
   }
   return windmillBlades;
+}
+
+function windmillHubMesh(windmillMaterial) {
+  var geometry = new THREE.SphereGeometry(1, 16, 16, Math.PI, Math.PI, 0);
+  var hubMesh = new THREE.Mesh(geometry, windmillMaterial);
+  hubMesh.rotation.x = degToRad(180);
+  hubMesh.scale.z = 2;
+  hubMesh.position.z = 0.45;
+  return hubMesh;
 }
 
 function rotateWindmillBlades() {
@@ -104,7 +124,7 @@ function renderScene() {
 function animateScene() {
   window.requestAnimationFrame( animateScene );
   controls.update();
-  rotateWindmillBlades();
+  // rotateWindmillBlades();
 }
 
 function resizeWindow() {
@@ -161,8 +181,9 @@ function initializeScene() {
   // Create blades
   var windmillMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
   var windmillBlades = windmillBladesObject3D(windmillMaterial);
+  var windmillHub = windmillHubMesh(windmillMaterial);
   windmill.add(windmillBlades);
-  console.log(windmill.children[0].rotation);
+  windmill.add(windmillHub);
 }
 
 
