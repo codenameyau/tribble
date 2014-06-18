@@ -9,10 +9,10 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, controls, renderer, clock;
 
 // Windmill settings
-var windmill;
+var windmill, delta;
 
 // Camera settings
 var CAMERA = {
@@ -89,6 +89,11 @@ function windmillBladesObject3D(windmillMaterial) {
   return windmillBlades;
 }
 
+function rotateWindmillBlades() {
+  delta = clock.getDelta();
+  windmill.children[0].rotation.z -= delta * 1;
+}
+
 /********************
  * Helper Functions *
  ********************/
@@ -99,7 +104,7 @@ function renderScene() {
 function animateScene() {
   window.requestAnimationFrame( animateScene );
   controls.update();
-
+  rotateWindmillBlades();
 }
 
 function resizeWindow() {
@@ -143,6 +148,9 @@ function initializeScene() {
   scene.add(lightAmbient);
   scene.add(lightSource);
 
+  // Clock timeframe
+  clock = new THREE.Clock();
+
   // Starter floor grid
   scene.add(basicFloorGrid(20, 2));
 
@@ -154,7 +162,7 @@ function initializeScene() {
   var windmillMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
   var windmillBlades = windmillBladesObject3D(windmillMaterial);
   windmill.add(windmillBlades);
-
+  console.log(windmill.children[0].rotation);
 }
 
 
