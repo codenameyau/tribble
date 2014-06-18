@@ -30,7 +30,7 @@ var CONTROLS = {
 
 
 /********************
- * Custom Functions *
+ * Helper Functions *
  ********************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
@@ -48,9 +48,9 @@ function basicFloorGrid(lines, steps, gridColor) {
 }
 
 
-/********************
- * Helper Functions *
- ********************/
+/***********************
+ * Rendering Functions *
+ ***********************/
 function renderScene() {
   renderer.render( scene, camera );
 }

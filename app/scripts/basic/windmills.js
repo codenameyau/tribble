@@ -33,7 +33,7 @@ var CONTROLS = {
 
 
 /********************
- * Custom Functions *
+ * Helper Functions *
  ********************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
@@ -100,6 +100,7 @@ function windmillBladesObject3D(windmillMaterial) {
   return windmillBlades;
 }
 
+// Returns mesh of windmill hub head
 function windmillHubMesh(windmillMaterial) {
   var geometry = new THREE.SphereGeometry(1, 16, 16, Math.PI, Math.PI, 0);
   var hubMesh = new THREE.Mesh(geometry, windmillMaterial);
@@ -109,14 +110,24 @@ function windmillHubMesh(windmillMaterial) {
   return hubMesh;
 }
 
+// Returns Object3D of windmill generator
+function windmillGeneratorObject3D(windmillMaterial) {
+  var sphere = new THREE.SphereGeometry(1, 3, 16, Math.PI, Math.PI, 0);
+  var body = new THREE.Mesh(sphere, windmillMaterial);
+  body.scale.z = 5;
+  body.position.z = -0.45;
+  return body;
+}
+
+
+/***********************
+ * Rendering Functions *
+ ***********************/
 function rotateWindmillBlades() {
   delta = clock.getDelta();
   windmill.children[0].rotation.z -= delta * 1;
 }
 
-/********************
- * Helper Functions *
- ********************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -179,11 +190,14 @@ function initializeScene() {
   scene.add(windmill);
 
   // Create blades
-  var windmillMaterial = new THREE.MeshLambertMaterial({color: 0xfafafa});
-  var windmillBlades = windmillBladesObject3D(windmillMaterial);
-  var windmillHub = windmillHubMesh(windmillMaterial);
+  var windmillMaterial = new THREE.MeshLambertMaterial( {color: 0xfafafa} );
+  var windmillBlades = windmillBladesObject3D( windmillMaterial );
+  var windmillHub = windmillHubMesh( windmillMaterial );
+  var windmillGenerator = windmillGeneratorObject3D( windmillMaterial );
   windmill.add(windmillBlades);
   windmill.add(windmillHub);
+  windmill.add(windmillGenerator);
+  windmill.position.y = 10;
 }
 
 
