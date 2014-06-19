@@ -135,10 +135,10 @@ function initScene() {
   window.addEventListener( 'resize', resizeWindow, false );
 
   // Camera position
-  var viewDistance = 50;
+  var fov = 45;
   var aspectRatio  = canvasWidth/canvasHeight;
   var lookAtCoords = new THREE.Vector3(0, 0, 0);
-  camera = new THREE.PerspectiveCamera(viewDistance, aspectRatio, 0.01, 3000);
+  camera = new THREE.PerspectiveCamera(fov, aspectRatio, 2, 500);
   camera.position.set(zoomX, zoomY, zoomZ);
   camera.lookAt(lookAtCoords);
 

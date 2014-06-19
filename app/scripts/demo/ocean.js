@@ -38,8 +38,8 @@ var WORLD = {
 // Camera settings
 var CAMERA = {
   fov : 50,
-  near : 0.01,
-  far : 2500000,
+  near : 50,
+  far : 250000,
   zoomX : 0,
   zoomY : 200,
   zoomZ : 900,
@@ -49,7 +49,8 @@ var CAMERA = {
 var CONTROLS = {
   userPan : false,
   userPanSpeed : 0.0,
-  maxDistance : 2000.0,
+  minDistance : 300.0,
+  maxDistance : 5000.0,
   maxPolarAngle : (Math.PI/180) * 85,
 };
 
