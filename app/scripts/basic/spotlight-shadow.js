@@ -9,6 +9,7 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
+var cube;
 
 // Camera settings
 var CAMERA = {
@@ -32,19 +33,16 @@ var CONTROLS = {
 /********************
  * Helper Functions *
  ********************/
-function basicFloorGrid(lines, steps, gridColor) {
-  lines = lines || 20;
-  steps = steps || 2;
-  gridColor = gridColor || 0xFFFFFF;
-  var floorGrid = new THREE.Geometry();
-  var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
-  for (var i = -lines; i <= lines; i += steps) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
-  }
-  return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
+function basicFloor(width, length, gridColor) {
+  width  = width || 20;
+  length = length || 20;
+  gridColor = gridColor || 0xA95555;
+  var floorPlane = new THREE.PlaneGeometry(width, length);
+  var floorMaterial = new THREE.MeshLambertMaterial( {color: gridColor} );
+  var floor = new THREE.Mesh(floorPlane, floorMaterial);
+  floor.rotation.x -= Math.PI/180 * 90;
+  floor.position.set(0, 0, 0);
+  return floor;
 }
 
 
@@ -93,18 +91,23 @@ function initializeScene() {
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
+  renderer.shadowMapEnabled = true;
   $(containerID).append(renderer.domElement);
 
   // Light sources
-  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var lightSource = new THREE.PointLight(0x7a7a7a);
   lightSource.position.set(0, 50, 80);
-  scene.add(lightAmbient);
   scene.add(lightSource);
 
   // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
+  scene.add(basicFloor(20, 20));
 
+  // Basic cube
+  var material = new THREE.MeshLambertMaterial();
+  var boxGeometry = new THREE.BoxGeometry(2, 2, 2);
+  cube = new THREE.Mesh(boxGeometry, material);
+  cube.position.set(0, 1, 0);
+  scene.add(cube);
 }
 
 
