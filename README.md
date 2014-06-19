@@ -3,14 +3,18 @@ tribble
 
 Playground for learning three.js and computer graphics
 
-##Incredibly Useful Resources
+##Learn Three.js
 * [Three.js Documentation](http://threejs.org/docs/#Manual/Introduction/Creating_a_scene) - Creating a scene
 * [Udacity CS291](https://www.udacity.com/course/cs291) - Interactive 3D Graphics course
-* [Stemkoski](https://stemkoski.github.io/Three.js/) - Set of basic Three.js examples
+* [Stemkoski's Examples](https://stemkoski.github.io/Three.js/) - Set of basic Three.js examples
+* [Intro to Pixel Shaders](http://www.airtightinteractive.com/2013/02/intro-to-pixel-shaders-in-three-js/)
+
+
+##Incredibly Useful Resources
 * [SketchUp 3D Warehouse](https://3dwarehouse.sketchup.com/) - Search for free 3D models
 
 
-##Recommended Computer Graphics Software
+##Recommended Modeling Software
 
 Complete list can be found on [Wikipedia](https://en.wikipedia.org/wiki/List_of_3D_computer_graphics_software)
 
@@ -18,8 +22,8 @@ Complete list can be found on [Wikipedia](https://en.wikipedia.org/wiki/List_of_
 * [Clara.io](https://clara.io/) - Model. Animate. Render. Online.
 * [Verold](http://verold.com/) - Publish 3D models and apps with online visual editor
 
-####Free software
-* [Blender](http://www.blender.org/) - Free 3D graphics and animation software
+####Free downloadable software
+* [Blender](http://www.blender.org/) - Free 3D graphics modeling and animation software
 * [Pixologic - Sculptris](http://pixologic.com/sculptris/) - Beginner version of ZBrush
 
 ####Proprietary and licensed

@@ -16,8 +16,8 @@ var CAMERA = {
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 20,
-  zoomZ : 40,
+  zoomY : 80,
+  zoomZ : 100,
 };
 
 // OrbitControls settings
@@ -26,6 +26,12 @@ var CONTROLS = {
   userPanSpeed : 0.5,
   maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
+};
+
+// Lamp settings
+var LAMP = {
+  towerHeight : 40,
+  coverHeight : 15,
 };
 
 
@@ -96,31 +102,38 @@ function initializeScene() {
 
   // Yellow spotlight
   var S1 = {x: -50, y: 80, z: 30};
-  var yellowLight = new THREE.SpotLight(0xFFFF00);
+  var yellowLight = new THREE.SpotLight(0xF0E3B9);
   yellowLight.position.set(S1.x, S1.y, S1.z);
   yellowLight.shadowCameraVisible = true;
   yellowLight.shadowDarkness = 0.95;
   yellowLight.castShadow = true;
+  yellowLight.intensity = 2;
   scene.add(yellowLight);
+
+  // Lamp light source
+  var lampLight = new THREE.PointLight(0xFFFFFF);
+  lampLight.position.set(0, LAMP.towerHeight, 0);
+  scene.add(lampLight);
 
   // Starter floor grid
   scene.add(basicFloor(100, 100));
 
   // Lamp cover
-  var coverMaterial = new THREE.MeshLambertMaterial({alpha: true, transparent: true, wireframe: true});
-  var coverGeometry = new THREE.CylinderGeometry(10, 20, 14, 16, 16);
-  var cylinder = new THREE.Mesh(coverGeometry, coverMaterial);
-  cylinder.position.set(0, 20, 20);
-  cylinder.castShadow = true;
-  scene.add(cylinder);
+  var coverMaterial = new THREE.MeshLambertMaterial(
+    {color: 0xEDBC61, transparent: true, opacity: 0.8});
+  var coverGeometry = new THREE.CylinderGeometry(8, 20, LAMP.coverHeight, 16, 16);
+  var lampCover = new THREE.Mesh(coverGeometry, coverMaterial);
+  lampCover.position.set(0, LAMP.towerHeight, 0);
+  lampCover.castShadow = true;
+  scene.add(lampCover);
 
   // Lamp tower
   var towerMaterial = new THREE.MeshLambertMaterial({color: 0x736540});
-  var towerGeometry = new THREE.CylinderGeometry(2, 2, 8);
-  var cube = new THREE.Mesh(towerGeometry, towerMaterial);
-  cube.position.set(0, 20, 20);
-  cube.castShadow = true;
-  scene.add(cube);
+  var towerGeometry = new THREE.CylinderGeometry(2, 2, LAMP.towerHeight + LAMP.coverHeight);
+  var lampTower = new THREE.Mesh(towerGeometry, towerMaterial);
+  lampTower.position.set(0, LAMP.towerHeight/2, 0);
+  lampTower.castShadow = true;
+  scene.add(lampTower);
 
 }
 
