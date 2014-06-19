@@ -28,6 +28,11 @@ var CONTROLS = {
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
+// Renderer settings
+var RENDERER = {
+  antialias : true,
+};
+
 
 /********************
  * Helper Functions *
@@ -91,9 +96,10 @@ function initializeScene() {
   controls.addEventListener('change', renderScene);
 
   // WebGL renderer
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer(RENDERER);
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
+  console.log(renderer);
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);

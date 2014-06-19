@@ -9,7 +9,6 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
-var cube;
 
 // Camera settings
 var CAMERA = {
@@ -42,6 +41,7 @@ function basicFloor(width, length, gridColor) {
   var floor = new THREE.Mesh(floorPlane, floorMaterial);
   floor.rotation.x -= Math.PI/180 * 90;
   floor.position.set(0, 0, 0);
+  floor.receiveShadow = true;
   return floor;
 }
 
@@ -94,20 +94,32 @@ function initializeScene() {
   renderer.shadowMapEnabled = true;
   $(containerID).append(renderer.domElement);
 
-  // Light sources
-  var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, 80);
-  scene.add(lightSource);
+  // Yellow spotlight
+  var S1 = {x: -50, y: 80, z: 30};
+  var yellowLight = new THREE.SpotLight(0xFFFF00);
+  yellowLight.position.set(S1.x, S1.y, S1.z);
+  yellowLight.shadowCameraVisible = true;
+  yellowLight.shadowDarkness = 0.95;
+  yellowLight.castShadow = true;
+  scene.add(yellowLight);
 
   // Starter floor grid
-  scene.add(basicFloor(20, 20));
+  scene.add(basicFloor(100, 100));
 
   // Basic cube
   var material = new THREE.MeshLambertMaterial();
-  var boxGeometry = new THREE.BoxGeometry(2, 2, 2);
-  cube = new THREE.Mesh(boxGeometry, material);
-  cube.position.set(0, 1, 0);
+  var boxGeometry = new THREE.BoxGeometry(8, 8, 8);
+  var cube = new THREE.Mesh(boxGeometry, material);
+  cube.position.set(0, 20, 20);
+  cube.castShadow = true;
   scene.add(cube);
+
+  // Basic cylinder
+  var cylinderGeometry = new THREE.CylinderGeometry(5, 8, 8, 16, 16);
+  var cylinder = new THREE.Mesh(cylinderGeometry, material);
+  cylinder.position.set(0, 20, 20);
+  cylinder.castShadow = true;
+  scene.add(cylinder);
 }
 
 
