@@ -1,14 +1,14 @@
 tribble
 =======
 
-Playground for three.js and computer graphics
+Playground for learning three.js and computer graphics
 
-###Getting started with three.js
+##Getting started with three.js
 * [Three.js](http://threejs.org/docs/#Manual/Introduction/Creating_a_scene) - Documentation: Creating a scene
 * [Udacity CS291](https://www.udacity.com/course/cs291)- Interactive 3D Graphics
 
 
-###3D Modeling, Rendering, and Animation Software
+##Computer Graphics Software
 
 ####Built with three.js for the web *(recommended)*
 * [Clara.io](https://clara.io/) - Model. Animate. Render. Online.
@@ -23,5 +23,5 @@ Playground for three.js and computer graphics
 * [ZBrush](http://pixologic.com/zbrush/features/overview/) - Digital sculpting and painting
 
 
-###Learning Milestones
-Can be found in the wiki.
+##Learning Milestones
+Can be found in the [wiki](https://github.com/codenameyau/tribble/wiki).

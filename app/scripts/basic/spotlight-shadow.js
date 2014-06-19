@@ -106,20 +106,22 @@ function initializeScene() {
   // Starter floor grid
   scene.add(basicFloor(100, 100));
 
-  // Basic cube
-  var material = new THREE.MeshLambertMaterial();
-  var boxGeometry = new THREE.BoxGeometry(8, 8, 8);
-  var cube = new THREE.Mesh(boxGeometry, material);
+  // Lamp cover
+  var coverMaterial = new THREE.MeshLambertMaterial({alpha: true, transparent: true, wireframe: true});
+  var coverGeometry = new THREE.CylinderGeometry(10, 20, 14, 16, 16);
+  var cylinder = new THREE.Mesh(coverGeometry, coverMaterial);
+  cylinder.position.set(0, 20, 20);
+  cylinder.castShadow = true;
+  scene.add(cylinder);
+
+  // Lamp tower
+  var towerMaterial = new THREE.MeshLambertMaterial({color: 0x736540});
+  var towerGeometry = new THREE.CylinderGeometry(2, 2, 8);
+  var cube = new THREE.Mesh(towerGeometry, towerMaterial);
   cube.position.set(0, 20, 20);
   cube.castShadow = true;
   scene.add(cube);
 
-  // Basic cylinder
-  var cylinderGeometry = new THREE.CylinderGeometry(5, 8, 8, 16, 16);
-  var cylinder = new THREE.Mesh(cylinderGeometry, material);
-  cylinder.position.set(0, 20, 20);
-  cylinder.castShadow = true;
-  scene.add(cylinder);
 }
 
 
