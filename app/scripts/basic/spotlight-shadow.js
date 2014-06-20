@@ -1,5 +1,5 @@
 /*-------JSHint Directives-------*/
-/* global THREE, $               */
+/* global THREE, $, dat          */
 /*-------------------------------*/
 'use strict';
 
@@ -8,7 +8,8 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, controls, renderer, gui;
+var yellowLight;
 
 // Camera settings
 var CAMERA = {
@@ -16,8 +17,8 @@ var CAMERA = {
   near : 1,
   far : 3000,
   zoomX : 0,
-  zoomY : 80,
-  zoomZ : 100,
+  zoomY : 60,
+  zoomZ : 90,
 };
 
 // OrbitControls settings
@@ -26,12 +27,15 @@ var CONTROLS = {
   userPanSpeed : 0.5,
   maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
+  enabled: false,
 };
 
-// Lamp settings
-var LAMP = {
-  towerHeight : 40,
-  coverHeight : 15,
+// Spotlight settings
+var S1 = {
+  visibility: true,
+  x: -50,
+  y: 80,
+  z: 30,
 };
 
 
@@ -51,6 +55,16 @@ function basicFloor(width, length, gridColor) {
   return floor;
 }
 
+function addSpotLightGUI(spotlight) {
+  gui.add(spotlight, 'x').min(-90).max(90).step(1);
+  gui.add(spotlight, 'y').min(0).max(200).step(1);
+  gui.add(spotlight, 'z').min(-90).max(90).step(1);
+  gui.add(spotlight, 'visibility');
+}
+
+function updateSpotLight() {
+  yellowLight.position.set(S1.x, S1.y, S1.z);
+}
 
 /***********************
  * Rendering Functions *
@@ -61,6 +75,7 @@ function renderScene() {
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
+  updateSpotLight();
   controls.update();
 }
 
@@ -100,40 +115,29 @@ function initializeScene() {
   renderer.shadowMapEnabled = true;
   $(containerID).append(renderer.domElement);
 
+  // Dat gui iteraction
+  gui = new dat.GUI({height : 5 * 32 - 1});
+  addSpotLightGUI(S1);
+
+  // Starter floor grid
+  scene.add(basicFloor(180, 180));
+
   // Yellow spotlight
-  var S1 = {x: -50, y: 80, z: 30};
-  var yellowLight = new THREE.SpotLight(0xF0E3B9);
-  yellowLight.position.set(S1.x, S1.y, S1.z);
-  yellowLight.shadowCameraVisible = true;
-  yellowLight.shadowDarkness = 0.95;
+  yellowLight = new THREE.SpotLight(0xF0E3B9);
+  yellowLight.shadowCameraVisible = S1.visibility;
   yellowLight.castShadow = true;
+  yellowLight.position.set(S1.x, S1.y, S1.z);
   yellowLight.intensity = 2;
   scene.add(yellowLight);
 
-  // Lamp light source
-  var lampLight = new THREE.PointLight(0xFFFFFF);
-  lampLight.position.set(0, LAMP.towerHeight, 0);
-  scene.add(lampLight);
-
-  // Starter floor grid
-  scene.add(basicFloor(100, 100));
-
   // Lamp cover
   var coverMaterial = new THREE.MeshLambertMaterial(
-    {color: 0xEDBC61, transparent: true, opacity: 0.8});
-  var coverGeometry = new THREE.CylinderGeometry(8, 20, LAMP.coverHeight, 16, 16);
+    {color: 0xEDBC61, transparent: true, opacity: 0.70});
+  var coverGeometry = new THREE.CylinderGeometry(8, 20, 15, 32, 32);
   var lampCover = new THREE.Mesh(coverGeometry, coverMaterial);
-  lampCover.position.set(0, LAMP.towerHeight, 0);
+  lampCover.position.set(0, 30, 0);
   lampCover.castShadow = true;
   scene.add(lampCover);
-
-  // Lamp tower
-  var towerMaterial = new THREE.MeshLambertMaterial({color: 0x736540});
-  var towerGeometry = new THREE.CylinderGeometry(2, 2, LAMP.towerHeight + LAMP.coverHeight);
-  var lampTower = new THREE.Mesh(towerGeometry, towerMaterial);
-  lampTower.position.set(0, LAMP.towerHeight/2, 0);
-  lampTower.castShadow = true;
-  scene.add(lampTower);
 
 }
 
