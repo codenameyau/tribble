@@ -15,27 +15,32 @@ var yellowLight;
 var CAMERA = {
   fov : 45,
   near : 1,
-  far : 3000,
+  far : 1000,
   zoomX : 0,
-  zoomY : 60,
-  zoomZ : 90,
+  zoomY : 100,
+  zoomZ : 150,
 };
 
 // OrbitControls settings
 var CONTROLS = {
+  enabled : true,
   userPan : true,
-  userPanSpeed : 0.5,
-  maxDistance : 200.0,
+  userPanSpeed : 1,
+  maxDistance : 350.0,
   maxPolarAngle : (Math.PI/180) * 80,
-  enabled: false,
 };
 
 // Spotlight settings
 var S1 = {
-  visibility: true,
-  x: -50,
-  y: 80,
-  z: 30,
+  visibility : true,
+  intensity : 2,
+  exponent: 5,
+  red : 0.9,
+  green : 0.9,
+  blue : 0.85,
+  x : -50,
+  y : 120,
+  z : 30,
 };
 
 
@@ -45,7 +50,7 @@ var S1 = {
 function basicFloor(width, length, gridColor) {
   width  = width || 20;
   length = length || 20;
-  gridColor = gridColor || 0xA95555;
+  gridColor = gridColor || 0xCC4343;
   var floorPlane = new THREE.PlaneGeometry(width, length);
   var floorMaterial = new THREE.MeshLambertMaterial( {color: gridColor} );
   var floor = new THREE.Mesh(floorPlane, floorMaterial);
@@ -56,14 +61,19 @@ function basicFloor(width, length, gridColor) {
 }
 
 function addSpotLightGUI(spotlight) {
-  gui.add(spotlight, 'x').min(-90).max(90).step(1);
-  gui.add(spotlight, 'y').min(0).max(200).step(1);
-  gui.add(spotlight, 'z').min(-90).max(90).step(1);
+  gui.add(spotlight, 'x').min(-200).max(200).step(1);
+  gui.add(spotlight, 'y').min(50).max(200).step(1);
+  gui.add(spotlight, 'z').min(-200).max(200).step(1);
+  gui.add(spotlight, 'intensity').min(0).max(10).step(0.1);
   gui.add(spotlight, 'visibility');
 }
 
 function updateSpotLight() {
   yellowLight.position.set(S1.x, S1.y, S1.z);
+  yellowLight.distance = S1.distance;
+  yellowLight.intensity = S1.intensity;
+  yellowLight.intensity = S1.intensity;
+  yellowLight.shadowCameraVisible = S1.visibility;
 }
 
 /***********************
@@ -123,11 +133,11 @@ function initializeScene() {
   scene.add(basicFloor(180, 180));
 
   // Yellow spotlight
-  yellowLight = new THREE.SpotLight(0xF0E3B9);
+  yellowLight = new THREE.SpotLight(new THREE.Color(S1.red, S1.green, S1.blue));
   yellowLight.shadowCameraVisible = S1.visibility;
   yellowLight.castShadow = true;
   yellowLight.position.set(S1.x, S1.y, S1.z);
-  yellowLight.intensity = 2;
+  yellowLight.intensity = S1.intensity;
   scene.add(yellowLight);
 
   // Lamp cover

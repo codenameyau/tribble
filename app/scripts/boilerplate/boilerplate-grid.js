@@ -22,8 +22,10 @@ var CAMERA = {
 
 // OrbitControls settings
 var CONTROLS = {
+  enabled: true,
   userPan : true,
-  userPanSpeed : 0.5,
+  userPanSpeed : 1,
+  minDistance : 10.0,
   maxDistance : 200.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
