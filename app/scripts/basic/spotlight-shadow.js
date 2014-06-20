@@ -17,8 +17,8 @@ var CAMERA = {
   near : 1,
   far : 1000,
   zoomX : 0,
-  zoomY : 100,
-  zoomZ : 150,
+  zoomY : 200,
+  zoomZ : 220,
 };
 
 // OrbitControls settings
@@ -38,9 +38,9 @@ var S1 = {
   red : 0.9,
   green : 0.9,
   blue : 0.85,
-  x : -50,
-  y : 120,
-  z : 30,
+  x : 0,
+  y : 180,
+  z : 150,
 };
 
 
@@ -52,9 +52,9 @@ function basicFloor(width, length, gridColor) {
   length = length || 20;
   gridColor = gridColor || 0xCC4343;
   var floorPlane = new THREE.PlaneGeometry(width, length);
-  var floorMaterial = new THREE.MeshLambertMaterial( {color: gridColor} );
+  var floorMaterial = new THREE.MeshLambertMaterial( {color: gridColor, side: THREE.DoubleSide} );
   var floor = new THREE.Mesh(floorPlane, floorMaterial);
-  floor.rotation.x -= Math.PI/180 * 90;
+  floor.rotation.x = Math.PI/180 * -90;
   floor.position.set(0, 0, 0);
   floor.receiveShadow = true;
   return floor;
@@ -62,8 +62,8 @@ function basicFloor(width, length, gridColor) {
 
 function addSpotLightGUI(spotlight) {
   gui.add(spotlight, 'x').min(-200).max(200).step(1);
-  gui.add(spotlight, 'y').min(50).max(200).step(1);
-  gui.add(spotlight, 'z').min(-200).max(200).step(1);
+  gui.add(spotlight, 'y').min(40).max(250).step(1);
+  gui.add(spotlight, 'z').min(-200).max(250).step(1);
   gui.add(spotlight, 'intensity').min(0).max(10).step(0.1);
   gui.add(spotlight, 'visibility');
 }
@@ -130,7 +130,14 @@ function initializeScene() {
   addSpotLightGUI(S1);
 
   // Starter floor grid
-  scene.add(basicFloor(180, 180));
+  var floorSize = 200;
+  scene.add(basicFloor(floorSize, floorSize));
+
+  // Add wall backdrop
+  var backdrop = basicFloor(floorSize, 100);
+  backdrop.rotation.x = 0;
+  backdrop.position.set(0, 100/2, -floorSize/2);
+  scene.add(backdrop);
 
   // Yellow spotlight
   yellowLight = new THREE.SpotLight(new THREE.Color(S1.red, S1.green, S1.blue));
@@ -145,7 +152,7 @@ function initializeScene() {
     {color: 0xEDBC61, transparent: true, opacity: 0.70});
   var coverGeometry = new THREE.CylinderGeometry(8, 20, 15, 32, 32);
   var lampCover = new THREE.Mesh(coverGeometry, coverMaterial);
-  lampCover.position.set(0, 30, 0);
+  lampCover.position.set(0, 40, 0);
   lampCover.castShadow = true;
   scene.add(lampCover);
 
