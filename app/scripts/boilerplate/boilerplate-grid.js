@@ -39,6 +39,10 @@ var RENDERER = {
 /********************
  * Helper Functions *
  ********************/
+function degToRad(degrees) {
+  return Math.PI/180 * degrees;
+}
+
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
   steps = steps || 2;
@@ -101,7 +105,6 @@ function initializeScene() {
   renderer = new THREE.WebGLRenderer(RENDERER);
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
-  console.log(renderer);
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);

@@ -31,13 +31,13 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/threejs/build/three.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/threejs/build/three.min.js"></script>
     <script src="bower_components/threex.keyboardstate/threex.keyboardstate.js"></script>
     <!-- endbower -->
-    <!-- endbuild -->
 
     <!-- Plugins: three.js (no bower packages) -->
+    <script src="bower_components/dat-gui/build/dat.gui.min.js"></script>
     <script src="scripts/plugins/calc.js"></script>
     <script src="scripts/plugins/threejs/OrbitControls.js"></script>
     <script src="scripts/plugins/threejs/Mirror.js"></script>
@@ -51,25 +51,25 @@
     <!-- End plugins: postprocessing -->
 
     <!-- Three.js shaders -->
-    <script src="scripts/shaders/WaterShader.js"></script>
     <script src="scripts/shaders/CopyShader.js"></script>
+    <script src="scripts/shaders/WaterShader.js"></script>
     <script src="scripts/shaders/SepiaShader.js"></script>
+    <script src="scripts/shaders/DotScreenShader.js"></script>
     <!-- End shaders  -->
+    <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
     <!-- <script src="scripts/main.js"></script> -->
     <!-- <script src="scripts/boilerplate/boilerplate-grid.js"></script> -->
-    <!-- <script src="scripts/basic/custom-geometry.js"></script> -->
     <!-- <script src="scripts/basic/2d-geometry.js"></script> -->
     <!-- <script src="scripts/basic/shader-simple.js"></script> -->
-    <!-- <script src="scripts/basic/spotlight-shadow.js"></script> -->
+    <script src="scripts/basic/spotlight-shadow.js"></script>
     <!-- <script src="scripts/basic/architecture.js"></script> -->
     <!-- <script src="scripts/basic/starfield.js"></script> -->
     <!-- <script src="scripts/basic/windmills.js"></script> -->
     <!-- <script src="scripts/demo/ocean.js"></script> -->
     <!-- <script src="scripts/demo/physics-spring.js"></script> -->
     <!-- <script src="scripts/demo/birds.js"></script> -->
-    <script src="scripts/game/basketball.js"></script>
     <!-- endbuild -->
 
   </body>
