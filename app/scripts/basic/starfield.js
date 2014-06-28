@@ -42,7 +42,8 @@ function particleStarField(totalParticles, texture, scale) {
 
 function rotateStarfields() {
   for (var i=0; i<starFields.length; i++) {
-    starFields[i].rotation.y -= 0.00015;
+    starFields[i].rotation.y += 0.0035;
+    starFields[i].rotation.x += 0.0045;
   }
 }
 
