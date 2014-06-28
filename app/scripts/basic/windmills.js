@@ -9,6 +9,8 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer, clock;
+var composer;
+
 
 // Windmill settings
 var windmills = [], delta;
@@ -168,7 +170,9 @@ function rotateWindmillBlades() {
 }
 
 function renderScene() {
-  renderer.render( scene, camera );
+  // Updated: using shader
+  composer.render(scene, camera);
+  // renderer.render( scene, camera );
 }
 
 function animateScene() {
@@ -218,6 +222,17 @@ function initializeScene() {
   lightSource.position.set(0, 0.4, 0.6);
   scene.add(lightAmbient);
   scene.add(lightSource);
+
+  // Shader composer: used to chain multiple shader passes
+  // RenderPass: renders 3D scene into effect chain
+  composer = new THREE.EffectComposer(renderer);
+  composer.addPass(new THREE.RenderPass(scene, camera));
+
+  // Shader effect: create new ShaderPass -> DotScreen
+  var dotscreenEffect = new THREE.ShaderPass(THREE.DotScreenShader);
+  dotscreenEffect.uniforms.scale.value = 4;
+  dotscreenEffect.renderToScreen = true;
+  composer.addPass(dotscreenEffect);
 
   // Clock timeframe
   clock = new THREE.Clock();
