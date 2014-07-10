@@ -16,8 +16,8 @@ var CAMERA = {
   near : 1,
   far : 2000,
   zoomX : 0,
-  zoomY : 20,
-  zoomZ : 40,
+  zoomY : 80,
+  zoomZ : 80,
 };
 
 // OrbitControls settings
@@ -32,7 +32,7 @@ var CONTROLS = {
 
 // Renderer settings
 var RENDERER = {
-  antialias : true,
+  antialias : false,
 };
 
 
@@ -58,6 +58,16 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
+function dippyBird() {
+  var figure = new THREE.Object3D();
+  // Bird Body
+  var sphere = new THREE.SphereGeometry( 10, 32, 32);
+  var headMaterial = new THREE.MeshLambertMaterial({color: 0xDD3333, transparent: true});
+  var figureHead = new THREE.Mesh(sphere, headMaterial);
+  figure.add(figureHead);
+
+  return figure;
+}
 
 /***********************
  * Rendering Functions *
@@ -114,8 +124,10 @@ function initializeScene() {
   scene.add(lightSource);
 
   // Starter floor grid
-  scene.add(basicFloorGrid(20, 2));
+  scene.add(basicFloorGrid(80, 5));
 
+  // Dippy bird
+  scene.add(dippyBird());
 }
 
 
