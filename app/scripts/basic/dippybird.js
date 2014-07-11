@@ -8,7 +8,8 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, renderer;
+var controls, clock;
 var dippyBird;
 
 // Camera settings
@@ -172,8 +173,12 @@ function renderScene() {
   renderer.render( scene, camera );
 }
 
+function updateScene() {
+}
+
 function animateScene() {
   window.requestAnimationFrame( animateScene );
+  updateScene();
   controls.update();
 }
 

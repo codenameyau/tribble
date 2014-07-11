@@ -8,7 +8,8 @@
  * Global Variables and Settings *
  *********************************/
 var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
+var scene, camera, renderer;
+var controls, clock;
 
 // Camera settings
 var CAMERA = {
@@ -32,7 +33,7 @@ var CONTROLS = {
 
 // Renderer settings
 var RENDERER = {
-  antialias : true,
+  antialias : false,
 };
 
 
@@ -66,8 +67,13 @@ function renderScene() {
   renderer.render( scene, camera );
 }
 
+function updateScene() {
+  // Put animation updates here
+}
+
 function animateScene() {
   window.requestAnimationFrame( animateScene );
+  updateScene();
   controls.update();
 }
 
@@ -96,20 +102,23 @@ function initializeScene() {
   camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
   scene.add(camera);
 
-  // OrbitControls with mouse
-  controls = new THREE.OrbitControls(camera);
-  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
-  controls.addEventListener('change', renderScene);
-
   // WebGL renderer
   renderer = new THREE.WebGLRenderer(RENDERER);
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
+  // OrbitControls with mouse
+  controls = new THREE.OrbitControls(camera);
+  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
+  controls.addEventListener('change', renderScene);
+
+  // Clock for animations
+  clock = new THREE.Clock();
+
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
-  var lightSource = new THREE.PointLight(0x7a7a7a);
-  lightSource.position.set(0, 50, 80);
+  var lightSource = new THREE.DirectionalLight(0x7a7a7a);
+  lightSource.position.set(0, 0.5, 0.8);
   scene.add(lightAmbient);
   scene.add(lightSource);
 
