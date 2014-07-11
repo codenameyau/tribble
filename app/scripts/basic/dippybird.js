@@ -9,6 +9,7 @@
  *********************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
+var dippyBird;
 
 // Camera settings
 var CAMERA = {
@@ -58,7 +59,7 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
-function dippyBird() {
+function createDippyBird() {
   // Bird parameters
   var figure = new THREE.Object3D();
   var movingFigure = new THREE.Object3D();
@@ -120,19 +121,20 @@ function dippyBird() {
   figureBody.add(figureBowl);
 
   // Configure moving figure
-  movingFigure.position.set(0, 7, 0);
+  movingFigure.position.set(0, 10, 0);
   movingFigure.add(figureHead);
   movingFigure.add(figureBody);
 
   // Static figure legs
   var staticFigure = new THREE.Object3D();
-  var hingeHeight = tubeHeight/2+8;
+  var feetHeight = 6;
+  var hingeHeight = tubeHeight-1;
   var hingeMaterial = new THREE.MeshLambertMaterial({color: 0xAAAAAA});
   var legMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
   var feetMaterial = new THREE.MeshLambertMaterial({color: 0xBB2222});
-  var hingeGeometry = new THREE.CylinderGeometry(0.6, 0.6, 15, 16);
+  var hingeGeometry = new THREE.CylinderGeometry(0.6, 0.6, 14.5, 16);
   var legGeometry = new THREE.BoxGeometry(1, tubeHeight-5, 5);
-  var feetGeometry = new THREE.BoxGeometry(1, 5, 12);
+  var feetGeometry = new THREE.BoxGeometry(1, feetHeight, 12);
   var feetBaseGeometry = new THREE.BoxGeometry(12, 1, 12);
   var figureHinge = new THREE.Mesh(hingeGeometry, hingeMaterial);
   var leftLeg = new THREE.Mesh(legGeometry, legMaterial);
@@ -144,11 +146,11 @@ function dippyBird() {
   // Configure static figure
   figureHinge.rotation.z = degToRad(90);
   figureHinge.position.set(0, hingeHeight, 0);
-  leftLeg.position.set(-6, 12.5, 0);
-  rightLeg.position.set(6, 12.5, 0);
-  leftFoot.position.set(-6, 0, 3);
-  rightFoot.position.set(6, 0, 3);
-  feetBase.position.set(0, -2, 3);
+  leftLeg.position.set(-6, 16, 0);
+  rightLeg.position.set(6, 16, 0);
+  leftFoot.position.set(-6, feetHeight/2, 3);
+  rightFoot.position.set(6, feetHeight/2, 3);
+  feetBase.position.set(0, 0.5, 3);
   staticFigure.add(figureHinge);
   staticFigure.add(leftLeg);
   staticFigure.add(rightLeg);
@@ -159,7 +161,7 @@ function dippyBird() {
   // Bind moving and static figure
   figure.add(movingFigure);
   figure.add(staticFigure);
-  figure.position.set(0, 2, 0);
+  figure.position.set(0, 0, -10);
   return figure;
 }
 
@@ -222,7 +224,8 @@ function initializeScene() {
   scene.add(basicFloorGrid(80, 8));
 
   // Dippy bird
-  scene.add(dippyBird());
+  dippyBird = createDippyBird();
+  scene.add(dippyBird);
 }
 
 
