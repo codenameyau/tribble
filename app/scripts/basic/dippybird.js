@@ -17,8 +17,8 @@ var CAMERA = {
   fov : 45,
   near : 1,
   far : 2000,
-  zoomX : 100,
-  zoomY : 80,
+  zoomX : 120,
+  zoomY : 70,
   zoomZ : 0,
 };
 
@@ -60,6 +60,19 @@ function basicFloorGrid(lines, steps, gridColor) {
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
 
+function createDrinkingCup() {
+  var cupHeight = 25;
+  var drinkingCup = new THREE.Object3D();
+  var cupGeometry = new THREE.CylinderGeometry(7, 5, cupHeight, 8, 8);
+  var cupMaterial = new THREE.MeshLambertMaterial({color: 0x9A8CA, transparent: true, opacity: 0.6});
+  var cupMesh = new THREE.Mesh(cupGeometry, cupMaterial);
+
+  // Combine cup and water
+  drinkingCup.add(cupMesh);
+  drinkingCup.position.set(0, cupHeight/2, 10);
+  return drinkingCup;
+}
+
 function createDippyBird() {
   // Bird parameters
   var figure = new THREE.Object3D();
@@ -69,22 +82,23 @@ function createDippyBird() {
 
   // Define bird head
   var figureHead = new THREE.Object3D();
-  var headMaterial = new THREE.MeshLambertMaterial({color: 0xEE1111, transparent: true, opacity: 0.85});
+  var headMaterial = new THREE.MeshLambertMaterial({color: 0xFE2c1c, transparent: true, opacity: 0.85});
   var eyeMaterial = new THREE.MeshLambertMaterial({color: 0xEEEEEE});
   var irisMaterial = new THREE.MeshLambertMaterial({color: 0x111111});
   var headGeometry = new THREE.SphereGeometry(headRadius, 32, 32);
-  var noseGeometry = new THREE.CylinderGeometry(1.2, 0.3, 7, 32);
+  var noseGeometry = new THREE.CylinderGeometry(1.2, 0.5, 6, 32);
   var eyeGeometry = new THREE.CircleGeometry(0.8, 16);
   var irisGeometry = new THREE.CircleGeometry(0.4, 16);
   var birdHead = new THREE.Mesh(headGeometry, headMaterial);
   var birdNose = new THREE.Mesh(noseGeometry, headMaterial);
   var leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+  leftEye.scale.y = 1.2;
   var rightEye = leftEye.clone();
   var leftIris = new THREE.Mesh(irisGeometry, irisMaterial);
   var rightIris = leftIris.clone();
 
   // Set parameters of head
-  birdNose.position.set(0, 0, 7);
+  birdNose.position.set(0, 0, 6);
   birdNose.rotation.x = degToRad(-90);
   leftEye.position.set(-1.8, 2, 3.5);
   rightEye.position.set(1.8, 2, 3.5);
@@ -98,7 +112,7 @@ function createDippyBird() {
   figureHead.add(rightIris);
 
   // Bird hat
-  var hatMaterial = new THREE.MeshPhongMaterial({color: 0x1111EE});
+  var hatMaterial = new THREE.MeshPhongMaterial({color: 0x2141F3});
   var hatBaseGeometry = new THREE.CylinderGeometry(headRadius+1.5, headRadius+1.5, 0.5, 32);
   var hatTopGeometry = new THREE.CylinderGeometry(headRadius-1, headRadius-0.5, 5, 32);
   var hatBase = new THREE.Mesh(hatBaseGeometry, hatMaterial);
@@ -111,7 +125,7 @@ function createDippyBird() {
 
   // Tube body
   var figureBody = new THREE.Object3D();
-  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2255FE, transparent: true, opacity: 0.7});
+  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2285FE, transparent: true, opacity: 0.6});
   var tubeGeometry = new THREE.CylinderGeometry(1.1, 1.1, tubeHeight, 16);
   var bowlGeometry = new THREE.SphereGeometry(3.5, 16, 16);
   var figureTube = new THREE.Mesh(tubeGeometry, tubeMaterial);
@@ -120,7 +134,7 @@ function createDippyBird() {
   figureTube.position.set(0, tubeHeight/2, 0);
   figureBody.add(figureTube);
   figureBody.add(figureBowl);
-  figureBody.position.set(0, -tubeHeight/2-3, 0);
+  figureBody.position.set(0, -tubeHeight/2, 0);
 
   // Configure moving figure
   movingFigure.position.set(0, tubeHeight, 0);
@@ -229,21 +243,25 @@ function initializeScene() {
   // Starter floor grid
   scene.add(basicFloorGrid(80, 8));
 
-  // Dippy bird
+  // Dippy bird and cup
+  scene.add(createDrinkingCup());
   dippyBird = createDippyBird();
   scene.add(dippyBird);
 
   // Configure tween animation
   var birdRotation = dippyBird.children[0].rotation;
-  var tweenTiltDown = new TWEEN.Tween(birdRotation);
-  tweenTiltDown.to({x: 0.9}, 1000);
-  var tweenDrink = new TWEEN.Tween(birdRotation).to({x: 0.9}, 2000);
-  var tweenTiltUp = new TWEEN.Tween(birdRotation).to({x: 0.0}, 1000);
+  var tweenTiltDown = new TWEEN.Tween(birdRotation).to({x: 1.2}, 1200);
+  var tweenDrink = new TWEEN.Tween(birdRotation).to({x: 0.9}, 1000);
+  var tweenTiltUp = new TWEEN.Tween(birdRotation).to({x: -0.9}, 800);
+  var tweenTiltRelax = new TWEEN.Tween(birdRotation).to({x: 0.8}, 600);
+  var tweenTiltUpSlow = new TWEEN.Tween(birdRotation).to({x: -0.8}, 900);
 
   // Chain and start tween
   tweenTiltDown.chain(tweenDrink);
   tweenDrink.chain(tweenTiltUp);
-  tweenTiltUp.chain(tweenTiltDown);
+  tweenTiltUp.chain(tweenTiltRelax);
+  tweenTiltRelax.chain(tweenTiltUpSlow);
+  tweenTiltUpSlow.chain(tweenTiltDown);
   tweenTiltDown.start();
 }
 
