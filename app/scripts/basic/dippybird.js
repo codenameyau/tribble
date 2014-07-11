@@ -62,7 +62,7 @@ function dippyBird() {
   // Bird parameters
   var figure = new THREE.Object3D();
   var movingFigure = new THREE.Object3D();
-  var tubeHeight = 30;
+  var tubeHeight = 25;
   var headRadius = 4;
 
   // Define bird head
@@ -109,20 +109,57 @@ function dippyBird() {
 
   // Tube body
   var figureBody = new THREE.Object3D();
-  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2277EE, transparent: true, opacity: 0.7});
+  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2255FE, transparent: true, opacity: 0.7});
   var tubeGeometry = new THREE.CylinderGeometry(1.1, 1.1, tubeHeight, 16);
+  var bowlGeometry = new THREE.SphereGeometry(3.5, 16, 16);
   var figureTube = new THREE.Mesh(tubeGeometry, tubeMaterial);
-  figureBody.position.set(0, tubeHeight/2, 0);
+  var figureBowl = new THREE.Mesh(bowlGeometry, tubeMaterial);
+  figureBowl.scale.y = 1.3;
+  figureTube.position.set(0, tubeHeight/2, 0);
   figureBody.add(figureTube);
+  figureBody.add(figureBowl);
 
-
-  // Configure figure
+  // Configure moving figure
+  movingFigure.position.set(0, 7, 0);
   movingFigure.add(figureHead);
   movingFigure.add(figureBody);
 
+  // Static figure legs
+  var staticFigure = new THREE.Object3D();
+  var hingeHeight = tubeHeight/2+8;
+  var hingeMaterial = new THREE.MeshLambertMaterial({color: 0xAAAAAA});
+  var legMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
+  var feetMaterial = new THREE.MeshLambertMaterial({color: 0xBB2222});
+  var hingeGeometry = new THREE.CylinderGeometry(0.6, 0.6, 15, 16);
+  var legGeometry = new THREE.BoxGeometry(1, tubeHeight-5, 5);
+  var feetGeometry = new THREE.BoxGeometry(1, 5, 12);
+  var feetBaseGeometry = new THREE.BoxGeometry(12, 1, 12);
+  var figureHinge = new THREE.Mesh(hingeGeometry, hingeMaterial);
+  var leftLeg = new THREE.Mesh(legGeometry, legMaterial);
+  var rightLeg = leftLeg.clone();
+  var leftFoot = new THREE.Mesh(feetGeometry, feetMaterial);
+  var rightFoot = leftFoot.clone();
+  var feetBase = new THREE.Mesh(feetBaseGeometry, feetMaterial);
+
+  // Configure static figure
+  figureHinge.rotation.z = degToRad(90);
+  figureHinge.position.set(0, hingeHeight, 0);
+  leftLeg.position.set(-6, 12.5, 0);
+  rightLeg.position.set(6, 12.5, 0);
+  leftFoot.position.set(-6, 0, 3);
+  rightFoot.position.set(6, 0, 3);
+  feetBase.position.set(0, -2, 3);
+  staticFigure.add(figureHinge);
+  staticFigure.add(leftLeg);
+  staticFigure.add(rightLeg);
+  staticFigure.add(leftFoot);
+  staticFigure.add(rightFoot);
+  staticFigure.add(feetBase);
+
   // Bind moving and static figure
   figure.add(movingFigure);
-  figure.position.set(0, 0, 0);
+  figure.add(staticFigure);
+  figure.position.set(0, 2, 0);
   return figure;
 }
 
