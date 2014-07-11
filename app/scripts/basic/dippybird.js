@@ -16,8 +16,8 @@ var CAMERA = {
   near : 1,
   far : 2000,
   zoomX : 0,
-  zoomY : 150,
-  zoomZ : 100,
+  zoomY : 100,
+  zoomZ : 120,
 };
 
 // OrbitControls settings
@@ -61,7 +61,8 @@ function basicFloorGrid(lines, steps, gridColor) {
 function dippyBird() {
   // Bird parameters
   var figure = new THREE.Object3D();
-  var bodyHeight = 80;
+  var movingFigure = new THREE.Object3D();
+  var tubeHeight = 30;
   var headRadius = 4;
 
   // Define bird head
@@ -104,10 +105,24 @@ function dippyBird() {
   hatTop.position.set(0, headRadius+2, 0);
   figureHead.add(hatBase);
   figureHead.add(hatTop);
+  figureHead.position.set(0, tubeHeight+headRadius-0.5, 0);
+
+  // Tube body
+  var figureBody = new THREE.Object3D();
+  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2277EE, transparent: true, opacity: 0.7});
+  var tubeGeometry = new THREE.CylinderGeometry(1.1, 1.1, tubeHeight, 16);
+  var figureTube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+  figureBody.position.set(0, tubeHeight/2, 0);
+  figureBody.add(figureTube);
+
 
   // Configure figure
-  figure.add(figureHead);
-  figure.position.set(0, bodyHeight/2, 0);
+  movingFigure.add(figureHead);
+  movingFigure.add(figureBody);
+
+  // Bind moving and static figure
+  figure.add(movingFigure);
+  figure.position.set(0, 0, 0);
   return figure;
 }
 
