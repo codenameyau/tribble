@@ -1,5 +1,5 @@
 /*-------JSHint Directives-------*/
-/* global THREE, $               */
+/* global THREE, $, TWEEN        */
 /*-------------------------------*/
 'use strict';
 
@@ -17,9 +17,9 @@ var CAMERA = {
   fov : 45,
   near : 1,
   far : 2000,
-  zoomX : 0,
-  zoomY : 100,
-  zoomZ : 120,
+  zoomX : 100,
+  zoomY : 80,
+  zoomZ : 0,
 };
 
 // OrbitControls settings
@@ -73,7 +73,7 @@ function createDippyBird() {
   var eyeMaterial = new THREE.MeshLambertMaterial({color: 0xEEEEEE});
   var irisMaterial = new THREE.MeshLambertMaterial({color: 0x111111});
   var headGeometry = new THREE.SphereGeometry(headRadius, 32, 32);
-  var noseGeometry = new THREE.CylinderGeometry(1, 0.3, 5, 32);
+  var noseGeometry = new THREE.CylinderGeometry(1.2, 0.3, 7, 32);
   var eyeGeometry = new THREE.CircleGeometry(0.8, 16);
   var irisGeometry = new THREE.CircleGeometry(0.4, 16);
   var birdHead = new THREE.Mesh(headGeometry, headMaterial);
@@ -84,7 +84,7 @@ function createDippyBird() {
   var rightIris = leftIris.clone();
 
   // Set parameters of head
-  birdNose.position.set(0, 0, 6);
+  birdNose.position.set(0, 0, 7);
   birdNose.rotation.x = degToRad(-90);
   leftEye.position.set(-1.8, 2, 3.5);
   rightEye.position.set(1.8, 2, 3.5);
@@ -107,7 +107,7 @@ function createDippyBird() {
   hatTop.position.set(0, headRadius+2, 0);
   figureHead.add(hatBase);
   figureHead.add(hatTop);
-  figureHead.position.set(0, tubeHeight+headRadius-0.5, 0);
+  figureHead.position.set(0, tubeHeight/2+headRadius-3.2, 0);
 
   // Tube body
   var figureBody = new THREE.Object3D();
@@ -120,9 +120,10 @@ function createDippyBird() {
   figureTube.position.set(0, tubeHeight/2, 0);
   figureBody.add(figureTube);
   figureBody.add(figureBowl);
+  figureBody.position.set(0, -tubeHeight/2-3, 0);
 
   // Configure moving figure
-  movingFigure.position.set(0, 10, 0);
+  movingFigure.position.set(0, tubeHeight, 0);
   movingFigure.add(figureHead);
   movingFigure.add(figureBody);
 
@@ -173,12 +174,9 @@ function renderScene() {
   renderer.render( scene, camera );
 }
 
-function updateScene() {
-}
-
 function animateScene() {
   window.requestAnimationFrame( animateScene );
-  updateScene();
+  TWEEN.update();
   controls.update();
 }
 
@@ -207,20 +205,23 @@ function initializeScene() {
   camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
   scene.add(camera);
 
-  // OrbitControls with mouse
-  controls = new THREE.OrbitControls(camera);
-  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
-  controls.addEventListener('change', renderScene);
-
   // WebGL renderer
   renderer = new THREE.WebGLRenderer(RENDERER);
   renderer.setSize(canvasWidth, canvasHeight);
   $(containerID).append(renderer.domElement);
 
+  // OrbitControls with mouse
+  controls = new THREE.OrbitControls(camera);
+  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
+  controls.addEventListener('change', renderScene);
+
+  // Clock for timing animations
+  clock = new THREE.Clock();
+
   // Light sources
   var frontLight = new THREE.DirectionalLight(0xaaaaaa);
   var sideLight = new THREE.DirectionalLight(0xaaaaaa);
-  frontLight.position.set(0, 0.5, 0.5);
+  frontLight.position.set(0, 0.2, 0.5);
   sideLight.position.set(0.5, 0.8, 0);
   scene.add(frontLight);
   scene.add(sideLight);
@@ -231,6 +232,19 @@ function initializeScene() {
   // Dippy bird
   dippyBird = createDippyBird();
   scene.add(dippyBird);
+
+  // Configure tween animation
+  var birdRotation = dippyBird.children[0].rotation;
+  var tweenTiltDown = new TWEEN.Tween(birdRotation);
+  tweenTiltDown.to({x: 0.9}, 1000);
+  var tweenDrink = new TWEEN.Tween(birdRotation).to({x: 0.9}, 2000);
+  var tweenTiltUp = new TWEEN.Tween(birdRotation).to({x: 0.0}, 1000);
+
+  // Chain and start tween
+  tweenTiltDown.chain(tweenDrink);
+  tweenDrink.chain(tweenTiltUp);
+  tweenTiltUp.chain(tweenTiltDown);
+  tweenTiltDown.start();
 }
 
 
