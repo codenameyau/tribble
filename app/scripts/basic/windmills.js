@@ -172,14 +172,15 @@ function rotateWindmillBlades() {
 function renderScene() {
   // Updated: using shader
   composer.render(scene, camera);
+  // Unused: for normal renderer
   // renderer.render( scene, camera );
 }
 
 function animateScene() {
   window.requestAnimationFrame( animateScene );
+  rotateWindmillBlades();
   controls.update();
   renderScene();
-  rotateWindmillBlades();
 }
 
 function resizeWindow() {

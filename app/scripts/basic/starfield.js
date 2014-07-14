@@ -59,6 +59,7 @@ function animateScene() {
   window.requestAnimationFrame( animateScene );
   rotateStarfields();
   controls.update();
+  renderScene();
 }
 
 function resizeWindow() {

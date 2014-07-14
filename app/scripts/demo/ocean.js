@@ -67,6 +67,7 @@ function animateScene() {
   controls.update();
   ocean.material.uniforms.time.value += waterSpeed;
   ocean.render();
+  renderScene();
 }
 
 function resizeWindow() {

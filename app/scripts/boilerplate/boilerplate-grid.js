@@ -75,6 +75,7 @@ function animateScene() {
   window.requestAnimationFrame( animateScene );
   updateScene();
   controls.update();
+  renderScene();
 }
 
 function resizeWindow() {
