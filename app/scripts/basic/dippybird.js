@@ -61,15 +61,23 @@ function basicFloorGrid(lines, steps, gridColor) {
 }
 
 function createDrinkingCup() {
-  var cupHeight = 20;
+  var cupHeight = 26;
   var drinkingCup = new THREE.Object3D();
-  var cupGeometry = new THREE.CylinderGeometry(7, 5, cupHeight, 8, 8);
-  var cupMaterial = new THREE.MeshLambertMaterial({color: 0x9A8CA, transparent: true, opacity: 0.6});
+
+  // Cup mesh
+  var cupGeometry = new THREE.CylinderGeometry(7.5, 5.5, cupHeight, 16, 16);
+  var cupMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC, transparent: true, opacity: 0.4});
   var cupMesh = new THREE.Mesh(cupGeometry, cupMaterial);
+
+  // Water mesh
+  var waterGeometry = new THREE.CylinderGeometry(7, 5, cupHeight-2, 16, 16);
+  var waterMaterial = new THREE.MeshLambertMaterial({color: 0x35ACFB});
+  var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
 
   // Combine cup and water
   drinkingCup.add(cupMesh);
-  drinkingCup.position.set(0, cupHeight/2, 10);
+  drinkingCup.add(waterMesh);
+  drinkingCup.position.set(0, cupHeight/2, 11);
   return drinkingCup;
 }
 
@@ -82,9 +90,9 @@ function createDippyBird() {
 
   // Define bird head
   var figureHead = new THREE.Object3D();
-  var headMaterial = new THREE.MeshLambertMaterial({color: 0xFE2c1c, transparent: true, opacity: 0.85});
-  var eyeMaterial = new THREE.MeshLambertMaterial({color: 0xEEEEEE});
-  var irisMaterial = new THREE.MeshLambertMaterial({color: 0x111111});
+  var headMaterial = new THREE.MeshPhongMaterial({color: 0xB32F20});
+  var eyeMaterial = new THREE.MeshPhongMaterial({color: 0xEEEEEE});
+  var irisMaterial = new THREE.MeshPhongMaterial({color: 0x111111});
   var headGeometry = new THREE.SphereGeometry(headRadius, 32, 32);
   var noseGeometry = new THREE.CylinderGeometry(1.2, 0.5, 6, 32);
   var eyeGeometry = new THREE.CircleGeometry(0.8, 16);
@@ -95,11 +103,12 @@ function createDippyBird() {
   leftEye.scale.y = 1.2;
   var rightEye = leftEye.clone();
   var leftIris = new THREE.Mesh(irisGeometry, irisMaterial);
+  leftIris.scale.y = 1.4;
   var rightIris = leftIris.clone();
 
   // Set parameters of head
-  birdNose.position.set(0, 0, 6);
   birdNose.rotation.x = degToRad(-90);
+  birdNose.position.set(0, 0, 6);
   leftEye.position.set(-1.8, 2, 3.5);
   rightEye.position.set(1.8, 2, 3.5);
   leftIris.position.set(-1.8, 2, 3.55);
@@ -112,44 +121,45 @@ function createDippyBird() {
   figureHead.add(rightIris);
 
   // Bird hat
-  var hatMaterial = new THREE.MeshPhongMaterial({color: 0x2141F3});
+  var hatMaterial = new THREE.MeshPhongMaterial({color: 0x2678BF});
   var hatBaseGeometry = new THREE.CylinderGeometry(headRadius+1.5, headRadius+1.5, 0.5, 32);
-  var hatTopGeometry = new THREE.CylinderGeometry(headRadius-1, headRadius-0.5, 5, 32);
+  var hatTopGeometry = new THREE.CylinderGeometry(headRadius-0.5, headRadius-0.8, 6, 32);
   var hatBase = new THREE.Mesh(hatBaseGeometry, hatMaterial);
   var hatTop = new THREE.Mesh(hatTopGeometry, hatMaterial);
   hatBase.position.set(0, headRadius-0.5, 0);
-  hatTop.position.set(0, headRadius+2, 0);
+  hatTop.position.set(0, headRadius+3, 0);
   figureHead.add(hatBase);
   figureHead.add(hatTop);
   figureHead.position.set(0, tubeHeight/2+headRadius-0.2, 0);
 
   // Tube body
   var figureBody = new THREE.Object3D();
-  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2285FE, transparent: true, opacity: 0.6});
-  var tubeGeometry = new THREE.CylinderGeometry(1.1, 1.1, tubeHeight, 16);
+  var tubeMaterial = new THREE.MeshLambertMaterial({color: 0x2678BF, transparent: true, opacity: 0.5});
+  var tubeGeometry = new THREE.CylinderGeometry(0.8, 0.8, tubeHeight, 16);
   var bowlGeometry = new THREE.SphereGeometry(3.5, 16, 16);
   var figureTube = new THREE.Mesh(tubeGeometry, tubeMaterial);
   var figureBowl = new THREE.Mesh(bowlGeometry, tubeMaterial);
   figureBowl.scale.y = 1.3;
+  figureBowl.position.set(0, -4, 0);
   figureTube.position.set(0, tubeHeight/2, 0);
   figureBody.add(figureTube);
   figureBody.add(figureBowl);
   figureBody.position.set(0, -tubeHeight/2, 0);
 
   // Configure moving figure
-  movingFigure.position.set(0, tubeHeight, 0);
+  movingFigure.position.set(0, tubeHeight+5, 0);
   movingFigure.add(figureHead);
   movingFigure.add(figureBody);
 
   // Static figure legs
   var staticFigure = new THREE.Object3D();
   var feetHeight = 6;
-  var hingeHeight = tubeHeight-1;
+  var hingeHeight = tubeHeight+5;
   var hingeMaterial = new THREE.MeshLambertMaterial({color: 0xAAAAAA});
   var legMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC});
   var feetMaterial = new THREE.MeshLambertMaterial({color: 0xBB2222});
   var hingeGeometry = new THREE.CylinderGeometry(0.6, 0.6, 14.5, 16);
-  var legGeometry = new THREE.BoxGeometry(1, tubeHeight, 5);
+  var legGeometry = new THREE.BoxGeometry(1, tubeHeight+2, 5);
   var feetGeometry = new THREE.BoxGeometry(1, feetHeight, 12);
   var feetBaseGeometry = new THREE.BoxGeometry(12, 1, 12);
   var figureHinge = new THREE.Mesh(hingeGeometry, hingeMaterial);
@@ -162,8 +172,8 @@ function createDippyBird() {
   // Configure static figure
   figureHinge.rotation.z = degToRad(90);
   figureHinge.position.set(0, hingeHeight, 0);
-  leftLeg.position.set(-6, 16, 0);
-  rightLeg.position.set(6, 16, 0);
+  leftLeg.position.set(-6, 17, 0);
+  rightLeg.position.set(6, 17, 0);
   leftFoot.position.set(-6, feetHeight/2, 3);
   rightFoot.position.set(6, feetHeight/2, 3);
   feetBase.position.set(0, 0.5, 3);
