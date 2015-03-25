@@ -1,8 +1,8 @@
 <!doctype html>
-<html class="no-js">
+<html>
   <head>
     <meta charset="utf-8">
-    <title>Tribble - Parthenon</title>
+    <title>Tribble - Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/styles/main.css">
@@ -15,22 +15,38 @@
     <!-- Vendor -->
     <script src="assets/scripts/vendor/jquery.min.js"></script>
     <script src="assets/scripts/vendor/three.min.js"></script>
+    <script src="assets/scripts/vendor/dat.gui.min.js"></script>
 
     <!-- Plugins: three.js -->
+    <script src="assets/scripts/plugins/calc.js"></script>
+    <script src="assets/scripts/plugins/vendor/tween.js"></script>
     <script src="assets/scripts/plugins/threejs/OrbitControls.js"></script>
-    <script src="assets/scripts/basic/architecture.js"></script>
+    <script src="assets/scripts/plugins/threejs/Mirror.js"></script>
 
-    <!-- <script src="assets/scripts/vendor/dat.gui.min.js"></script> -->
-    <!-- <script src="assets/scripts/main.js"></script> -->
+    <!-- Plugins: postprocessing -->
+    <script src="assets/scripts/plugins/postprocessing/EffectComposer.js"></script>
+    <script src="assets/scripts/plugins/postprocessing/RenderPass.js"></script>
+    <script src="assets/scripts/plugins/postprocessing/ShaderPass.js"></script>
+    <script src="assets/scripts/plugins/postprocessing/MaskPass.js"></script>
+
+    <!-- Three.js shaders -->
+    <script src="assets/scripts/shaders/CopyShader.js"></script>
+    <script src="assets/scripts/shaders/WaterShader.js"></script>
+    <script src="assets/scripts/shaders/SepiaShader.js"></script>
+    <script src="assets/scripts/shaders/DotScreenShader.js"></script>
+    <script src="assets/scripts/shaders/BrightnessShader.js"></script>
+
+    <!-- build:js assets/scripts/main.js -->
     <!-- <script src="assets/scripts/boilerplate/boilerplate-grid.js"></script> -->
     <!-- <script src="assets/scripts/basic/2d-geometry.js"></script> -->
     <!-- <script src="assets/scripts/basic/shader-simple.js"></script> -->
     <!-- <script src="assets/scripts/basic/spotlight-shadow.js"></script> -->
-    <!-- <script src="assets/scripts/basic/windmills.js"></script> -->
+    <script src="assets/scripts/basic/architecture.js"></script>
     <!-- <script src="assets/scripts/basic/dippybird.js"></script> -->
     <!-- <script src="assets/scripts/demo/ocean.js"></script> -->
     <!-- <script src="assets/scripts/demo/physics-spring.js"></script> -->
     <!-- <script src="assets/scripts/demo/birds.js"></script> -->
+    <!-- endbuild -->
 
   </body>
 </html>

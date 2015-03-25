@@ -4,9 +4,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+/***************************************************************
+* Global Variables and Settings *
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer, clock;
 var composer;
@@ -39,9 +39,9 @@ var CONTROLS = {
 };
 
 
-/********************
- * Helper Functions *
- ********************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
   steps = steps || 2;
@@ -159,9 +159,9 @@ function Windmill() {
   return newWindmill;
 }
 
-/***********************
- * Rendering Functions *
- ***********************/
+/***************************************************************
+* Rendering Functions
+***************************************************************/
 function rotateWindmillBlades() {
   delta = clock.getDelta();
   for (var i=0; i<windmills.length; i++) {
@@ -170,8 +170,8 @@ function rotateWindmillBlades() {
 }
 
 function renderScene() {
-  // Updated: using shader
   composer.render(scene, camera);
+
   // Unused: for normal renderer
   // renderer.render( scene, camera );
 }
@@ -191,9 +191,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -260,8 +260,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();
