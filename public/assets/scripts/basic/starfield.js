@@ -1,27 +1,26 @@
 /*-------JSHint Directives-------*/
 /* global THREE                  */
 /* global calc                   */
-/* global $:false                */
 /*-------------------------------*/
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
-var containerID = '#canvas-body';
+/***************************************************************
+* Global Variables
+***************************************************************/
+var TEXTURES = 'assets/images/texture/';
+var CONTAINER = '#canvas-body';
 var scene, camera, controls, renderer;
 var viewDistance = 50;
 var zoomX = 10;
 var zoomY = 10;
 var zoomZ = 300;
 var starFields = [];
-var TEXTURES = 'assets/images/texture/';
 
 
-/****************************
- * Custom THREEJS Functions *
- ****************************/
+/***************************************************************
+* Custom THREEJS Functions
+***************************************************************/
 function particleStarField(totalParticles, texture, scale) {
   totalParticles = totalParticles || 200;
   scale = scale || 8;
@@ -49,9 +48,9 @@ function rotateStarfields() {
 }
 
 
-/********************************
- * Helper Functions Declarations *
- ********************************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -71,9 +70,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -96,7 +95,7 @@ function initializeScene() {
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
-  $(containerID).append(renderer.domElement);
+  $(CONTAINER).append(renderer.domElement);
 
   // Add particle field
   var yellowStar = THREE.ImageUtils.loadTexture(TEXTURES + '/f-star.png');
@@ -114,8 +113,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();
