@@ -4,9 +4,10 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+
+/***************************************************************
+* Global Variables and Settings *
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, renderer;
 var controls, clock;
@@ -38,9 +39,9 @@ var RENDERER = {
 };
 
 
-/********************
- * Helper Functions *
- ********************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function degToRad(degrees) {
   return Math.PI/180 * degrees;
 }
@@ -191,9 +192,9 @@ function createDippyBird() {
   return figure;
 }
 
-/***********************
- * Rendering Functions *
- ***********************/
+/***************************************************************
+* Rendering Functions
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -213,9 +214,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -277,8 +278,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();
