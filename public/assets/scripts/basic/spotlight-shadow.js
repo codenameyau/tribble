@@ -26,7 +26,7 @@ var CONTROLS = {
   enabled : true,
   userPan : true,
   userPanSpeed : 1,
-  maxDistance : 350.0,
+  maxDistance : 500.0,
   maxPolarAngle : (Math.PI/180) * 80,
 };
 
