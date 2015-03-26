@@ -17,14 +17,14 @@ var waterSpeed = 1.0/60.0;
 
 // External file paths
 var PATHS = {
-  texture : 'images/texture/',
-  skybox : 'images/skybox/',
-  water : 'images/texture/water/',
+  texture : 'assets/images/texture/',
+  skybox : 'assets/images/skybox/',
+  water : 'assets/images/texture/water/',
 };
 
 // World settings
 var WORLD = {
-  skybox : 'skybox-amethyst.jpg',
+  skybox : 'skybox-sea.jpg',
   waterNormal : 'water-clear.png',
   width: 500,
   height: 500,
