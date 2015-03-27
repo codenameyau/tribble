@@ -41,11 +41,12 @@ a:hover {
 }
 
 .card-title {
-  padding: 20px 0 15px 0;
+  padding: 20px 0 18px 0;
   text-transform: uppercase;
-  font-size: 16px;
+  font-size: 15px;
   border-bottom: 1px solid #dddddd;
   background: #333333;
+  letter-spacing: 2px;
 }
 
 .card-title a {
@@ -59,5 +60,9 @@ a:hover {
 .card-body {
   padding: 20px;
   text-align: left;
-  font-size: 17px;
+  font-size: 16px;
+}
+
+.card-body-text {
+  line-height: 25px;
 }

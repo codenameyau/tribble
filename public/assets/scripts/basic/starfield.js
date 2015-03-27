@@ -101,12 +101,13 @@ function initializeScene() {
   var yellowStar = THREE.ImageUtils.loadTexture(TEXTURES + '/f-star.png');
   var redStar = THREE.ImageUtils.loadTexture(TEXTURES + '/m-star.png');
   var whiteStar = THREE.ImageUtils.loadTexture(TEXTURES + '/a-star.png');
-  starFields.push(particleStarField(3000, whiteStar, 2));
-  starFields.push(particleStarField(400, redStar, 3));
-  starFields.push(particleStarField(100, redStar, 5));
+  starFields.push(particleStarField(5000, whiteStar, 2));
+  starFields.push(particleStarField(600, redStar, 3));
   starFields.push(particleStarField(600, yellowStar, 3));
+  starFields.push(particleStarField(200, redStar, 5));
   starFields.push(particleStarField(200, yellowStar, 5));
   starFields.push(particleStarField(30, yellowStar, 8));
+  starFields.push(particleStarField(5, redStar, 14));
   for (var i=0; i<starFields.length; i++) {
     scene.add(starFields[i]);
   }
