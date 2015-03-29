@@ -4,9 +4,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+/***************************************************************
+* Global Variables and Settings
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, renderer;
 var controls, clock;
@@ -37,13 +37,9 @@ var RENDERER = {
 };
 
 
-/********************
- * Helper Functions *
- ********************/
-function degToRad(degrees) {
-  return Math.PI/180 * degrees;
-}
-
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 20;
   steps = steps || 2;
@@ -60,9 +56,9 @@ function basicFloorGrid(lines, steps, gridColor) {
 }
 
 
-/***********************
- * Rendering Functions *
- ***********************/
+/***************************************************************
+* Rendering Functions
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -85,9 +81,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -128,8 +124,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();

@@ -5,9 +5,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+/***************************************************************
+* Global Variables and Settings
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 
@@ -30,9 +30,9 @@ var CONTROLS = {
 };
 
 
-/********************
- * Custom Functions *
- ********************/
+/***************************************************************
+* Custom Functions
+***************************************************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 40;
   steps = steps || 2;
@@ -40,10 +40,10 @@ function basicFloorGrid(lines, steps, gridColor) {
   var floorGrid = new THREE.Geometry();
   var gridLine = new THREE.LineBasicMaterial( {color: gridColor} );
   for (var i = -lines; i <= lines; i += steps) {
-    floorGrid.vertices.push(new THREE.Vector3(-lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( lines, 0, i));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, -lines));
-    floorGrid.vertices.push(new THREE.Vector3( i, 0, lines));
+    floorGrid.vertices.push( new THREE.Vector3(-lines, 0, i) );
+    floorGrid.vertices.push( new THREE.Vector3( lines, 0, i) );
+    floorGrid.vertices.push( new THREE.Vector3( i, 0, -lines) );
+    floorGrid.vertices.push( new THREE.Vector3( i, 0, lines) );
   }
   return new THREE.Line(floorGrid, gridLine, THREE.LinePieces);
 }
@@ -81,9 +81,9 @@ function geometryScaleneTriangle(base, sideA, sideB) {
   return geometry;
 }
 
-/********************
- * Helper Functions *
- ********************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -101,9 +101,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -160,8 +160,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();

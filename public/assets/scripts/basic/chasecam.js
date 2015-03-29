@@ -6,9 +6,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+/***************************************************************
+* Global Variables and Settings
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, renderer;
 var keyboard = new THREEx.KeyboardState();
@@ -24,9 +24,9 @@ var pixelsPerSec = 20;
 var rotationSteed = 1.5;
 
 
-/*************************
- * Custom User Functions *
- *************************/
+/***************************************************************
+* Custom User Functions
+***************************************************************/
 function basicFloorGrid(lines, steps, gridColor) {
   lines = lines || 40;
   steps = steps || 2;
@@ -80,9 +80,9 @@ function updateMovingFigure() {
   camera.lookAt( movingFigure.position );
 }
 
-/********************************
- * Helper Functions Declarations *
- ********************************/
+/***************************************************************
+* Helper Functions Declarations
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -101,9 +101,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -142,8 +142,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();

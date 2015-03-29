@@ -4,9 +4,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
+/***************************************************************
+* Global Variables and Settings
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer, gui;
 var yellowLight;
@@ -44,9 +44,9 @@ var S1 = {
 };
 
 
-/********************
- * Helper Functions *
- ********************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 function basicFloor(width, length, gridColor) {
   width  = width || 20;
   length = length || 20;
@@ -76,9 +76,9 @@ function updateSpotLight() {
   yellowLight.shadowCameraVisible = S1.visibility;
 }
 
-/***********************
- * Rendering Functions *
- ***********************/
+/***************************************************************
+* Rendering Functions
+***************************************************************/
 function renderScene() {
   renderer.render( scene, camera );
 }
@@ -97,9 +97,9 @@ function resizeWindow() {
 }
 
 
-/************************
- * Scene Initialization *
- ************************/
+/***************************************************************
+* Scene Initialization
+***************************************************************/
 function initializeScene() {
 
   // Scene and resize listener
@@ -159,8 +159,8 @@ function initializeScene() {
 }
 
 
-/**********************
- * Render and Animate *
- **********************/
+/***************************************************************
+* Render and Animate
+***************************************************************/
 initializeScene();
 animateScene();

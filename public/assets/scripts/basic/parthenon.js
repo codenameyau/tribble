@@ -4,11 +4,9 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
-
-// Global variables
+/***************************************************************
+* Global Variables and Settings *
+***************************************************************/
 var containerID = '#canvas-body';
 var scene, camera, controls, renderer;
 var zoomX = 0;
@@ -32,9 +30,9 @@ var CONTROLS = {
 };
 
 
-/********************
- * Helper Functions *
- ********************/
+/***************************************************************
+* Helper Functions
+***************************************************************/
 
 // Custom Geometry: triangular prism
 function triangularPrism(width, height, length) {
@@ -123,9 +121,9 @@ function resizeWindow() {
 }
 
 
-/******************
- * Initialization *
- ******************/
+/***************************************************************
+* Initialization
+***************************************************************/
 function initScene() {
 
   // Create scene
@@ -218,8 +216,8 @@ function initScene() {
 }
 
 
-/******************
- * Run Animations *
- ******************/
+/***************************************************************
+* Run Animations
+***************************************************************/
 initScene();
 animateScene();
