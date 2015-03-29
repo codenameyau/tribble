@@ -17,7 +17,7 @@ a:hover {
 
 .container {
   width: 1280px;
-  margin: 20px auto 40px auto;
+  margin: 20px auto;
   text-align: center;
 }
 
@@ -27,6 +27,11 @@ a:hover {
   text-transform: uppercase;
   margin: 40px auto;
   font-size: 25px;
+}
+
+footer {
+  margin: 40px auto;
+  text-align: center;
 }
 
 .card {
