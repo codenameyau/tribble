@@ -26,7 +26,7 @@ a:hover {
   letter-spacing: 5px;
   text-transform: uppercase;
   margin: 40px auto;
-  font-size: 25px;
+  font-size: 24px;
 }
 
 footer {
@@ -36,22 +36,35 @@ footer {
 
 .card {
   display: inline-block;
+  position: relative;
   vertical-align: top;
   letter-spacing: 1px;
   width: 380px;
-  height: 300px;
-  background: white;
+  height: 350px;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px #acacac;
   margin: 20px;
-  box-shadow: 0px 0px 20px #acacac;
+}
+
+.card-title, .card-footer {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 20px 0 18px 0;
+  font-size: 15px;
+  width: 100%;
 }
 
 .card-title {
-  padding: 20px 0 18px 0;
-  text-transform: uppercase;
-  font-size: 15px;
-  border-bottom: 1px solid #dddddd;
   background: #333333;
-  letter-spacing: 2px;
+  font-size: 15px;
+}
+
+.card-footer {
+  border-top: 1px solid #cccccc;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .card-title a {
@@ -60,6 +73,14 @@ footer {
 
 .card-title a:hover {
   color: #99CCFF;
+}
+
+.card-footer a {
+  color: #333333;
+}
+
+.card-footer a:hover {
+  color: #E75C5C;
 }
 
 .card-body {
