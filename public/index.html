@@ -12,7 +12,7 @@
     <div class="container">
       <h1 class="container-header">
         <a href="https://github.com/codenameyau/tribble">
-          Tribble &dash; Three.js Playground
+          Tribble &dash; Three.js Playground (GitHub)
         </a>
       </h1>
 
@@ -22,6 +22,23 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
+            When starting a three.js project, all you'll see is a black screen.
+            This gird serves a guide for new projects. Bundled with the Orbit Controls plugin,
+            which allows you to move and zoom the camera with a mouse.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <a href="2d-geometry.html">2D Geometry</a>
+        </div>
+        <div class="card-body">
+          <div class="card-body-text">
+            One fundamental concept of Computer Graphics is understand how all geometries are
+            represented as triangles. 3D meshes are simply composed of 2D triangles. By
+            using many triangles, a mesh will appear smoother and more realistic
+            at the cost of performance.
           </div>
         </div>
       </div>
@@ -32,7 +49,9 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
-
+            My first independent Computer Graphics project. I learned about different lighting,
+            meshes, and geometries. I also created a custom triangular prism geometry for the roof.
+            You'll definitely want to outline your work with paper and pencil first.
           </div>
         </div>
       </div>
@@ -43,7 +62,9 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
-
+            Particles are different from traditional triangular-based geometries.
+            They are rendered as particle systems where all the particles are
+            treated as a single mesh. Particles are awesome!
           </div>
         </div>
       </div>
@@ -54,18 +75,22 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
-
+            This demo explores interactive lighting and shadow created by a spotlight.
+            Many three.js projects use the plugin <a href="https://github.com/dataarts/dat.gui">dat.gui</a>
+            to drive user interaction by adjusting variables. Play with it!
           </div>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">
-          <a href="ocean.html">Ocean</a>
+          <a href="chasecam.html">Chase Cam</a>
         </div>
         <div class="card-body">
           <div class="card-body-text">
-
+            Chase cam is a concept that is very common in video games.
+            Basically the user moves an entity and the camera follows the entity
+            from its point of view. Move around with the WASD keys.
           </div>
         </div>
       </div>
@@ -76,7 +101,25 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
+            For this project, I started exploring the simplest animation technique&mdash;rotation.
+            The blades of the windwill were created using custom geometries. Overall, the windmill
+            was created as an <em>Object3D</em>. I also applied a <em>Shader</em> for the first time to create a
+            dotted-like appearance.
+          </div>
+        </div>
+      </div>
 
+      <div class="card">
+        <div class="card-title">
+          <a href="ocean.html">Ocean</a>
+        </div>
+        <div class="card-body">
+          <div class="card-body-text">
+            Recreated from this <a href="https://github.com/jbouny/ocean">ocean example</a>.
+            This example explores shaders in depth and uses the <em>MirrorShader</em>,
+            <em>BrightnessShader</em>, and <em>WaterShader</em> to achieve its realistic effect
+            while maintaining performance with the GPU. The swaying ocean tide effect
+            was created with a water <em>Normal Map</em>.
           </div>
         </div>
       </div>
@@ -87,12 +130,17 @@
         </div>
         <div class="card-body">
           <div class="card-body-text">
-
+            Explored the interpolation-based animation technique called <em>Tweening</em>.
+            Tweening is the process of interpolating and generating intermediate key frames
+            in between the starting and ending frames. Recreated from Lesson 10 of Udacity's
+            <em>Interactive 3D Graphics</em> course.
           </div>
         </div>
       </div>
 
     </div>
-  </body>
 
+    <footer>
+    </footer>
+  </body>
 </html>
