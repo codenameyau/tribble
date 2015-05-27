@@ -1,11 +1,11 @@
 # tribble
 
-Welcome to tribble, a playground of three.js projects.
+Welcome to tribble, a playground of three.js projects. Follow my journey
+on learning computer graphics.
 
-[Visit the website](https://codenameyau.github.io/tribble/)
+[Visit the tribble website](https://codenameyau.github.io/tribble/)
 
 ## Learn Three.js
-* [Three.js Documentation](http://threejs.org/docs/#Manual/Introduction/Creating_a_scene) - Creating a scene
 * [Udacity CS291](https://www.udacity.com/course/cs291) - Interactive 3D Graphics course
 * [Stemkoski's Examples](https://stemkoski.github.io/Three.js/) - Set of basic Three.js examples
 * [Intro to Pixel Shaders](http://www.airtightinteractive.com/2013/02/intro-to-pixel-shaders-in-three-js/) - By Airtight Interactive

@@ -1,15 +1,28 @@
 <!doctype html>
-<html>
+<html ng-app="tribbleApp">
   <head>
     <meta charset="utf-8">
     <title>Tribble - Home</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="assets/styles/home.css">
+
+    <!-- Angular Application -->
+    <script src="assets/scripts/vendor/angular/angular.min.js" defer></script>
+    <script src="assets/scripts/app/tribble.js" defer></script>
   </head>
 
   <body>
+
     <div class="container">
+
+      <div ng-controller="CardCtrl">
+        <input type="text" name="" value="" ng-model="hello.text">
+        {{ hello.text }}
+        {{ hi }}
+      </div>
+
+
       <h1 class="container-header">
         <a href="https://github.com/codenameyau/tribble">
           Tribble &dash; Three.js Playground (GitHub)
