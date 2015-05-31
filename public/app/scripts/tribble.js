@@ -2,6 +2,9 @@
 
 var app = angular.module('tribbleApp', ['ui.router']);
 
+/********************************************************************
+* CONFIGURATION
+*********************************************************************/
 app.config(['$stateProvider', function($stateProvider) {
 
   $stateProvider.state('home', {
@@ -10,10 +13,30 @@ app.config(['$stateProvider', function($stateProvider) {
     templateUrl: 'templates/home.html'
   });
 
-  $stateProvider.state('about', {
-    url: '/about',
-    controller: 'AboutCtrl as about',
-    templateUrl: 'templates/about.html'
-  });
+}]);
+
+
+/********************************************************************
+* SERVICES
+*********************************************************************/
+app.service('projects', ['$http', function ($http) {
+  this.getProjects = function() {
+    return $http.get('app/data/projects.json').then(function(res) {
+      return res.data;
+    });
+  };
+}]);
+
+
+/********************************************************************
+* CONTROLLERS
+*********************************************************************/
+app.controller('HomeCtrl', ['$scope', 'projects',
+  function($scope, projects) {
+
+    // Bind projects list to scope.
+    projects.getProjects().then(function(data) {
+      $scope.projects = data;
+    });
 
 }]);

@@ -4,7 +4,7 @@
 body {
   margin: 0;
   font-family: "Palanquin", sans-serif;
-  background-color: #fcfcfc;
+  background: url('../img/symphony.png');
   color: #666666;
 }
 
@@ -33,7 +33,6 @@ a:hover {
 
 footer {
   margin: 40px auto;
-  text-align: center;
 }
 
 .card {

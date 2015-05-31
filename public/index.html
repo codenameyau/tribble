@@ -1,204 +1,32 @@
 <!doctype html>
 <html ng-app="tribbleApp">
-  <head>
-    <meta charset="utf-8">
-    <title>Tribble - Home</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/styles/home.css">
+<head>
+  <meta charset="utf-8">
+  <title>Tribble - Home</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Palanquin:400' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="app/css/home.css">
+  <link rel="stylesheet" href="app/css/navigation.css">
 
-    <!-- Angular Application -->
-    <script src="assets/scripts/vendor/angular/angular.min.js" defer></script>
-    <script src="assets/scripts/app/tribble.js" defer></script>
-  </head>
+  <!-- Angular Application -->
+  <script src="vendor/angular/angular.min.js" defer></script>
+  <script src="vendor/angular/angular-ui-router.min.js" defer></script>
+  <script src="app/scripts/tribble.js" defer></script>
+</head>
 
-  <body>
-
-    <div class="container">
-
-      <div ng-controller="CardCtrl">
-        <input type="text" name="" value="" ng-model="hello.text">
-        {{ hello.text }}
-        {{ hi }}
-      </div>
-
-
-      <h1 class="container-header">
-        <a href="https://github.com/codenameyau/tribble">
-          Tribble &dash; Three.js Playground (GitHub)
-        </a>
-      </h1>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="boilerplate.html">Basic Grid</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            When starting a three.js project, all you'll see is a black screen.
-            This gird serves a guide for new projects. Bundled with the Orbit Controls plugin,
-            which allows you to move and zoom the camera with a mouse.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/boilerplate/grid.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="2d-geometry.html">2D Geometry</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            One fundamental concept of Computer Graphics is understand how all geometries are
-            represented as triangles. 3D meshes are simply composed of 2D triangles. By
-            using many triangles, a mesh will appear smoother and more realistic
-            at the cost of performance.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/2d-geometry.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="parthenon.html">Parthenon</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            My first independent Computer Graphics project. I learned about different lighting,
-            meshes, and geometries. I also created a custom triangular prism geometry for the roof.
-            You'll definitely want to outline your work with paper and pencil first.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/parthenon.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="starfield.html">Starfield Particles</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            Particles are different from traditional triangular-based geometries.
-            They are rendered as particle systems where all the particles are
-            treated as a single mesh. Particles are awesome!
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/starfield.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="spotlight.html">Spotlight</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            This demo explores interactive lighting and shadow created by a spotlight.
-            Many three.js projects use the plugin <a href="https://github.com/dataarts/dat.gui">dat.gui</a>
-            to drive user interaction by adjusting variables. Play with it!
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/spotlight-shadow.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="chasecam.html">Chase Cam</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            Chase cam is a concept that is very common in video games.
-            Basically the user moves an entity and the camera follows the entity
-            from its point of view. Move around with the WASD keys.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/chasecam.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="windmills.html">Windmills</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            For this project, I started exploring the simplest animation technique&mdash;rotation.
-            The blades of the windwill were created using custom geometries. Overall, the windmill
-            was created as an <em>Object3D</em>. I also applied a <em>Shader</em> for the first time to create a
-            dotted-like appearance.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/windmills.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="ocean.html">Ocean</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            Recreated from this <a href="https://github.com/jbouny/ocean">ocean example</a>.
-            This example explores shaders in depth and uses the <em>MirrorShader</em>,
-            <em>BrightnessShader</em>, and <em>WaterShader</em> to achieve its realistic effect
-            while maintaining performance with the GPU. The swaying ocean tide effect
-            was created with a water <em>Normal Map</em>.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/demo/ocean.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">
-          <a href="dippybird.html">Dippy Bird Animation</a>
-        </div>
-        <div class="card-body">
-          <div class="card-body-text">
-            Explored the interpolation-based animation technique called <em>Tweening</em>.
-            Tweening is the process of interpolating and generating intermediate key frames
-            in between the starting and ending frames. Recreated from Lesson 10 of Udacity's
-            <em>Interactive 3D Graphics</em> course.
-          </div>
-        </div>
-        <div class="card-footer">
-          <a href="https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/dippybird.js">
-            Source Code
-          </a>
-        </div>
-      </div>
-
+<body>
+  <nav>
+    <div class="nav-open">
+      <a ui-sref="home">Home</a>
+      <a ui-sref="projects">Projects</a>
+      <a target="_blank" href="https://github.com/codenameyau/tribble">Github</a>
     </div>
+  </nav>
 
-    <footer>
-    </footer>
-  </body>
+  <div class="container">
+    <ui-view></ui-view>
+  </div>
+
+</body>
 </html>

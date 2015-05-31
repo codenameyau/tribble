@@ -1,0 +1,15 @@
+<!-- Project Cards -->
+<div class="card" ng-repeat="card in projects">
+  <div class="card-title">
+    <a href="boilerplate.html">{{ card.title }}</a>
+  </div>
+  <div class="card-body">
+    <div class="card-body-text">{{ card.description }}</div>
+  </div>
+  <div class="card-footer">
+    <a href="{{ card.source }}" target="_blank">Source Code</a>
+  </div>
+</div>
+
+<!-- Footer for whitespace -->
+<footer></footer>
