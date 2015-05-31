@@ -1,7 +1,7 @@
 <!-- Project Cards -->
 <div class="card" ng-repeat="card in projects">
   <div class="card-title">
-    <a href="boilerplate.html">{{ card.title }}</a>
+    <a ui-sref="project({slug: card.slug })">{{ card.title }}</a>
   </div>
   <div class="card-body">
     <div class="card-body-text">{{ card.description }}</div>
