@@ -1,0 +1,30 @@
+nav a {
+  color: #fff;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+nav {
+  z-index: 1;
+  position: fixed;
+  background: #000;
+  width: 100%;
+  padding: 10px 0;
+  top: 0;
+  left: 0;
+  opacity: 0.80;
+  transition: ease-in 0.4s;
+}
+
+nav:hover {
+  opacity: 0.95;
+}
+
+.nav-open {
+  text-align: center;
+}
+
+nav a {
+  margin: 0 20px;
+}

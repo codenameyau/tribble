@@ -1,0 +1,102 @@
+/***************************************************************
+* HOMEPAGE STYLES
+****************************************************************/
+body {
+  margin: 0;
+  font-family: "Palanquin", sans-serif;
+  background-color: #fcfcfc;
+  color: #666666;
+}
+
+a {
+  text-decoration: none;
+  color: #4a4a4a;
+}
+
+a:hover {
+  color: #A1E8AD;
+}
+
+.container {
+  width: 90%;
+  margin: 80px auto 0 auto;
+  text-align: center;
+}
+
+.container-header {
+  font-weight: lighter;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin: 40px auto;
+  font-size: 24px;
+}
+
+footer {
+  margin: 40px auto;
+  text-align: center;
+}
+
+.card {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  letter-spacing: 1px;
+  width: 340px;
+  height: 380px;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px #acacac;
+  margin: 20px;
+}
+
+.card-title,
+.card-footer {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 20px 0 18px 0;
+  font-size: 15px;
+  width: 100%;
+}
+
+.card-title {
+  background: #333;
+  font-size: 15px;
+  transition: linear 0.3s;
+}
+
+.card-title:hover {
+  background: #020202;
+}
+
+.card-footer {
+  border-top: 1px solid #cccccc;
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.card-title a {
+  color: #ffffff;
+}
+
+.card-title a:hover {
+  color: #A1E8AD;
+}
+
+.card-footer a {
+  color: #333333;
+}
+
+.card-footer a:hover {
+  color: #E75C5C;
+}
+
+.card-body {
+  padding: 20px;
+  text-align: left;
+  font-size: 16px;
+}
+
+.card-body-text {
+  line-height: 25px;
+}
