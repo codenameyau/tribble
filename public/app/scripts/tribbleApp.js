@@ -5,10 +5,11 @@ var app = angular.module('tribbleApp', ['ui.router']);
 /********************************************************************
 * CONFIGURATION
 *********************************************************************/
-app.config(['$stateProvider', function($stateProvider) {
+app.config(['$stateProvider', '$urlRouterProvider',
+  function($stateProvider, $urlRouterProvider) {
 
   $stateProvider.state('home', {
-    url: '',
+    url: '/',
     controller: 'HomeCtrl as home',
     templateUrl: 'templates/home.html'
   });
@@ -19,6 +20,7 @@ app.config(['$stateProvider', function($stateProvider) {
     templateUrl: 'templates/project.html'
   });
 
+  $urlRouterProvider.otherwise('/');
 }]);
 
 
