@@ -2,17 +2,23 @@
 <html ng-app="tribbleApp">
 <head>
   <meta charset="utf-8">
-  <title>Tribble - Home</title>
+  <title>Tribble - Three.js Playground</title>
   <meta name="description" content="Tribble - Playground for three.js projects">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Palanquin:400' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="app/css/home.css">
+  <link rel="stylesheet" href="app/css/tribble.css">
   <link rel="stylesheet" href="app/css/navigation.css">
 
   <!-- Angular Application -->
-  <script src="vendor/angular/angular.min.js" defer></script>
+  <script src="vendor/angular/angular.min.js"></script>
   <script src="vendor/angular/angular-ui-router.min.js" defer></script>
-  <script src="app/scripts/tribble.js" defer></script>
+  <script src="app/scripts/tribbleApp.js" defer></script>
+
+  <!-- Three.js Packages -->
+  <script src="vendor/threejs/three.min.js"></script>
+  <script src="vendor/threejs/dat.gui.min.js"></script>
+  <script src="vendor/threejs/playground.min.js" defer></script>
+  <script src="projects/plugins/threejs/OrbitControls.js" defer></script>
 </head>
 
 <body>
@@ -23,10 +29,6 @@
       <a target="_blank" href="https://github.com/codenameyau/tribble">Github</a>
     </div>
   </nav>
-
-  <div class="container">
-    <ui-view></ui-view>
-  </div>
-
+  <ui-view></ui-view>
 </body>
 </html>

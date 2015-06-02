@@ -8,7 +8,7 @@ var app = angular.module('tribbleApp', ['ui.router']);
 app.config(['$stateProvider', function($stateProvider) {
 
   $stateProvider.state('home', {
-    url: '/',
+    url: '',
     controller: 'HomeCtrl as home',
     templateUrl: 'templates/home.html'
   });
@@ -32,19 +32,10 @@ app.service('projectSrv', ['$http', function ($http) {
     });
 
   this.getProjects = function(cb) {
-    return this.projects.then(function(data) {
+    this.projects.then(function(data) {
       cb(data);
     });
   };
-
-  this.getProjectsBySlug = function(slug, cb) {
-    return this.projects.then(function(data) {
-      cb(data.filter(function(obj) {
-        return obj.slug === slug;
-      }));
-    });
-  };
-
 }]);
 
 
@@ -61,7 +52,10 @@ app.controller('HomeCtrl', ['$scope', 'projectSrv',
 app.controller('ProjectCtrl', ['$scope', '$stateParams', 'projectSrv',
   function($scope, $stateParams, projectSrv) {
     var slug = $stateParams.slug;
-    projectSrv.getProjectsBySlug(slug, function(data) {
+    projectSrv.getProjects(function(data) {
       $scope.projects = data;
+      $scope.project = data.filter(function(obj) {
+        return obj.slug === slug;
+      })[0];
     });
 }]);

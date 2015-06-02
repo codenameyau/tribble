@@ -1,13 +1,9 @@
-/*-------JSHint Directives-------*/
-/* global THREE                  */
-/*-------------------------------*/
 'use strict';
-
 
 /***************************************************************
 * Global Variables and Settings *
 ***************************************************************/
-var containerID = '#canvas-body';
+var containerID = 'threejs-canvas';
 var scene, camera, controls, renderer;
 var zoomX = 0;
 var zoomY = 20;
@@ -148,7 +144,8 @@ function initScene() {
   // WebGL renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setSize(canvasWidth, canvasHeight);
-  $(containerID).append(renderer.domElement);
+  var canvas = document.getElementById(containerID);
+  canvas.appendChild(renderer.domElement);
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
