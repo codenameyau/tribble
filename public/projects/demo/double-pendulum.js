@@ -1,6 +1,3 @@
-/*-------JSHint Directives-------*/
-/* global THREE, $               */
-/*-------------------------------*/
 'use strict';
 
 
