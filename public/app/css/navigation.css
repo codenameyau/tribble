@@ -6,7 +6,8 @@ nav a {
 }
 
 nav {
-  z-index: 1;
+  z-index: 10;
+  text-align: center;
   position: fixed;
   background: #000;
   width: 100%;
@@ -21,10 +22,8 @@ nav:hover {
   opacity: 0.95;
 }
 
-.nav-open {
-  text-align: center;
-}
-
 nav a {
   margin: 0 20px;
+  cursor: pointer;
 }
+

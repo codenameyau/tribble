@@ -56,14 +56,15 @@ app.controller('ProjectCtrl',
   function($scope, $filter, $stateParams, projectSrv) {
 
     var slug = $stateParams.slug;
-    var demoFunction = $filter('slugToCamel')(slug);
+    var demoFunction = $filter('slugToCamel')(slug) + 'Demo';
 
     projectSrv.getProjects(function(data) {
       $scope.projects = data;
       $scope.project = data.filter(function(obj) {
         return obj.slug === slug;
       })[0];
-      window[demoFunction + 'Demo']();
+      console.log(demoFunction);
+      window[demoFunction]();
     });
 }]);
 

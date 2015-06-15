@@ -7,8 +7,8 @@
   },
 
   {
-    "slug": "2d-geometry",
-    "title": "2D Geometry",
+    "slug": "basic-geometry",
+    "title": "Basic Geometry",
     "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/2d-geometry.js",
     "description": "One fundamental concept of Computer Graphics is understand how all geometries are represented as triangles. 3D meshes are simply composed of 2D triangles. By using many triangles, a mesh will appear smoother and more realistic at the cost of performance."
   },
