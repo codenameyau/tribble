@@ -51,13 +51,30 @@ app.controller('HomeCtrl', ['$scope', 'projectSrv',
     });
 }]);
 
-app.controller('ProjectCtrl', ['$scope', '$stateParams', 'projectSrv',
-  function($scope, $stateParams, projectSrv) {
+app.controller('ProjectCtrl',
+  ['$scope', '$filter', '$stateParams', 'projectSrv',
+  function($scope, $filter, $stateParams, projectSrv) {
+
     var slug = $stateParams.slug;
+    var demoFunction = $filter('slugToCamel')(slug);
+
     projectSrv.getProjects(function(data) {
       $scope.projects = data;
       $scope.project = data.filter(function(obj) {
         return obj.slug === slug;
       })[0];
+      window[demoFunction + 'Demo']();
     });
 }]);
+
+
+/********************************************************************
+* FILTERS
+*********************************************************************/
+app.filter('slugToCamel', function() {
+  return function(input) {
+    return input.replace(/-(.)?/g, function(match) {
+      return match[1].toUpperCase();
+    });
+  };
+});
