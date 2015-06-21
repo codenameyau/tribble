@@ -63,7 +63,6 @@ app.controller('ProjectCtrl',
       $scope.project = data.filter(function(obj) {
         return obj.slug === slug;
       })[0];
-      console.log(demoFunction);
       window[demoFunction]();
     });
 }]);
