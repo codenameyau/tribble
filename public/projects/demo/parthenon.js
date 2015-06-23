@@ -1,7 +1,8 @@
 'use strict';
 
+
 /***************************************************************
-* Global Variables and Settings *
+* PARTHENON DEMO
 ***************************************************************/
 var parthenonDemo = function() {
   var playground = new Playground();

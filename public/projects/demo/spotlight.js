@@ -4,137 +4,67 @@
 /***************************************************************
 * Global Variables and Settings
 ***************************************************************/
-var containerID = '#canvas-body';
-var scene, camera, controls, renderer, gui;
-var yellowLight;
+var spotlightDemo = function() {
+  var playground = new Playground();
+  playground.camera.position.set(0, 100, 250);
+  var yellowLight;
 
-// Camera settings
-var CAMERA = {
-  fov : 45,
-  near : 1,
-  far : 1000,
-  zoomX : 0,
-  zoomY : 200,
-  zoomZ : 220,
-};
+  // Spotlight settings
+  var S1 = {
+    visibility : true,
+    intensity : 2,
+    exponent: 5,
+    red : 0.9,
+    green : 0.9,
+    blue : 0.85,
+    x : 0,
+    y : 180,
+    z : 150,
+  };
 
-// OrbitControls settings
-var CONTROLS = {
-  enabled : true,
-  userPan : true,
-  userPanSpeed : 1,
-  maxDistance : 500.0,
-  maxPolarAngle : (Math.PI/180) * 80,
-};
+  var wall = function(width, length, gridColor) {
+    width  = width || 20;
+    length = length || 20;
+    gridColor = gridColor || 0xCC4343;
+    var floorPlane = new THREE.PlaneGeometry(width, length);
+    var floorMaterial = new THREE.MeshLambertMaterial(
+      {color: gridColor, side: THREE.DoubleSide});
+    var floor = new THREE.Mesh(floorPlane, floorMaterial);
+    floor.rotation.x = Math.PI/180 * -90;
+    floor.position.set(0, 0, 0);
+    floor.receiveShadow = true;
+    return floor;
+  };
 
-// Spotlight settings
-var S1 = {
-  visibility : true,
-  intensity : 2,
-  exponent: 5,
-  red : 0.9,
-  green : 0.9,
-  blue : 0.85,
-  x : 0,
-  y : 180,
-  z : 150,
-};
+  var addSpotLightGUI = function(spotlight) {
+    gui.add(spotlight, 'x').min(-200).max(200).step(1);
+    gui.add(spotlight, 'y').min(40).max(250).step(1);
+    gui.add(spotlight, 'z').min(-200).max(250).step(1);
+    gui.add(spotlight, 'intensity').min(0).max(10).step(0.1);
+    gui.add(spotlight, 'visibility');
+  };
 
-
-/***************************************************************
-* Helper Functions
-***************************************************************/
-function basicFloor(width, length, gridColor) {
-  width  = width || 20;
-  length = length || 20;
-  gridColor = gridColor || 0xCC4343;
-  var floorPlane = new THREE.PlaneGeometry(width, length);
-  var floorMaterial = new THREE.MeshLambertMaterial( {color: gridColor, side: THREE.DoubleSide} );
-  var floor = new THREE.Mesh(floorPlane, floorMaterial);
-  floor.rotation.x = Math.PI/180 * -90;
-  floor.position.set(0, 0, 0);
-  floor.receiveShadow = true;
-  return floor;
-}
-
-function addSpotLightGUI(spotlight) {
-  gui.add(spotlight, 'x').min(-200).max(200).step(1);
-  gui.add(spotlight, 'y').min(40).max(250).step(1);
-  gui.add(spotlight, 'z').min(-200).max(250).step(1);
-  gui.add(spotlight, 'intensity').min(0).max(10).step(0.1);
-  gui.add(spotlight, 'visibility');
-}
-
-function updateSpotLight() {
-  yellowLight.position.set(S1.x, S1.y, S1.z);
-  yellowLight.distance = S1.distance;
-  yellowLight.intensity = S1.intensity;
-  yellowLight.intensity = S1.intensity;
-  yellowLight.shadowCameraVisible = S1.visibility;
-}
-
-/***************************************************************
-* Rendering Functions
-***************************************************************/
-function renderScene() {
-  renderer.render( scene, camera );
-}
-
-function animateScene() {
-  window.requestAnimationFrame( animateScene );
-  updateSpotLight();
-  controls.update();
-}
-
-function resizeWindow() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  renderScene();
-}
-
-
-/***************************************************************
-* Scene Initialization
-***************************************************************/
-function initializeScene() {
-
-  // Scene and resize listener
-  scene = new THREE.Scene();
-  var canvasWidth  = window.innerWidth;
-  var canvasHeight = window.innerHeight;
-  window.addEventListener('resize', resizeWindow, false);
-
-  // Camera and initial view
-  var aspectRatio  = canvasWidth/canvasHeight;
-  camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
-  camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
-  scene.add(camera);
-
-  // OrbitControls with mouse
-  controls = new THREE.OrbitControls(camera);
-  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
-  controls.addEventListener('change', renderScene);
-
-  // WebGL renderer
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(canvasWidth, canvasHeight);
-  renderer.shadowMapEnabled = true;
-  $(containerID).append(renderer.domElement);
+  var updateSpotLight = function() {
+    yellowLight.position.set(S1.x, S1.y, S1.z);
+    yellowLight.distance = S1.distance;
+    yellowLight.intensity = S1.intensity;
+    yellowLight.intensity = S1.intensity;
+    yellowLight.shadowCameraVisible = S1.visibility;
+  };
 
   // Dat gui iteraction
-  gui = new dat.GUI({height : 5 * 32 - 1});
+  var gui = new dat.GUI();
   addSpotLightGUI(S1);
 
   // Starter floor grid
   var floorSize = 200;
-  scene.add(basicFloor(floorSize, floorSize));
+  playground.scene.add(wall(floorSize, floorSize));
 
   // Add wall backdrop
-  var backdrop = basicFloor(floorSize, 100);
+  var backdrop = wall(floorSize, 100);
   backdrop.rotation.x = 0;
   backdrop.position.set(0, 100/2, -floorSize/2);
-  scene.add(backdrop);
+  playground.scene.add(backdrop);
 
   // Yellow spotlight
   yellowLight = new THREE.SpotLight(new THREE.Color(S1.red, S1.green, S1.blue));
@@ -142,7 +72,7 @@ function initializeScene() {
   yellowLight.castShadow = true;
   yellowLight.position.set(S1.x, S1.y, S1.z);
   yellowLight.intensity = S1.intensity;
-  scene.add(yellowLight);
+  playground.scene.add(yellowLight);
 
   // Lamp cover
   var coverMaterial = new THREE.MeshLambertMaterial(
@@ -151,13 +81,7 @@ function initializeScene() {
   var lampCover = new THREE.Mesh(coverGeometry, coverMaterial);
   lampCover.position.set(0, 40, 0);
   lampCover.castShadow = true;
-  scene.add(lampCover);
+  playground.scene.add(lampCover);
+  playground.setAnimation(updateSpotLight);
+};
 
-}
-
-
-/***************************************************************
-* Render and Animate
-***************************************************************/
-initializeScene();
-animateScene();
