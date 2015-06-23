@@ -53,7 +53,9 @@ var spotlightDemo = function() {
   };
 
   // Dat gui iteraction
-  var gui = new dat.GUI();
+  var gui = new dat.GUI({ autoPlace: false });
+  var guiContainer = document.getElementById('dat-gui-container');
+  guiContainer.appendChild(gui.domElement);
   addSpotLightGUI(S1);
 
   // Starter floor grid
