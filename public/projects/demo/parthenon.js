@@ -20,35 +20,35 @@ var parthenonDemo = function() {
 
   var spacing = pillars.radius * 4;
 
-  // Custom Geometry: triangular prism
-  var triangularPrism = function(width, height, length) {
+  // Custom TriangularPrismGeometry
+  var TriangularPrismGeometry = function(width, height, length) {
     width  = width  || 8;
     height = height || 8;
     length = length || 10;
-    var geometry = new THREE.Geometry();
+    this.geometry = new THREE.Geometry();
 
     // Front triangle
-    geometry.vertices.push(new THREE.Vector3(-width, 0, length));
-    geometry.vertices.push(new THREE.Vector3(width, 0, length));
-    geometry.vertices.push(new THREE.Vector3(0, height, length));
+    this.geometry.vertices.push(new THREE.Vector3(-width, 0, length));
+    this.geometry.vertices.push(new THREE.Vector3(width, 0, length));
+    this.geometry.vertices.push(new THREE.Vector3(0, height, length));
 
     // Back triangle
-    geometry.vertices.push(new THREE.Vector3(-width, 0, -length));
-    geometry.vertices.push(new THREE.Vector3(width, 0, -length));
-    geometry.vertices.push(new THREE.Vector3(0, height, -length));
+    this.geometry.vertices.push(new THREE.Vector3(-width, 0, -length));
+    this.geometry.vertices.push(new THREE.Vector3(width, 0, -length));
+    this.geometry.vertices.push(new THREE.Vector3(0, height, -length));
 
     // Connect faces
-    geometry.faces.push(new THREE.Face3(2, 0, 1)); // CC: front face
-    geometry.faces.push(new THREE.Face3(5, 4, 3)); // CW: back face
-    geometry.faces.push(new THREE.Face3(4, 1, 3)); // CC: bottom
-    geometry.faces.push(new THREE.Face3(1, 0, 3)); // CC: bottom
-    geometry.faces.push(new THREE.Face3(2, 5, 3)); // CC: left side
-    geometry.faces.push(new THREE.Face3(2, 3, 0)); // CW: left side
-    geometry.faces.push(new THREE.Face3(1, 4, 2)); // CW: right side
-    geometry.faces.push(new THREE.Face3(2, 4, 5)); // CC: right side
-    geometry.computeFaceNormals();
-    geometry.computeVertexNormals();
-    return geometry;
+    this.geometry.faces.push(new THREE.Face3(2, 0, 1)); // CC: front face
+    this.geometry.faces.push(new THREE.Face3(5, 4, 3)); // CW: back face
+    this.geometry.faces.push(new THREE.Face3(4, 1, 3)); // CC: bottom
+    this.geometry.faces.push(new THREE.Face3(1, 0, 3)); // CC: bottom
+    this.geometry.faces.push(new THREE.Face3(2, 5, 3)); // CC: left side
+    this.geometry.faces.push(new THREE.Face3(2, 3, 0)); // CW: left side
+    this.geometry.faces.push(new THREE.Face3(1, 4, 2)); // CW: right side
+    this.geometry.faces.push(new THREE.Face3(2, 4, 5)); // CC: right side
+    this.geometry.computeFaceNormals();
+    this.geometry.computeVertexNormals();
+    return this.geometry;
   };
 
   var addPillars = function(detail, pillarMaterial, totalPillars) {
@@ -120,9 +120,9 @@ var parthenonDemo = function() {
   addPillars(pillarsLeft, concreteMaterial, pillars.sides);
   addPillars(pillarsright, concreteMaterial, pillars.sides);
 
-  // Add ceiling
+  // Add ceiling and facade.
   var ceilingHeight = 3;
-  var facadeHeight = 6;
+  var facadeHeight = 5;
   var ceilingLayer = getFloorLayer(0, 1, ceilingHeight, 0xDCDCDC);
   ceilingLayer.position.y = startY+pillars.height;
   var facadeLayer = getFloorLayer(-0.1, 0.8, facadeHeight, 0xABABAB);
@@ -130,10 +130,12 @@ var parthenonDemo = function() {
   parthenon.add(ceilingLayer);
   parthenon.add(facadeLayer);
 
-  // Adding triangularPrism roof
-  var roofHeight = pillars.height/2.8;
-  var roofWidth = pillars.radius*2;
-  var roof = triangularPrism(pillars.faces*roofWidth, roofHeight, pillars.sides*roofWidth*1.05);
+  // Add triangular prism roof.
+  var roofHeight = pillars.height / 2.8;
+  var pillarWidth = pillars.radius*2;
+  var roofWidth = pillarWidth * pillars.faces;
+  var roofLength = pillarWidth * pillars.sides * 1.05;
+  var roof = new TriangularPrismGeometry(roofWidth, roofHeight, roofLength);
   var roofMesh = new THREE.Mesh(roof, concreteMaterial);
   roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
   parthenon.add(roofMesh);
