@@ -7,7 +7,7 @@
 var parthenonDemo = function() {
   var playground = new Playground();
   playground.enableGrid(120, 5);
-  playground.camera.position.set(0, 30, 230);
+  playground.setCameraPosition(0, 30, 230);
 
   // Custom settings
   var parthenon;
@@ -78,66 +78,64 @@ var parthenonDemo = function() {
     return new THREE.Mesh(floorGeometry, solidMaterial);
   };
 
-  playground.loadScene(function() {
-    // Light sources
-    var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
-    var lightFront = new THREE.PointLight(0x7c7c7c);
-    var lightLeft = new THREE.PointLight(0x525252);
-    var lightRight = new THREE.PointLight(0x525252);
-    lightFront.position.set(0, 100, 150);
-    lightLeft.position.set(-250, 120, 80);
-    lightRight.position.set(250, 120, 80);
-    playground.scene.add(lightAmbient);
-    playground.scene.add(lightFront);
-    playground.scene.add(lightLeft);
-    playground.scene.add(lightRight);
+  // Main Scene
+  var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
+  var lightFront = new THREE.PointLight(0x7c7c7c);
+  var lightLeft = new THREE.PointLight(0x525252);
+  var lightRight = new THREE.PointLight(0x525252);
+  lightFront.position.set(0, 100, 150);
+  lightLeft.position.set(-250, 120, 80);
+  lightRight.position.set(250, 120, 80);
+  playground.scene.add(lightAmbient);
+  playground.scene.add(lightFront);
+  playground.scene.add(lightLeft);
+  playground.scene.add(lightRight);
 
-    // Materials and setup
-    var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
-    parthenon = new THREE.Object3D();
+  // Materials and setup
+  var concreteMaterial = new THREE.MeshLambertMaterial({color: 0xFAFAFA});
+  parthenon = new THREE.Object3D();
 
-    // Add floor layers
-    var floorHeight = 2;
-    var floorFirstLayer = getFloorLayer(1.3, 2.0, floorHeight);
-    floorFirstLayer.position.y = floorHeight/2;
-    var floorSecondLayer = getFloorLayer(0.8, 1.5, floorHeight);
-    floorSecondLayer.position.y = floorFirstLayer.position.y + floorHeight;
-    var floorThirdLayer = getFloorLayer(0.3, 1.0, floorHeight);
-    floorThirdLayer.position.y = floorSecondLayer.position.y + floorHeight;
-    parthenon.add(floorFirstLayer);
-    parthenon.add(floorSecondLayer);
-    parthenon.add(floorThirdLayer);
+  // Add floor layers
+  var floorHeight = 2;
+  var floorFirstLayer = getFloorLayer(1.3, 2.0, floorHeight);
+  floorFirstLayer.position.y = floorHeight/2;
+  var floorSecondLayer = getFloorLayer(0.8, 1.5, floorHeight);
+  floorSecondLayer.position.y = floorFirstLayer.position.y + floorHeight;
+  var floorThirdLayer = getFloorLayer(0.3, 1.0, floorHeight);
+  floorThirdLayer.position.y = floorSecondLayer.position.y + floorHeight;
+  parthenon.add(floorFirstLayer);
+  parthenon.add(floorSecondLayer);
+  parthenon.add(floorThirdLayer);
 
-    // Add pillars
-    var startX = (pillars.faces-1) * pillars.radius * 2;
-    var startY = floorThirdLayer.position.y;
-    var startZ = pillars.sides * pillars.radius * 2;
-    var pillarsFront = {x: -startX, xSpace: spacing, z: startZ,  zSpace: 0, y: startY};
-    var pillarsBack  = {x: -startX, xSpace: spacing, z: -startZ, zSpace: 0, y: startY};
-    var pillarsLeft  = {x: -startX, xSpace: 0, z: -startZ, zSpace: spacing, y: startY};
-    var pillarsright = {x:  startX, xSpace: 0, z: -startZ, zSpace: spacing, y: startY};
-    addPillars(pillarsFront, concreteMaterial, pillars.faces);
-    addPillars(pillarsBack, concreteMaterial, pillars.faces);
-    addPillars(pillarsLeft, concreteMaterial, pillars.sides);
-    addPillars(pillarsright, concreteMaterial, pillars.sides);
+  // Add pillars
+  var startX = (pillars.faces-1) * pillars.radius * 2;
+  var startY = floorThirdLayer.position.y;
+  var startZ = pillars.sides * pillars.radius * 2;
+  var pillarsFront = {x: -startX, xSpace: spacing, z: startZ,  zSpace: 0, y: startY};
+  var pillarsBack  = {x: -startX, xSpace: spacing, z: -startZ, zSpace: 0, y: startY};
+  var pillarsLeft  = {x: -startX, xSpace: 0, z: -startZ, zSpace: spacing, y: startY};
+  var pillarsright = {x:  startX, xSpace: 0, z: -startZ, zSpace: spacing, y: startY};
+  addPillars(pillarsFront, concreteMaterial, pillars.faces);
+  addPillars(pillarsBack, concreteMaterial, pillars.faces);
+  addPillars(pillarsLeft, concreteMaterial, pillars.sides);
+  addPillars(pillarsright, concreteMaterial, pillars.sides);
 
-    // Add ceiling
-    var ceilingHeight = 3;
-    var facadeHeight = 6;
-    var ceilingLayer = getFloorLayer(0, 1, ceilingHeight, 0xDCDCDC);
-    ceilingLayer.position.y = startY+pillars.height;
-    var facadeLayer = getFloorLayer(-0.1, 0.8, facadeHeight, 0xABABAB);
-    facadeLayer.position.y = ceilingLayer.position.y + ceilingHeight+1;
-    parthenon.add(ceilingLayer);
-    parthenon.add(facadeLayer);
+  // Add ceiling
+  var ceilingHeight = 3;
+  var facadeHeight = 6;
+  var ceilingLayer = getFloorLayer(0, 1, ceilingHeight, 0xDCDCDC);
+  ceilingLayer.position.y = startY+pillars.height;
+  var facadeLayer = getFloorLayer(-0.1, 0.8, facadeHeight, 0xABABAB);
+  facadeLayer.position.y = ceilingLayer.position.y + ceilingHeight+1;
+  parthenon.add(ceilingLayer);
+  parthenon.add(facadeLayer);
 
-    // Adding triangularPrism roof
-    var roofHeight = pillars.height/2.8;
-    var roofWidth = pillars.radius*2;
-    var roof = triangularPrism(pillars.faces*roofWidth, roofHeight, pillars.sides*roofWidth*1.05);
-    var roofMesh = new THREE.Mesh(roof, concreteMaterial);
-    roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
-    parthenon.add(roofMesh);
-    playground.scene.add(parthenon);
-  });
+  // Adding triangularPrism roof
+  var roofHeight = pillars.height/2.8;
+  var roofWidth = pillars.radius*2;
+  var roof = triangularPrism(pillars.faces*roofWidth, roofHeight, pillars.sides*roofWidth*1.05);
+  var roofMesh = new THREE.Mesh(roof, concreteMaterial);
+  roofMesh.position.y = facadeLayer.position.y + (facadeHeight/2);
+  parthenon.add(roofMesh);
+  playground.scene.add(parthenon);
 };

@@ -5,5 +5,5 @@
 ***************************************************************/
 var basicGridDemo = function() {
   var playground = new Playground();
-  playground.enableGrid();
+  playground.enableGrid(40, 2);
 };

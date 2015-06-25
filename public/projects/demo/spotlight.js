@@ -6,7 +6,7 @@
 ***************************************************************/
 var spotlightDemo = function() {
   var playground = new Playground();
-  playground.camera.position.set(0, 100, 250);
+  playground.setCameraPosition(0, 100, 250);
   var yellowLight;
 
   // Spotlight settings
@@ -44,7 +44,7 @@ var spotlightDemo = function() {
     gui.add(spotlight, 'visibility');
   };
 
-  var updateSpotLight = function() {
+  var animateSpotLight = function() {
     yellowLight.position.set(S1.x, S1.y, S1.z);
     yellowLight.distance = S1.distance;
     yellowLight.intensity = S1.intensity;
@@ -70,7 +70,7 @@ var spotlightDemo = function() {
 
   // Yellow spotlight
   yellowLight = new THREE.SpotLight(new THREE.Color(S1.red, S1.green, S1.blue));
-  yellowLight.shadowCameraVisible = S1.visibility;
+  yellowLight.shadowCameraVisible = true;
   yellowLight.castShadow = true;
   yellowLight.position.set(S1.x, S1.y, S1.z);
   yellowLight.intensity = S1.intensity;
@@ -84,6 +84,5 @@ var spotlightDemo = function() {
   lampCover.position.set(0, 40, 0);
   lampCover.castShadow = true;
   playground.scene.add(lampCover);
-  playground.setAnimation(updateSpotLight);
+  playground.setAnimation(animateSpotLight);
 };
-

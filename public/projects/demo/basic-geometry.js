@@ -5,7 +5,8 @@
 ***************************************************************/
 var basicGeometryDemo = function() {
   var playground = new Playground();
-  playground.enableGrid();
+  playground.enableGrid(20, 4);
+  playground.setCameraPosition(0, 40, 60);
 
   // Define basic 2D geometry
   var geometryIsoscelesTriangle = function(base, height) {
