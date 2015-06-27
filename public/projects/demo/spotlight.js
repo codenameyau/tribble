@@ -7,6 +7,7 @@
 var spotlightDemo = function() {
   var playground = new Playground();
   playground.setCameraPosition(0, 100, 250);
+  playground.renderer.shadowMapEnabled = true;
   var yellowLight;
 
   // Spotlight settings
