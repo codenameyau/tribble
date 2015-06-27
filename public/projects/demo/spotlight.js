@@ -6,21 +6,20 @@
 ***************************************************************/
 var spotlightDemo = function() {
   var playground = new Playground();
-  playground.setCameraPosition(0, 100, 250);
+  playground.setCameraPosition(0, 120, 400);
   playground.renderer.shadowMapEnabled = true;
-  var yellowLight;
 
   // Spotlight settings
-  var S1 = {
+  var SL = {
     visibility : true,
     intensity : 2,
-    exponent: 5,
+    exponent: 10,
     red : 0.9,
     green : 0.9,
     blue : 0.85,
     x : 0,
-    y : 180,
-    z : 150,
+    y : 120,
+    z : 300,
   };
 
   var wall = function(width, length, gridColor) {
@@ -37,44 +36,42 @@ var spotlightDemo = function() {
     return floor;
   };
 
-  var addSpotLightGUI = function(spotlight) {
-    gui.add(spotlight, 'x').min(-200).max(200).step(1);
-    gui.add(spotlight, 'y').min(40).max(250).step(1);
-    gui.add(spotlight, 'z').min(-200).max(250).step(1);
-    gui.add(spotlight, 'intensity').min(0).max(10).step(0.1);
-    gui.add(spotlight, 'visibility');
-  };
-
   var animateSpotLight = function() {
-    yellowLight.position.set(S1.x, S1.y, S1.z);
-    yellowLight.distance = S1.distance;
-    yellowLight.intensity = S1.intensity;
-    yellowLight.intensity = S1.intensity;
-    yellowLight.shadowCameraVisible = S1.visibility;
+    yellowLight.position.set(SL.x, SL.y, SL.z);
+    yellowLight.distance = SL.distance;
+    yellowLight.intensity = SL.intensity;
+    yellowLight.intensity = SL.intensity;
+    yellowLight.shadowCameraVisible = SL.visibility;
   };
 
   // Dat gui iteraction
   var gui = new dat.GUI({ autoPlace: false });
   var guiContainer = document.getElementById('dat-gui-container');
   guiContainer.appendChild(gui.domElement);
-  addSpotLightGUI(S1);
+  gui.add(SL, 'x').min(-200).max(200).step(1);
+  gui.add(SL, 'y').min(40).max(250).step(1);
+  gui.add(SL, 'z').min(-200).max(300).step(1);
+  gui.add(SL, 'intensity').min(0).max(10).step(0.1);
+  gui.add(SL, 'visibility');
 
   // Starter floor grid
-  var floorSize = 200;
-  playground.scene.add(wall(floorSize, floorSize));
+  var wallWidth = 300;
+  var wallHeight = 100;
+  playground.scene.add(wall(wallWidth, wallHeight));
 
   // Add wall backdrop
-  var backdrop = wall(floorSize, 100);
+  var backdrop = wall(wallWidth, wallHeight);
   backdrop.rotation.x = 0;
-  backdrop.position.set(0, 100/2, -floorSize/2);
+  backdrop.position.set(0, 100/2, -wallHeight/2);
   playground.scene.add(backdrop);
 
   // Yellow spotlight
-  yellowLight = new THREE.SpotLight(new THREE.Color(S1.red, S1.green, S1.blue));
+  var yellowLight = new THREE.SpotLight(
+    new THREE.Color(SL.red, SL.green, SL.blue));
   yellowLight.shadowCameraVisible = true;
   yellowLight.castShadow = true;
-  yellowLight.position.set(S1.x, S1.y, S1.z);
-  yellowLight.intensity = S1.intensity;
+  yellowLight.position.set(SL.x, SL.y, SL.z);
+  yellowLight.intensity = SL.intensity;
   playground.scene.add(yellowLight);
 
   // Lamp cover
