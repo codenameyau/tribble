@@ -2,7 +2,7 @@
 
 
 /***************************************************************
-* Global Variables and Settings
+* SPOTLIGHT DEMO
 ***************************************************************/
 var spotlightDemo = function() {
   var playground = new Playground();

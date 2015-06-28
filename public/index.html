@@ -19,6 +19,7 @@
   <script src="vendor/threejs/dat.gui.min.js" defer></script>
   <script src="vendor/threejs/playground.min.js" defer></script>
   <script src="projects/plugins/threejs/OrbitControls.js" defer></script>
+  <script src="projects/plugins/threejs/KeyboardState.js"></script>
 
   <!-- Project Demos -->
   <script src="projects/demo/basic-grid.js" defer></script>
@@ -26,9 +27,9 @@
   <script src="projects/demo/parthenon.js" defer></script>
   <script src="projects/demo/starfield-particles.js" defer></script>
   <script src="projects/demo/spotlight.js" defer></script>
+  <script src="projects/demo/chase-cam.js" defer></script>
 
   <!--
-  <script src="projects/demo/chase-cam.js" defer></script>
   <script src="projects/demo/windmills.js" defer></script>
   <script src="projects/demo/ocean.js" defer></script>
   <script src="projects/demo/dippy-bird.js" defer></script>
@@ -39,10 +40,12 @@
 <body>
   <nav>
     <a href="/" target="_self">Home</a>
-    <a>Description</a>
+    <a id="description">Description</a>
     <a href="https://github.com/codenameyau/tribble" target="_blank">Github</a>
   </nav>
+
   <ui-view></ui-view>
   <div id="dat-gui-container"></div>
+
 </body>
 </html>
