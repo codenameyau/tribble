@@ -1,134 +1,49 @@
 'use strict';
 
 
-/*********************************
- * Global Variables and Settings *
- *********************************/
-var containerID = '#canvas-body';
-var scene, camera, controls, renderer;
-var ocean;
+/***************************************************************
+* OCEAN DEMO
+***************************************************************/
+var oceanDemo = function() {
 
-// Water movement speed
-var waterSpeed = 1.0/60.0;
+  // External file paths
+  var PATHS = {
+    texture : 'projects/images/texture/',
+    skybox : 'projects/images/skybox/',
+    water : 'projects/images/texture/water/',
+  };
 
-// External file paths
-var PATHS = {
-  texture : 'assets/images/texture/',
-  skybox : 'assets/images/skybox/',
-  water : 'assets/images/texture/water/',
-};
+  // World settings
+  var WORLD = {
+    skybox : 'skybox-sun.png',
+    waterNormal : 'water-clear.png',
+    width: 500,
+    height: 500,
+    widthSegments: 250,
+    heightSegments: 250,
+    depth: 200,
+    param: 4,
+    filterparam: 1
+  };
 
-// World settings
-var WORLD = {
-  skybox : 'skybox-sea.jpg',
-  waterNormal : 'water-clear.png',
-  width: 500,
-  height: 500,
-  widthSegments: 250,
-  heightSegments: 250,
-  depth: 200,
-  param: 4,
-  filterparam: 1
-};
+  // Ocean config.
+  var ocean;
+  var waterSpeed = 1.0 / 90.0;
 
-// Camera settings
-var CAMERA = {
-  fov : 50,
-  near : 50,
-  far : 250000,
-  zoomX : 0,
-  zoomY : 200,
-  zoomZ : 900,
-};
-
-// OrbitControls settings
-var CONTROLS = {
-  userPan : false,
-  userPanSpeed : 0.0,
-  minDistance : 300.0,
-  maxDistance : 5000.0,
-  maxPolarAngle : (Math.PI/180) * 85,
-};
-
-
-/********************
- * Helper Functions *
- ********************/
-function renderScene() {
-  renderer.render( scene, camera );
-}
-
-function animateScene() {
-  window.requestAnimationFrame( animateScene );
-  controls.update();
-  ocean.material.uniforms.time.value += waterSpeed;
-  ocean.render();
-  renderScene();
-}
-
-function resizeWindow() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  renderScene();
-}
-
-
-/************************
- * Scene Initialization *
- ************************/
-function initializeScene() {
-
-  // Scene and resize listener
-  scene = new THREE.Scene();
-  var canvasWidth  = window.innerWidth;
-  var canvasHeight = window.innerHeight;
-  window.addEventListener('resize', resizeWindow, false);
-
-  // Camera and initial view
-  var aspectRatio  = canvasWidth/canvasHeight;
-  camera = new THREE.PerspectiveCamera(CAMERA.fov, aspectRatio, CAMERA.near, CAMERA.far);
-  camera.position.set(CAMERA.zoomX, CAMERA.zoomY, CAMERA.zoomZ);
-
-  // OrbitControls with mouse
-  controls = new THREE.OrbitControls(camera);
-  for (var key in CONTROLS) { controls[key] = CONTROLS[key]; }
-  controls.addEventListener('change', renderScene);
-
-  // WebGL renderer
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(canvasWidth, canvasHeight);
-  $(containerID).append(renderer.domElement);
+  // Playgroud intialization.
+  var playground = new Playground();
+  playground.setCameraPosition(0, 20, 200);
+  playground.setMaxCameraDistance(300000);
+  playground.controls.center = new THREE.Vector3(0, 50, 0);
 
   // Light sources
   var lightAmbient = new THREE.AmbientLight(0x5a5a5a);
   var sunLight = new THREE.DirectionalLight(0xffff55, 1);
   sunLight.position.set(- 1, 0.5, -1);
-  scene.add(lightAmbient);
-  scene.add(sunLight);
+  playground.scene.add(lightAmbient);
+  playground.scene.add(sunLight);
 
-  // Water demo
-  var waterNormals = new THREE.ImageUtils.loadTexture(PATHS.water + WORLD.waterNormal);
-  waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
-  ocean = new THREE.Water(renderer, camera, scene, {
-    textureWidth: 512,
-    textureHeight: 512,
-    waterNormals: waterNormals,
-    alpha: 1.0,
-    sunDirection: sunLight.position.normalize(),
-    sunColor: 0xffffff,
-    waterColor: 0x001e0f,
-    distortionScale: 50.0,
-  });
-
-  // Mirror plane for ocean
-  var mirrorPlane = new THREE.PlaneGeometry(WORLD.width*500, WORLD.height*500, 50, 50);
-  var mirrorMesh = new THREE.Mesh(mirrorPlane, ocean.material);
-  mirrorMesh.add(ocean);
-  mirrorMesh.rotation.x = - Math.PI * 0.5;
-  scene.add(mirrorMesh);
-
-  // Create ocean skybox
+  // Create ocean skybox.
   var cubeMap = new THREE.Texture([]);
   cubeMap.format = THREE.RGBFormat;
   cubeMap.flipY = false;
@@ -154,6 +69,7 @@ function initializeScene() {
     cubeMap.needsUpdate = true;
   });
 
+  // Cube shader for skybox,
   var cubeShader = THREE.ShaderLib.cube;
   cubeShader.uniforms.tCube.value = cubeMap;
   var skyBoxMaterial = new THREE.ShaderMaterial( {
@@ -163,17 +79,40 @@ function initializeScene() {
     depthWrite: false,
     side: THREE.BackSide
   });
+
+  // Create skybox around scene.
   var skyBox = new THREE.Mesh(
-    new THREE.BoxGeometry(300000, 300000, 300000),
+    new THREE.BoxGeometry(200000, 200000, 200000),
     skyBoxMaterial
   );
-  scene.add( skyBox );
+  playground.scene.add(skyBox);
 
-}
+  // Water demo
+  var waterNormals = new THREE.ImageUtils.loadTexture(PATHS.water + WORLD.waterNormal);
+  waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
+  ocean = new THREE.Water(playground.renderer, playground.camera, playground.scene, {
+    textureWidth: 512,
+    textureHeight: 512,
+    waterNormals: waterNormals,
+    alpha: 1.0,
+    sunDirection: sunLight.position.normalize(),
+    sunColor: 0xffffff,
+    waterColor: 0x001e0f,
+    distortionScale: 50.0,
+  });
 
+  // Mirror plane for ocean.
+  var mirrorPlane = new THREE.PlaneGeometry(WORLD.width*500, WORLD.height*500, 50, 50);
+  var mirrorMesh = new THREE.Mesh(mirrorPlane, ocean.material);
+  mirrorMesh.add(ocean);
+  mirrorMesh.rotation.x = - Math.PI * 0.5;
+  playground.scene.add(mirrorMesh);
 
-/**********************
- * Render and Animate *
- **********************/
-initializeScene();
-animateScene();
+  // Set ocean animation.
+  playground.setAnimation(function() {
+    ocean.material.uniforms.time.value += waterSpeed;
+    ocean.render();
+    playground.defaultAnimation();
+  });
+
+};
