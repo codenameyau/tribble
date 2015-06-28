@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="app/css/navigation.css">
 
   <!-- Angular Application -->
-  <script src="vendor/angular/angular.min.js"></script>
+  <script src="vendor/angular/angular.min.js" defer></script>
   <script src="vendor/angular/angular-ui-router.min.js" defer></script>
   <script src="app/scripts/tribbleApp.js" defer></script>
 
@@ -21,6 +21,16 @@
   <script src="projects/plugins/threejs/OrbitControls.js" defer></script>
   <script src="projects/plugins/threejs/KeyboardState.js"></script>
 
+  <!-- Three.js Postprocessing -->
+  <script src="projects/plugins/postprocessing/EffectComposer.js" defer></script>
+  <script src="projects/plugins/postprocessing/RenderPass.js" defer></script>
+  <script src="projects/plugins/postprocessing/ShaderPass.js" defer></script>
+  <script src="projects/plugins/postprocessing/MaskPass.js" defer></script>
+
+  <!-- Three.js Shaders -->
+  <script src="projects/shaders/CopyShader.js" defer></script>
+  <script src="projects/shaders/DotScreenShader.js" defer></script>
+
   <!-- Project Demos -->
   <script src="projects/demo/basic-grid.js" defer></script>
   <script src="projects/demo/basic-geometry.js" defer></script>
@@ -28,9 +38,9 @@
   <script src="projects/demo/starfield-particles.js" defer></script>
   <script src="projects/demo/spotlight.js" defer></script>
   <script src="projects/demo/chase-cam.js" defer></script>
+  <script src="projects/demo/windmills.js" defer></script>
 
   <!--
-  <script src="projects/demo/windmills.js" defer></script>
   <script src="projects/demo/ocean.js" defer></script>
   <script src="projects/demo/dippy-bird.js" defer></script>
   -->

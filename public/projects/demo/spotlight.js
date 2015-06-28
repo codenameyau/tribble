@@ -8,6 +8,7 @@ var spotlightDemo = function() {
   var playground = new Playground();
   playground.setCameraPosition(0, 120, 400);
   playground.renderer.shadowMapEnabled = true;
+  playground.controls.center = new THREE.Vector3(0, 30, 0);
 
   // Spotlight settings
   var SL = {
