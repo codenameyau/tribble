@@ -47,6 +47,9 @@ app.service('projectSrv', ['$http', function ($http) {
 app.controller('HomeCtrl', ['$scope', 'projectSrv',
   function($scope, projectSrv) {
     projectSrv.getProjects(function(data) {
+      var repository = 'https://github.com/codenameyau/tribble/';
+      var source = 'blob/master/public/projects/demo/';
+      $scope.github = repository + source;
       $scope.projects = data;
     });
 }]);

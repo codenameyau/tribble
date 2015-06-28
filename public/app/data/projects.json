@@ -2,63 +2,54 @@
   {
     "slug": "basic-grid",
     "title": "Basic Grid",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/boilerplate/grid.js",
     "description": "When starting a three.js project, all you'll see is a black screen. This gird serves a guide for new projects. Bundled with the Orbit Controls plugin, which allows you to move and zoom the camera with a mouse."
   },
 
   {
     "slug": "basic-geometry",
     "title": "Basic Geometry",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/2d-geometry.js",
     "description": "One fundamental concept of Computer Graphics is understand how all geometries are represented as triangles. 3D meshes are simply composed of 2D triangles. By using many triangles, a mesh will appear smoother and more realistic at the cost of performance."
   },
 
   {
     "slug": "parthenon",
     "title": "Parthenon",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/parthenon.js",
     "description": "My first independent Computer Graphics project. I learned about different lighting, meshes, and geometries. I also created a custom triangular prism geometry for the roof. You'll definitely want to outline your work with paper and pencil first."
   },
 
   {
     "slug": "starfield-particles",
     "title": "Starfield Particles",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/starfield.js",
     "description": "Particles are different from traditional triangular-based geometries. They are rendered as particle systems where all the particles are treated as a single mesh. Particles are awesome and efficient!"
   },
 
   {
     "slug": "spotlight",
     "title": "Spotlight",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/spotlight-shadow.js",
     "description": "This demo explores interactive lighting and shadow created by a spotlight. Many three.js projects use the dat.gui plugin to drive user interaction by adjusting variables. Play with it!"
   },
 
   {
     "slug": "chase-cam",
     "title": "Chase Cam",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/chasecam.js",
     "description": "Chase cam is a concept that is very common in video games. Basically the user moves an entity and the camera follows the entity from its point of view. Move around with the WASD keys."
   },
 
   {
     "slug": "windmills",
     "title": "Windmills",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/windmills.js",
     "description": "For this project, I started exploring the simplest animation technique: rotation. The blades of the windwill were created using custom geometries. Overall, the windmill was created as an Object3D. I also applied a Shader for the first time to create a dotted-like appearance."
   },
 
   {
     "slug": "ocean",
     "title": "Ocean",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/demo/ocean.js",
     "description": "Recreated from the three.js Ocean demo. This example explores shaders in depth and uses the MirrorShader, BrightnessShader, and WaterShader to achieve its realistic effect while maintaining performance with the GPU. The swaying ocean tide effect was created with a water Normal Map."
   },
 
   {
     "slug": "dippy-bird",
     "title": "Dippy Bird",
-    "source": "https://github.com/codenameyau/tribble/blob/master/public/assets/scripts/basic/dippybird.js",
     "description": "Explored the interpolation-based animation technique called Tweening. Tweening is the process of interpolating and generating intermediate key frames in between the starting and ending frames. Recreated from Lesson 10 of Udacity's Interactive 3D Graphics course."
   }
 
