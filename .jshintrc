@@ -23,6 +23,7 @@
         "THREE": true,
         "THREEx": true,
         "Playground": true,
-        "dat": true
+        "dat": true,
+        "TWEEN": true
     }
 }
