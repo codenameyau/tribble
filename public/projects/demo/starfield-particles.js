@@ -55,5 +55,6 @@ var starfieldParticlesDemo = function() {
       starFields[i].rotation.y += 0.0025;
       starFields[i].rotation.x += 0.0035;
     }
+    playground.defaultAnimation();
   });
 };

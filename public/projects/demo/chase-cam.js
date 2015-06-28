@@ -52,6 +52,7 @@ var chaseCamDemo = function() {
     var offset = relativeOffset.applyMatrix4( movingFigure.matrixWorld );
     playground.setCameraPosition(offset.x, offset.y, offset.z);
     playground.camera.lookAt( movingFigure.position );
+    playground.defaultAnimation();
   };
 
   // Ambient and point light

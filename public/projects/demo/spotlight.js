@@ -43,6 +43,7 @@ var spotlightDemo = function() {
     yellowLight.intensity = SL.intensity;
     yellowLight.intensity = SL.intensity;
     yellowLight.shadowCameraVisible = SL.visibility;
+    playground.defaultAnimation();
   };
 
   // Dat gui iteraction
