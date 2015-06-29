@@ -6,35 +6,36 @@
   <meta name="description" content="Tribble - Playground for three.js projects">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Palanquin:400' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="app/css/tribble.css">
 
-  <!-- Angular Application -->
+  <!-- build:css app/css/main.css -->
+  <link rel="stylesheet" href="app/css/tribble.css">
+  <!-- endbuild -->
+
+  <!-- build:js app/scripts/vendor.js -->
   <script src="vendor/angular/angular.min.js" defer></script>
   <script src="vendor/angular/angular-ui-router.min.js" defer></script>
-  <script src="app/scripts/tribbleApp.js" defer></script>
-
-  <!-- Vendor Packages -->
-  <script src="vendor/threejs/three.min.js" defer></script>
+ <script src="vendor/threejs/three.min.js" defer></script>
   <script src="vendor/threejs/dat.gui.min.js" defer></script>
   <script src="vendor/threejs/tween.min.js"></script>
   <script src="vendor/threejs/playground.min.js" defer></script>
   <script src="projects/plugins/threejs/OrbitControls.js" defer></script>
   <script src="projects/plugins/threejs/KeyboardState.js"></script>
+  <!-- endbuild -->
 
-  <!-- Three.js Postprocessing -->
+  <!-- build:js app/scripts/shaders.js -->
   <script src="projects/plugins/postprocessing/EffectComposer.js" defer></script>
   <script src="projects/plugins/postprocessing/RenderPass.js" defer></script>
   <script src="projects/plugins/postprocessing/ShaderPass.js" defer></script>
   <script src="projects/plugins/postprocessing/MaskPass.js" defer></script>
-
-  <!-- Three.js Shaders -->
   <script src="projects/shaders/CopyShader.js" defer></script>
   <script src="projects/shaders/DotScreenShader.js" defer></script>
   <script src="projects/shaders/MirrorShader.js" defer></script>
   <script src="projects/shaders/WaterShader.js" defer></script>
   <script src="projects/shaders/BrightnessShader.js" defer></script>
+  <!-- endbuild -->
 
-  <!-- Project Demos -->
+  <!-- build:js app/scripts/projects.js -->
+  <script src="app/scripts/tribbleApp.js" defer></script>
   <script src="projects/demo/basic-grid.js" defer></script>
   <script src="projects/demo/basic-geometry.js" defer></script>
   <script src="projects/demo/parthenon.js" defer></script>
@@ -44,6 +45,7 @@
   <script src="projects/demo/windmills.js" defer></script>
   <script src="projects/demo/ocean.js" defer></script>
   <script src="projects/demo/dippy-bird.js" defer></script>
+  <!-- endbuild -->
 
 </head>
 
