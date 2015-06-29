@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Palanquin:400' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="app/css/tribble.css">
-  <link rel="stylesheet" href="app/css/navigation.css">
 
   <!-- Angular Application -->
   <script src="vendor/angular/angular.min.js" defer></script>
@@ -49,14 +48,8 @@
 </head>
 
 <body>
-  <nav>
-    <a href="/" target="_self">Home</a>
-    <a id="description">Description</a>
-    <a href="https://github.com/codenameyau/tribble" target="_blank">Github</a>
-  </nav>
-
-  <ui-view></ui-view>
+  <div ui-view="description"></div>
+  <div ui-view="container"></div>
   <div id="dat-gui-container"></div>
-
 </body>
 </html>

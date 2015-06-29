@@ -10,14 +10,30 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
   $stateProvider.state('home', {
     url: '',
-    controller: 'HomeCtrl as home',
-    templateUrl: 'templates/home.html'
+    views: {
+      'description': {
+        controller: 'DescriptionCtrl as description',
+        templateUrl: 'templates/description.html',
+      },
+      'container': {
+        controller: 'HomeCtrl as home',
+        templateUrl: 'templates/home.html'
+      }
+    },
   });
 
   $stateProvider.state('project', {
     url: '/project/:slug',
-    controller: 'ProjectCtrl as project',
-    templateUrl: 'templates/project.html'
+    views: {
+      'description': {
+        controller: 'DescriptionCtrl as description',
+        templateUrl: 'templates/description.html',
+      },
+      'container': {
+        controller: 'ProjectCtrl as project',
+        templateUrl: 'templates/project.html'
+      }
+    }
   });
 
   $urlRouterProvider.otherwise('');
@@ -38,12 +54,31 @@ app.service('projectSrv', ['$http', function ($http) {
       cb(data);
     });
   };
+
+  this.getProject = function(projects, slug) {
+    for (var i=0; i<projects.length; i++) {
+      if (projects[i].slug === slug) {
+        return projects[i];
+      }
+    }
+  };
 }]);
 
 
 /********************************************************************
 * CONTROLLERS
 *********************************************************************/
+app.controller('DescriptionCtrl', ['$scope', '$stateParams', 'projectSrv',
+  function($scope, $stateParams, projectSrv) {
+    $scope.slug = $stateParams.slug;
+    if ($scope.slug) {
+      projectSrv.getProjects(function(data) {
+        $scope.projects = data;
+        $scope.project = projectSrv.getProject($scope.projects, $scope.slug);
+      });
+    }
+}]);
+
 app.controller('HomeCtrl', ['$scope', 'projectSrv',
   function($scope, projectSrv) {
     projectSrv.getProjects(function(data) {
@@ -54,20 +89,11 @@ app.controller('HomeCtrl', ['$scope', 'projectSrv',
     });
 }]);
 
-app.controller('ProjectCtrl',
-  ['$scope', '$filter', '$stateParams', 'projectSrv',
-  function($scope, $filter, $stateParams, projectSrv) {
-
-    var slug = $stateParams.slug;
-    var demoFunction = $filter('slugToCamel')(slug) + 'Demo';
-
-    projectSrv.getProjects(function(data) {
-      $scope.projects = data;
-      $scope.project = data.filter(function(obj) {
-        return obj.slug === slug;
-      })[0];
-      window[demoFunction]();
-    });
+app.controller('ProjectCtrl', ['$scope', '$filter', '$stateParams',
+  function($scope, $filter, $stateParams) {
+    $scope.slug = $stateParams.slug;
+    var demoFunction = $filter('slugToCamel')($scope.slug) + 'Demo';
+    window[demoFunction]();
 }]);
 
 

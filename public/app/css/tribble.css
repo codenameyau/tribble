@@ -1,5 +1,5 @@
 /***************************************************************
-* HOMEPAGE STYLES
+* HOMEPAGE CARDS
 ****************************************************************/
 body {
   margin: 0;
@@ -10,7 +10,7 @@ body {
 
 a {
   text-decoration: none;
-  color: #4a4a4a;
+  color: #fff;
 }
 
 a:hover {
@@ -18,8 +18,8 @@ a:hover {
 }
 
 .container {
-  width: 90%;
-  margin: 80px auto;
+  width: 92%;
+  margin: 60px auto;
   text-align: center;
 }
 
@@ -36,8 +36,8 @@ a:hover {
   position: relative;
   vertical-align: top;
   letter-spacing: 1px;
-  width: 340px;
-  height: 380px;
+  width: 360px;
+  height: 400px;
   background: #ffffff;
   box-shadow: 0 0 10px #acacac;
   margin: 20px;
@@ -55,7 +55,7 @@ a:hover {
 .card-title {
   background: #333;
   font-size: 15px;
-  transition: linear 0.3s;
+  transition: linear 0.5s;
 }
 
 .card-title:hover {
@@ -68,14 +68,6 @@ a:hover {
   position: absolute;
   bottom: 0;
   left: 0;
-}
-
-.card-title a {
-  color: #ffffff;
-}
-
-.card-title a:hover {
-  color: #A1E8AD;
 }
 
 .card-footer a {
@@ -94,4 +86,53 @@ a:hover {
 
 .card-body-text {
   line-height: 25px;
+}
+
+
+/***************************************************************
+* PROJECT DESCRIPTION
+****************************************************************/
+.project-text {
+  background: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 10;
+  top: 35px;
+  left: 25px;
+  width: 440px;
+  opacity: 0.5;
+  transition: ease-out 0.5s;
+}
+
+.project-text:hover {
+  opacity: 1;
+}
+
+.project-text-container {
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 14.5px;
+  letter-spacing: 1px;
+  line-height: 22px;
+}
+
+
+/***************************************************************
+* PROJECT CANVAS
+****************************************************************/
+.project-container {
+  width: 100%;
+  height: 100%;
+}
+
+#dat-gui-container {
+  position: absolute;
+  top: 50px;
+  right: 25px;
+  z-index: 10;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  cursor: all-scroll;
 }
