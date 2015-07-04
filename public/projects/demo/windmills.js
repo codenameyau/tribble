@@ -18,7 +18,7 @@ var windmillsDemo = function() {
   // Effect composer
   playground.composer = new THREE.EffectComposer(playground.renderer);
   playground.composer.addPass(new THREE.RenderPass(
-    playground.scene, playground.camera));
+  playground.scene, playground.camera));
 
   // Shader effect: create new ShaderPass -> DotScreen
   var dotscreenEffect = new THREE.ShaderPass(THREE.DotScreenShader);
@@ -27,7 +27,7 @@ var windmillsDemo = function() {
   playground.composer.addPass(dotscreenEffect);
 
   // Returns geometry of a blade
-  var BladeGeometry = function() {
+  function BladeGeometry() {
     this.geometry = new THREE.Geometry();
     this.geometry.vertices.push(new THREE.Vector3(    0,   15,  0   ));
     this.geometry.vertices.push(new THREE.Vector3(   -1,  2.5,  0   ));
@@ -49,82 +49,72 @@ var windmillsDemo = function() {
     this.geometry.computeFaceNormals();
     this.geometry.computeVertexNormals();
     return this.geometry;
-  };
+  }
 
-  // Returns three windmill blades as an Object3D
-  var windmillBladesObject3D = function(windmillMaterial) {
-    var windmillBlades = new THREE.Object3D();
+  // Windmill Constructor
+  function Windmill(height) {
+    this.windmill = new THREE.Object3D();
+    this.material = new THREE.MeshLambertMaterial( {color: 0xfafafa} );
+    this.height = height;
+    this.createBlades();
+    this.createHub();
+    this.createGenerator();
+    this.createTower();
+    this.createPlatform();
+  }
+
+  Windmill.prototype.createBlades = function() {
+    this.blades = new THREE.Object3D();
 
     // Rotating hub
     var cylinderGeometry = new THREE.CylinderGeometry(1, 1, 1, 16);
-    var windmillHub = new THREE.Mesh(cylinderGeometry, windmillMaterial);
-    windmillHub.rotation.x = playground.utils.degToRad(90);
-    windmillBlades.add(windmillHub);
+    var rotator = new THREE.Mesh(cylinderGeometry, this.material);
+    rotator.rotation.x = playground.utils.degToRad(90);
+    this.blades.add(rotator);
 
     // Windmill blades
     var windmillBlade = new BladeGeometry();
     var rotationAngle = 0;
     for (var i=0; i<3; i++) {
-      var blade = new THREE.Mesh(windmillBlade, windmillMaterial);
+      var blade = new THREE.Mesh(windmillBlade, this.material);
       blade.rotation.z = playground.utils.degToRad(rotationAngle);
-      windmillBlades.add(blade);
+      this.blades.add(blade);
       rotationAngle += 120;
     }
-    return windmillBlades;
+    this.windmill.add(this.blades);
   };
 
-  // Returns mesh of windmill hub head.
-  var windmillHubMesh = function(windmillMaterial) {
+  Windmill.prototype.createHub = function() {
     var geometry = new THREE.SphereGeometry(1, 16, 16, Math.PI, Math.PI, 0);
-    var hubMesh = new THREE.Mesh(geometry, windmillMaterial);
-    hubMesh.rotation.x = playground.utils.degToRad(180);
-    hubMesh.scale.z = 2;
-    hubMesh.position.z = 0.45;
-    return hubMesh;
+    this.hub = new THREE.Mesh(geometry, this.material);
+    this.hub.rotation.x = playground.utils.degToRad(180);
+    this.hub.scale.z = 2;
+    this.hub.position.z = 0.45;
+    this.windmill.add(this.hub);
   };
 
-  // Returns Object3D of windmill generator.
-  var windmillGeneratorObject3D = function(windmillMaterial) {
+  Windmill.prototype.createGenerator = function() {
     var sphere = new THREE.SphereGeometry(1, 3, 16, Math.PI, Math.PI, 0);
-    var body = new THREE.Mesh(sphere, windmillMaterial);
-    body.scale.z = 6;
-    body.position.z = -0.45;
-    return body;
+    this.generator = new THREE.Mesh(sphere, this.material);
+    this.generator.scale.z = 6;
+    this.generator.position.z = -0.45;
+    this.windmill.add(this.generator);
   };
 
-  // Returns mesh of windmill tower.
-  var windmillTowerMesh = function(windmillMaterial) {
+  Windmill.prototype.createTower = function() {
     var radius = 0.7;
-    var cylinder = new THREE.CylinderGeometry(radius, radius+0.5, WINDMILL.height, 16);
-    var tower = new THREE.Mesh(cylinder, windmillMaterial);
-    tower.position.set(0, -WINDMILL.height/2, -1.5);
-    return tower;
+    var cylinder = new THREE.CylinderGeometry(radius, radius+0.5, this.height, 16);
+    this.tower = new THREE.Mesh(cylinder, this.material);
+    this.tower.position.set(0, -this.height/2, -1.5);
+    this.windmill.add(this.tower);
   };
 
-  // Returns mesh of windmill ground base.
-  var windmillGroundMesh = function(windmillMaterial) {
+  Windmill.prototype.createPlatform = function() {
     var box = new THREE.BoxGeometry(10, 1, 10);
-    var base = new THREE.Mesh(box, windmillMaterial);
-    base.position.set(0, -WINDMILL.height, -1.5);
-    return base;
+    this.platform = new THREE.Mesh(box, this.material);
+    this.platform.position.set(0, -this.height, -1.5);
+    this.windmill.add(this.platform);
   };
-
-  function Windmill() {
-    // Create blades
-    var newWindmill = new THREE.Object3D();
-    var windmillMaterial = new THREE.MeshLambertMaterial( {color: 0xfafafa} );
-    var windmillBlades = windmillBladesObject3D( windmillMaterial );
-    var windmillHub = windmillHubMesh( windmillMaterial );
-    var windmillGenerator = windmillGeneratorObject3D( windmillMaterial );
-    var windmillTower = windmillTowerMesh( windmillMaterial );
-    var windmillGround = windmillGroundMesh( windmillMaterial );
-    newWindmill.add(windmillBlades);
-    newWindmill.add(windmillHub);
-    newWindmill.add(windmillGenerator);
-    newWindmill.add(windmillTower);
-    newWindmill.add(windmillGround);
-    return newWindmill;
-  }
 
   var animateWindmillBlades = function() {
     var delta = playground.clock.getDelta();
@@ -141,20 +131,20 @@ var windmillsDemo = function() {
   playground.scene.add(lightSource);
 
   // Add windmills to scene
-  var windmillA = new Windmill();
-  windmillA.position.set(0, WINDMILL.height+0.5, 0);
-  playground.scene.add(windmillA);
-  windmills.push(windmillA);
+  var windmillA = new Windmill(WINDMILL.height);
+  windmillA.windmill.position.set(0, WINDMILL.height+0.5, 0);
+  playground.scene.add(windmillA.windmill);
+  windmills.push(windmillA.windmill);
 
-  var windmillB = new Windmill();
-  windmillB.position.set(-30, WINDMILL.height+0.5, 0);
-  playground.scene.add(windmillB);
-  windmills.push(windmillB);
+  var windmillB = new Windmill(WINDMILL.height);
+  windmillB.windmill.position.set(-30, WINDMILL.height+0.5, 0);
+  playground.scene.add(windmillB.windmill);
+  windmills.push(windmillB.windmill);
 
-  var windmillC = new Windmill();
-  windmillC.position.set(30, WINDMILL.height+0.5, 0);
-  playground.scene.add(windmillC);
-  windmills.push(windmillC);
+  var windmillC = new Windmill(WINDMILL.height);
+  windmillC.windmill.position.set(30, WINDMILL.height+0.5, 0);
+  playground.scene.add(windmillC.windmill);
+  windmills.push(windmillC.windmill);
 
   // Animate windmill blades
   playground.setAnimation(function() {

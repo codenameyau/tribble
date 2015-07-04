@@ -50,7 +50,7 @@
   {
     "slug": "dippy-bird",
     "title": "Dippy Bird",
-    "description": "In this demo, I explored the animation technique called Tweening. Tweening generates key frames by interpolating the values in between two values. You can observe it in action as the dippy bird rocks back-and-forth in between sips of water."
+    "description": "In this demo, I explored the animation technique called Tweening. Tweening generates key frames by interpolating the values in between two values in a given amount of time. You can observe it in action as the dippy bird rocks back-and-forth in between sips of water."
   }
 
 ]
