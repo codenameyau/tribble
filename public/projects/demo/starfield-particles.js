@@ -51,10 +51,10 @@ var starfieldParticlesDemo = function() {
 
   // Animate starfield.
   playground.setAnimation(function() {
-    for (var i=0; i<starFields.length; i++) {
-      starFields[i].rotation.y += 0.0025;
-      starFields[i].rotation.x += 0.0035;
-    }
+    starFields.forEach(function(star) {
+      star.rotation.y += 0.0025;
+      star.rotation.x += 0.0035;
+    });
     playground.defaultAnimation();
   });
 };
